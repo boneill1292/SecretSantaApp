@@ -102,6 +102,10 @@ namespace SecretSantaApp
           NameClaimType = "name"
         },
 
+        // Saves tokens to the AuthenticationProperties
+        SaveTokens = true,
+        
+        
         Events = new OpenIdConnectEvents
         {
           // handle the logout redirection 
