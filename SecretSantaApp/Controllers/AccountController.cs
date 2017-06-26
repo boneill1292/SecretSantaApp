@@ -138,6 +138,13 @@ namespace SecretSantaApp.Controllers
       });
     }
 
+
+    [Authorize(Roles = "admin")]
+    public IActionResult Admin()
+    {
+      return View();
+    }
+
   }
 }
 

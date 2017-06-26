@@ -12,11 +12,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using SecretSantaApp.BL;
 
 namespace SecretSantaApp
 {
   public class Startup
   {
+    private IConfigurationRoot _configurationRoot;
+   
     public Startup(IHostingEnvironment env)
     {
       var builder = new ConfigurationBuilder()
@@ -36,6 +39,10 @@ namespace SecretSantaApp
       services.AddAuthentication(
         options => options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
 
+
+      //Test Dependency Injection
+      services.AddTransient<ITestBl, TestBl>();
+      
       // Add framework services.
       services.AddMvc();
 
@@ -134,8 +141,10 @@ namespace SecretSantaApp
       };
       options.Scope.Clear();
       options.Scope.Add("openid");
-      options.Scope.Add("profile");
+      options.Scope.Add("name");
       options.Scope.Add("email");
+      options.Scope.Add("picture");
+      options.Scope.Add("country");
       options.Scope.Add("roles");
       app.UseOpenIdConnectAuthentication(options);
 
