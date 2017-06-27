@@ -11,5 +11,7 @@ namespace SecretSantaApp.Models
     //IEnumerable<Group> Groups { get; }
     // Pie GetPieById(int pieId);
     Group GetGroupById(int groupid);
+
+    void CreateGroup(Group g);
   }
 }

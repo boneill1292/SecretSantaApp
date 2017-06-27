@@ -9,6 +9,7 @@ using SecretSantaApp.BL;
 
 namespace SecretSantaApp.Controllers
 {
+  [Authorize]
   public class GroupsController : Controller
   {
     private readonly ISecretSantaBl _secretSantaBl;
@@ -26,6 +27,15 @@ namespace SecretSantaApp.Controllers
       //var model = _secretSantaBl.DefaultTestDataViewModel();
       return View("Index");
     }
+
+    [HttpGet]
+    public IActionResult NewGroupPage()
+    {
+      return View("NewGroup");
+    }
+    
+    
+    
 
   }
 }

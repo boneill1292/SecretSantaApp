@@ -11,28 +11,12 @@ namespace SecretSantaApp.Controllers
 {
   public class HomeController : Controller
   {
-    //private readonly AppDbContext _appDbContext;
-    //private readonly ShoppingCart _shoppingCart;
-
-
-    //public OrderRepository(AppDbContext appDbContext, ShoppingCart shoppingCart)
-    //{
-    //  _appDbContext = appDbContext;
-    //  _shoppingCart = shoppingCart;
-    //}
-
-
+  
     private readonly ISecretSantaBl _secretSantaBl;
-    //private readonly AppDbContext _appDbContext;
-
     
-
-    public HomeController(ISecretSantaBl secretSantaBl
-                          //AppDbContext dbContext
-                          )
+    public HomeController(ISecretSantaBl secretSantaBl)
     {
       _secretSantaBl = secretSantaBl;
-     // _appDbContext = dbContext;
     }
 
     [HttpGet]
