@@ -7,19 +7,22 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using SecretSantaApp.BL;
+using SecretSantaApp.Models;
 
 namespace SecretSantaApp
 {
   public class Startup
   {
     private IConfigurationRoot _configurationRoot;
-   
+
     public Startup(IHostingEnvironment env)
     {
       var builder = new ConfigurationBuilder()
@@ -28,6 +31,12 @@ namespace SecretSantaApp
           .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
           .AddEnvironmentVariables();
       Configuration = builder.Build();
+
+      //_configurationRoot = new ConfigurationBuilder()
+      //  .SetBasePath(hostingEnvironment.ContentRootPath)
+      //  //.AddJsonFile("appsettings.json")
+      //  .AddJsonFile($"appsettings. {hostingEnvironment.EnvironmentName}.json", true)
+      //  .Build();
     }
 
     public IConfigurationRoot Configuration { get; }
@@ -35,6 +44,17 @@ namespace SecretSantaApp
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
+
+      services.AddDbContext<AppDbContext>(options =>
+        options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+
+      services.AddIdentity<IdentityUser, IdentityRole>()
+        .AddEntityFrameworkStores<AppDbContext>();
+
+      services.AddTransient<IGroupRepository, GroupRepository>();
+
+
       // Add authentication services
       services.AddAuthentication(
         options => options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
@@ -42,7 +62,7 @@ namespace SecretSantaApp
 
       //Test Dependency Injection
       services.AddTransient<ITestBl, TestBl>();
-      
+
       // Add framework services.
       services.AddMvc();
 
@@ -58,7 +78,7 @@ namespace SecretSantaApp
     {
       loggerFactory.AddConsole(Configuration.GetSection("Logging"));
       loggerFactory.AddDebug();
-      
+
       if (env.IsDevelopment())
       {
         app.UseDeveloperExceptionPage();
@@ -111,8 +131,8 @@ namespace SecretSantaApp
 
         // Saves tokens to the AuthenticationProperties
         SaveTokens = true,
-        
-        
+
+
         Events = new OpenIdConnectEvents
         {
           // handle the logout redirection 
@@ -154,6 +174,8 @@ namespace SecretSantaApp
           name: "default",
           template: "{controller=Home}/{action=Index}/{id?}");
       });
+      
+      
     }
   }
 }
