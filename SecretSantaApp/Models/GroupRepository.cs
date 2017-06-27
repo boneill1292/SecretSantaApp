@@ -22,6 +22,19 @@ namespace SecretSantaApp.Models
     }
 
 
+    public List<Group> AllActiveGroups()
+    {
+      return _appDbContext.Groups.Where(x => x.Active).ToList();
+    }
+    //public IEnumerable<Pie> Pies
+    //{
+    //  get
+    //  {
+    //    return _appDbContext.Pies.Include(c => c.Category);
+    //  }
+    //}
+
+
     public void CreateGroup(Group g)
     {
       var group = new Group();

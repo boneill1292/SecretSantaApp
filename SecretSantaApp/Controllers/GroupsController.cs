@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SecretSantaApp.BL;
+using SecretSantaApp.Views.Groups;
 
 namespace SecretSantaApp.Controllers
 {
@@ -25,17 +26,39 @@ namespace SecretSantaApp.Controllers
     public IActionResult Index()
     {
       //var model = _secretSantaBl.DefaultTestDataViewModel();
-      return View("Index");
+      var model = _secretSantaBl.DefaultGroupAdminModel();
+      return View("Index", model);
     }
 
     [HttpGet]
     public IActionResult NewGroupPage()
     {
-      return View("NewGroup");
+      var model = _secretSantaBl.DefaultGroupEditModel();
+      return View("NewGroup",model);
     }
-    
-    
-    
+
+    [HttpPost]
+    //[Route("tickets/{department}/newcategoryonticketview/edit")]
+    public ActionResult SaveNewGroup(GroupEditModel model)
+    {
+      if (!ModelState.IsValid)
+      {
+        return View("NewGroup", model);
+      }
+      try
+      {
+        var m = _secretSantaBl.SaveNewGroup(model);
+        return View("NewGroup",m);
+
+      }
+      catch (Exception ex)
+      {
+        ModelState.AddModelError("", ex.Message);
+      }
+      return View("Index");
+    }
+
+
 
   }
 }

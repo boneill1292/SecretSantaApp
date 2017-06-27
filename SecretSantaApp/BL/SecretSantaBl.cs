@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SecretSantaApp.Models;
 using SecretSantaApp.ViewModels;
+using SecretSantaApp.Views.Groups;
 
 namespace SecretSantaApp.BL
 {
@@ -21,7 +22,7 @@ namespace SecretSantaApp.BL
     //}
 
     private readonly IGroupRepository _groupRepository;
-    public SecretSantaBl(IGroupRepository groupRepository) 
+    public SecretSantaBl(IGroupRepository groupRepository)
     {
       _groupRepository = groupRepository;
     }
@@ -38,15 +39,34 @@ namespace SecretSantaApp.BL
       return result;
     }
 
-
-    public void SaveANewGroup()
+    public GroupAdminModel DefaultGroupAdminModel()
     {
-      var test = new Group();
-      test.GroupName = "ben";
-
-      _groupRepository.CreateGroup(test);
+      var result = new GroupAdminModel();
+      result.ActiveGroups = _groupRepository.AllActiveGroups();
+      return result;
     }
-    
-    
+
+
+    public GroupEditModel DefaultGroupEditModel()
+    {
+      var result = new GroupEditModel();
+      return result;
+    }
+
+    public GroupEditModel SaveNewGroup(GroupEditModel model)
+    {
+      if (model.GroupName == null)
+      {
+        throw new Exception("Name is Required");
+      }
+      
+      
+      _groupRepository.CreateGroup(model);
+
+      model.Saved = true;
+      return model;
+    }
+
+
   }
 }

@@ -11,5 +11,6 @@ namespace SecretSantaApp.Models
     public int GroupId { get; set; }
     public string GroupName { get; set; }
     public string GroupPassWord { get; set; }
+    public bool Active { get; set; }
   }
 }

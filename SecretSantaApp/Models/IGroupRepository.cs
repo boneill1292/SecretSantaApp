@@ -12,6 +12,8 @@ namespace SecretSantaApp.Models
     // Pie GetPieById(int pieId);
     Group GetGroupById(int groupid);
 
+    List<Group> AllActiveGroups();
+
     void CreateGroup(Group g);
   }
 }

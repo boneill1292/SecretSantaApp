@@ -1,10 +1,25 @@
-﻿<h1>If you are logged in. You can play the game!</h1>
+﻿@using SecretSantaApp.Views.Groups
+@model SecretSantaApp.Views.Groups.GroupAdminModel
+<h1>If you are logged in. You can play the game!</h1>
 
 @* First we should list the groups that this user has created. *@
 
 <form>
   <button asp-action="NewGroupPage" asp-controller="Groups">Create New Group</button>
+  <button asp-action="NewGroupPage" asp-controller="Groups">Create New Group</button>
 </form>
+
+<div class="row">
+  @foreach (var g in Model.ActiveGroups)
+  {
+    <p>GroupID: @g.GroupId</p> 
+    <p>Group Name: @g.GroupName</p>
+    <p> Active: @g.Active</p>
+    <br />
+  }
+</div>
+
+@Html.Partial("_ExistingGroups")
 
 @section scripts{
   <script>

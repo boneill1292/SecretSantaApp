@@ -64,6 +64,11 @@ namespace SecretSantaApp.Controllers
           // Get user info from token
           var user = await client.GetUserInfoAsync(result.AccessToken);
 
+          var id = user.UserId;
+          var username = user.PreferredUsername;
+          var email = user.Email;
+
+          
           // Create claims principal
           var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new[]
           {
