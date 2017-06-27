@@ -1,27 +1,33 @@
-﻿@{
+﻿@model TestDataViewModel
+@{
     ViewData["Title"] = "Home Page";
 }
 
-@*<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
-    <ol class="carousel-indicators">
-        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-        <li data-target="#myCarousel" data-slide-to="1"></li>
-        <li data-target="#myCarousel" data-slide-to="2"></li>
-        <li data-target="#myCarousel" data-slide-to="3"></li>
-    </ol>
-    <div class="carousel-inner" role="listbox">
-      
-    </div>
-    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-    </a>
-    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-    </a>
-</div>*@
+
 
 <div class="row">
-    <h3>Starting</h3>
+  @*<form asp-controller="Home" asp-action="Checkout" method="post" class="form-horizontal" role="form">
+    <h4>Test it out</h4>
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+      <label asp-for="GroupId" class="col-md-2 control-label"></label>
+      <div class="col-md-5">
+        <input asp-for="GroupId" class="form-control" />
+        <span asp-validation-for="GroupId" class="text-danger"></span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label asp-for="GroupName" class="col-md-2 control-label"></label>
+      <div class="col-md-5">
+        <input asp-for="GroupName" class="form-control" />
+        <span asp-validation-for="GroupName" class="text-danger"></span>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-offset-2 col-md-5">
+        <input type="submit" class="btn btn-primary" value="Complete order"/>
+      </div>
+    </div>
+  </form>*@
+  <h1>Welcome to the Secret Santa Game. Please Login to create a new game.</h1>
 </div>

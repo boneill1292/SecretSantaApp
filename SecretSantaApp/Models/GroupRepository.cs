@@ -20,21 +20,24 @@ namespace SecretSantaApp.Models
     {
       return _appDbContext.Groups.FirstOrDefault(g => g.GroupId == groupid);
     }
+
+
+    public void CreateGroup(Group g)
+    {
+      var group = new Group();
+      group.GroupName = g.GroupName;
+
+      _appDbContext.Groups.Add(group);
+      _appDbContext.SaveChanges();
+    }
+
+
+
+
+
+
+
   }
-  //private readonly AppDbContext _appDbContext;
 
-  //   return _appDbContext.Pies.FirstOrDefault(p => p.PieId == pieId);
-  //  public PieRepository(AppDbContext appDbContext)
-  //  {
-  //    _appDbContext = appDbContext;
-  //  }
-
-  //  public IEnumerable<Pie> Pies
-  //  {
-  //    get
-  //    {
-  //      return _appDbContext.Pies.Include(c => c.Category);
-  //    }
-  //  }
 }
 

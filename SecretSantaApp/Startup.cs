@@ -21,7 +21,7 @@ namespace SecretSantaApp
 {
   public class Startup
   {
-    private IConfigurationRoot _configurationRoot;
+    //private IConfigurationRoot _configurationRoot;
 
     public Startup(IHostingEnvironment env)
     {
@@ -61,7 +61,7 @@ namespace SecretSantaApp
 
 
       //Test Dependency Injection
-      services.AddTransient<ITestBl, TestBl>();
+      services.AddTransient<ISecretSantaBl, SecretSantaBl>();
 
       // Add framework services.
       services.AddMvc();
