@@ -80,7 +80,10 @@
         </script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
-
-    @RenderSection("Scripts", required: false)
+  
+@Html.Partial("_LayoutCommonLoadPartial")
+@Html.Partial("_LayoutCommonLoadPopup")
+@RenderSection("Scripts", required: false)
 </body>
 </html>
+

@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SecretSantaApp.BL;
 using SecretSantaApp.Views.Groups;
@@ -14,10 +17,12 @@ namespace SecretSantaApp.Controllers
   public class GroupsController : Controller
   {
     private readonly ISecretSantaBl _secretSantaBl;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public GroupsController(ISecretSantaBl secretSantaBl)
+    public GroupsController(ISecretSantaBl secretSantaBl, IHttpContextAccessor httpContextAccessor)
     {
       _secretSantaBl = secretSantaBl;
+      _httpContextAccessor = httpContextAccessor;
     }
 
     [HttpGet]
@@ -25,8 +30,13 @@ namespace SecretSantaApp.Controllers
     // [Route("benapp/test")]
     public IActionResult Index()
     {
-      //var model = _secretSantaBl.DefaultTestDataViewModel();
-      var model = _secretSantaBl.DefaultGroupAdminModel();
+      //var user = await _userManager.GetUserAsync(HttpContext.User);
+      //var LoggedInUser => User.Identity;
+      
+      //gets the id... dunno what to do with it
+      //var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+    //var model = _secretSantaBl.DefaultTestDataViewModel();
+    var model = _secretSantaBl.DefaultGroupAdminModel();
       return View("Index", model);
     }
 
