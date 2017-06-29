@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using SecretSantaApp.Models;
@@ -59,13 +60,28 @@ namespace SecretSantaApp.BL
       {
         throw new Exception("Name is Required");
       }
-      
-      
+      //var acctid = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+
+      model.Active = true;
+      model.InsertedDateTime = DateTime.Now;
+      // model.InsertedBy = H
+
       _groupRepository.CreateGroup(model);
 
       model.Saved = true;
       return model;
     }
+
+
+    public CustomUserEditModel CheckUserByUserId(string userid)
+    {
+      
+      
+      var result = new CustomUserEditModel();
+      return result;
+    }
+
+
 
 
   }

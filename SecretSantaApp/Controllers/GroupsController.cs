@@ -58,7 +58,8 @@ namespace SecretSantaApp.Controllers
       try
       {
         var m = _secretSantaBl.SaveNewGroup(model);
-        return View("NewGroup",m);
+        var result = _secretSantaBl.DefaultGroupAdminModel();
+        return View("Index", result);
 
       }
       catch (Exception ex)

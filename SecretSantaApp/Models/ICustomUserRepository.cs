@@ -6,13 +6,9 @@ using System.Threading.Tasks;
 
 namespace SecretSantaApp.Models
 {
-  public interface IGroupRepository
+  public interface ICustomUserRepository
   {
-
-    Group GetGroupById(int groupid);
-
-    List<Group> AllActiveGroups();
-
-    void CreateGroup(Group g);
+    List<CustomUser> AllUsers();
+    CustomUser CustomUserByUserId(int id);
   }
 }

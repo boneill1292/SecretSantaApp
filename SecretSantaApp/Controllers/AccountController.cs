@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using SecretSantaApp.BL;
 using SecretSantaApp.ViewModels;
 
 namespace SecretSantaApp.Controllers
@@ -22,10 +23,12 @@ namespace SecretSantaApp.Controllers
   public class AccountController : Controller
   {
     private readonly Auth0Settings _auth0Settings;
+    private readonly ISecretSantaBl _secretSantaBl;
 
-    public AccountController(IOptions<Auth0Settings> auth0Settings)
+    public AccountController(IOptions<Auth0Settings> auth0Settings, ISecretSantaBl secretSantaBl)
     {
       _auth0Settings = auth0Settings.Value;
+      _secretSantaBl = secretSantaBl;
     }
 
     [HttpGet]
@@ -68,7 +71,7 @@ namespace SecretSantaApp.Controllers
           var username = user.PreferredUsername;
           var email = user.Email;
 
-          
+
           // Create claims principal
           var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new[]
           {
@@ -89,8 +92,111 @@ namespace SecretSantaApp.Controllers
         }
       }
 
-      return View(vm);
+      return View("Login", vm);
     }
+
+
+
+
+    //TODO - Log someone in.... if they do not exist, add a new row to the custom users table that i need to create
+    [HttpGet]
+    public IActionResult LoginExternal(string connection, string returnUrl = "/")
+    {
+      var url = Url.Action("RedirectToLocal", "Account");
+      var properties = new AuthenticationProperties()
+      {
+        RedirectUri = url
+      };
+
+      if (!string.IsNullOrEmpty(connection))
+        properties.Items.Add("connection", connection);
+
+
+      return new ChallengeResult("Auth0", properties);
+    }
+
+
+    [HttpGet]
+    public IActionResult RedirectToLocal(string returnUrl)
+    {
+      var url = Url.Action("CheckUser", "Account");
+
+      return RedirectToAction(nameof(AccountController.Login), "Account");
+      //if (Url.IsLocalUrl(returnUrl))
+      //{
+      //  return Redirect(returnUrl);
+      //}
+      //else
+      //{
+      //  return RedirectToAction(nameof(HomeController.Index), "Home");
+      //}
+    }
+
+
+
+    [HttpGet]
+    public IActionResult CheckUser()
+    {
+      //We have logged in externally -
+      //Now i need to compare the user with the user table,
+      //If the user exists... continue as him
+      //If the user does not exist... create a new one.
+
+
+      var client = new AuthenticationApiClient(new Uri($"https://{_auth0Settings.Domain}/"));
+
+      var result =  client.GetTokenAsync(new ResourceOwnerTokenRequest
+      {
+        ClientId = _auth0Settings.ClientId,
+        ClientSecret = _auth0Settings.ClientSecret,
+        Scope = "openid profile",
+        Realm = "Username-Password-Authentication", // Specify the correct name of your DB connection
+      });
+
+      var acctid = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+      var model = _secretSantaBl.CheckUserByUserId(acctid);
+
+
+
+
+      return View("Admin");
+    }
+
+
+
+
+    [Authorize]
+    public IActionResult Profile()
+    {
+      var result = new UserProfileViewModel();
+      result.Name = User.Identity.Name;
+      result.EmailAddress = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+      result.ProfileImage = User.Claims.FirstOrDefault(c => c.Type == "picture")?.Value;
+
+      var acctid = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+
+      //var user = await this._userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
+      //var claimsPrincipal = await this._signInManager.CreateUserPrincipalAsync(user);
+      //((ClaimsIdentity)claimsPrincipal.Identity).AddClaim(new Claim("accessToken", info.AuthenticationTokens.Single(t => t.Name == "access_token").Value));
+      //await HttpContext.Authentication.SignInAsync("Identity.Application", claimsPrincipal);
+
+      return View("Profile", result);
+
+      //return View(new UserProfileViewModel()
+      //{
+      //  Name = User.Identity.Name,
+      //  EmailAddress = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value,
+      //  ProfileImage = User.Claims.FirstOrDefault(c => c.Type == "picture")?.Value
+      //});
+    }
+
+
+    [Authorize(Roles = "admin")]
+    public IActionResult Admin()
+    {
+      return View();
+    }
+
 
 
     [Authorize]
@@ -105,51 +211,6 @@ namespace SecretSantaApp.Controllers
       });
       await HttpContext.Authentication.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
     }
-
-    private IActionResult RedirectToLocal(string returnUrl)
-    {
-      if (Url.IsLocalUrl(returnUrl))
-      {
-        return Redirect(returnUrl);
-      }
-      else
-      {
-        return RedirectToAction(nameof(HomeController.Index), "Home");
-      }
-    }
-
-
-
-    [HttpGet]
-    public IActionResult LoginExternal(string connection, string returnUrl = "/")
-    {
-      var properties = new AuthenticationProperties() { RedirectUri = returnUrl };
-
-      if (!string.IsNullOrEmpty(connection))
-        properties.Items.Add("connection", connection);
-
-      return new ChallengeResult("Auth0", properties);
-    }
-
-
-    [Authorize]
-    public IActionResult Profile()
-    {
-      return View(new UserProfileViewModel()
-      {
-        Name = User.Identity.Name,
-        EmailAddress = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value,
-        ProfileImage = User.Claims.FirstOrDefault(c => c.Type == "picture")?.Value
-      });
-    }
-
-
-    [Authorize(Roles = "admin")]
-    public IActionResult Admin()
-    {
-      return View();
-    }
-
   }
 }
 
@@ -157,4 +218,4 @@ namespace SecretSantaApp.Controllers
 
 
 
-  
+

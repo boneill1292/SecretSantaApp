@@ -66,6 +66,10 @@ namespace SecretSantaApp
       // Add framework services.
       services.AddMvc();
 
+      //session and cache
+      services.AddDistributedMemoryCache(); // Adds a default in-memory implementation of IDistributedCache
+      services.AddSession();
+
       // Add functionality to inject IOptions<T>
       services.AddOptions();
 
@@ -89,7 +93,12 @@ namespace SecretSantaApp
         app.UseExceptionHandler("/Home/Error");
       }
 
+      //app related settings
       app.UseStaticFiles();
+      
+      // IMPORTANT: This session call MUST go before UseMvc()
+      app.UseSession();
+
 
       // Add the cookie middleware
       app.UseCookieAuthentication(new CookieAuthenticationOptions

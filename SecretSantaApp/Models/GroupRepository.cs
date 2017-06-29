@@ -37,10 +37,15 @@ namespace SecretSantaApp.Models
 
     public void CreateGroup(Group g)
     {
-      var group = new Group();
-      group.GroupName = g.GroupName;
 
-      _appDbContext.Groups.Add(group);
+      var result = new Group();
+      result.Active = g.Active;
+      result.GroupName = g.GroupName;
+      result.GroupPassWord = g.GroupPassWord;
+      result.InsertedBy = g.InsertedBy;
+      result.InsertedDateTime = g.InsertedDateTime;
+      
+      _appDbContext.Groups.Add(result);
       _appDbContext.SaveChanges();
     }
 

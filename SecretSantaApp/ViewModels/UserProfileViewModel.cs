@@ -13,5 +13,7 @@ namespace SecretSantaApp.ViewModels
     public string Name { get; set; }
 
     public string ProfileImage { get; set; }
+    public string UserId { get; set; }
+    
   }
 }

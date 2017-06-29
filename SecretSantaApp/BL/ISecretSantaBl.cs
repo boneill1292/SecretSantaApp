@@ -19,5 +19,7 @@ namespace SecretSantaApp.BL
     GroupEditModel DefaultGroupEditModel();
 
     GroupEditModel SaveNewGroup(GroupEditModel model);
+
+    CustomUserEditModel CheckUserByUserId(string userid);
   }
 }
