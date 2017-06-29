@@ -108,6 +108,12 @@ namespace SecretSantaApp.BL
     }
 
 
+    public void JoinGroupAsCustomUser(CustomUserEditModel user, int groupid)
+    {
+      var model = user;
+        //now that we in here with the logged in user - lets add them to the group
+    }
+
 
 
   }

@@ -5,10 +5,11 @@
 @* First we should list the groups that this user has created. *@
 
 <form>
-  <button asp-action="NewGroupPage" asp-controller="Groups">Create New Group</button>
+  <button asp-action="NewGroupPage" asp-controller="Groups" class="btn btn-primary">Create New Group</button>
 </form>
 
 
+<h4>Groups I Belong To:</h4>
 
 @Html.Partial("_ExistingGroups", Model)
 
