@@ -8,9 +8,10 @@ using SecretSantaApp.Models;
 namespace SecretSantaApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170629175751_AddingGroupMemberDetails")]
+    partial class AddingGroupMemberDetails
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")

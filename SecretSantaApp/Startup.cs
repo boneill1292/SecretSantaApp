@@ -32,11 +32,6 @@ namespace SecretSantaApp
           .AddEnvironmentVariables();
       Configuration = builder.Build();
 
-      //_configurationRoot = new ConfigurationBuilder()
-      //  .SetBasePath(hostingEnvironment.ContentRootPath)
-      //  //.AddJsonFile("appsettings.json")
-      //  .AddJsonFile($"appsettings. {hostingEnvironment.EnvironmentName}.json", true)
-      //  .Build();
     }
 
     public IConfigurationRoot Configuration { get; }

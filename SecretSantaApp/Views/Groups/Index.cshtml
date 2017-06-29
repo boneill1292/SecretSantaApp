@@ -8,18 +8,9 @@
   <button asp-action="NewGroupPage" asp-controller="Groups">Create New Group</button>
 </form>
 
-<div class="row">
-  @foreach (var g in Model.ActiveGroups)
-  {
-    <p>GroupID: @g.GroupId</p>
-    <p>Group Name: @g.GroupName</p>
-    <p> Active: @g.Active</p>
-    <p> Password: @g.GroupPassWord</p>
-    <br />
-  }
-</div>
 
-@Html.Partial("_ExistingGroups")
+
+@Html.Partial("_ExistingGroups", Model)
 
 @section scripts{
   <script>

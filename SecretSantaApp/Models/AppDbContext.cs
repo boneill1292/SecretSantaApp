@@ -17,9 +17,6 @@ namespace SecretSantaApp.Models
 
     public DbSet<Group> Groups { get; set; }
     public DbSet<CustomUser> CustomUsers { get; set; }
-    //public DbSet<Category> Categories { get; set; }
-    //public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
-    //public DbSet<Order> Orders { get; set; }
-    //public DbSet<OrderDetail> OrderDetails { get; set; }
+    public DbSet<GroupMemberDetails> GroupMemberDetails { get; set; }
   }
 }

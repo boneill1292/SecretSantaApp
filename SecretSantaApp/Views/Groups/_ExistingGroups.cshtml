@@ -1,1 +1,28 @@
-﻿<h3>Hi from partial</h3>
+﻿@model SecretSantaApp.Views.Groups.GroupAdminModel
+
+<h3>Partial Life</h3>
+<div class="row">
+  <table class="table table-responsive table-striped">
+    <thead>
+    <tr>
+      <th>Group ID</th>
+      <th>Group Name</th>
+      <th>Active</th>
+      <th>PassWord</th>
+      <th>InsertedBy</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var g in Model.ActiveGroups)
+    {
+      <tr>
+        <td>@g.GroupId</td>
+        <td>@g.GroupName</td>
+        <td>@g.Active</td>
+        <td>@g.GroupPassWord</td>
+        <td>@g.InsertedBy</td>
+      </tr>
+    }
+    </tbody>
+  </table>
+</div>
