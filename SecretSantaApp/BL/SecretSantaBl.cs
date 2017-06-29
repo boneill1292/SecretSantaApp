@@ -12,20 +12,13 @@ namespace SecretSantaApp.BL
 {
   public class SecretSantaBl : ISecretSantaBl
   {
-    //private readonly AppDbContext _appDbContext;
-    //private readonly ShoppingCart _shoppingCart;
-
-
-    //public OrderRepository(AppDbContext appDbContext, ShoppingCart shoppingCart)
-    //{
-    //  _appDbContext = appDbContext;
-    //  _shoppingCart = shoppingCart;
-    //}
 
     private readonly IGroupRepository _groupRepository;
-    public SecretSantaBl(IGroupRepository groupRepository)
+    private readonly ICustomUserRepository _customUserRepository;
+    public SecretSantaBl(IGroupRepository groupRepository, ICustomUserRepository customUserRepository)
     {
       _groupRepository = groupRepository;
+      _customUserRepository = customUserRepository;
     }
 
     public string TestStringMethod()
@@ -73,12 +66,26 @@ namespace SecretSantaApp.BL
     }
 
 
-    public CustomUserEditModel CheckUserByUserId(string userid)
+    public CustomUserEditModel CheckUserByUserId(CustomUserEditModel model)
     {
-      
-      
-      var result = new CustomUserEditModel();
-      return result;
+      //First check to see if this user exists
+      //_customUserRepository.SaveUser(model);
+      var exists = _customUserRepository.CustomUserByAccountNumber(model.AccountNumber);
+
+      if (exists)
+      {
+        //We can redirect here
+        return model;
+      }
+      else
+      {
+        //Create a new user
+        var newuser = _customUserRepository.SaveUser(model);
+      }
+
+      return model;
+      //var result = new CustomUserEditModel();
+      //return result;
     }
 
 

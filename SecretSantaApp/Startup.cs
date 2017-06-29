@@ -53,7 +53,7 @@ namespace SecretSantaApp
         .AddEntityFrameworkStores<AppDbContext>();
 
       services.AddTransient<IGroupRepository, GroupRepository>();
-
+      services.AddTransient<ICustomUserRepository, CustomUserRepository>();
 
       // Add authentication services
       services.AddAuthentication(

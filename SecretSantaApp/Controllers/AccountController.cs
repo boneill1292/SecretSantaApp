@@ -121,7 +121,7 @@ namespace SecretSantaApp.Controllers
     {
       var url = Url.Action("CheckUser", "Account");
 
-      return RedirectToAction(nameof(AccountController.Login), "Account");
+      return RedirectToAction(nameof(AccountController.CheckUser), "Account");
       //if (Url.IsLocalUrl(returnUrl))
       //{
       //  return Redirect(returnUrl);
@@ -142,19 +142,17 @@ namespace SecretSantaApp.Controllers
       //If the user exists... continue as him
       //If the user does not exist... create a new one.
 
-
-      var client = new AuthenticationApiClient(new Uri($"https://{_auth0Settings.Domain}/"));
-
-      var result =  client.GetTokenAsync(new ResourceOwnerTokenRequest
-      {
-        ClientId = _auth0Settings.ClientId,
-        ClientSecret = _auth0Settings.ClientSecret,
-        Scope = "openid profile",
-        Realm = "Username-Password-Authentication", // Specify the correct name of your DB connection
-      });
-
+      var customUserModel = new CustomUserEditModel();
+      
       var acctid = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
-      var model = _secretSantaBl.CheckUserByUserId(acctid);
+      var name = User.Identity.Name;
+      var email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
+
+      customUserModel.AccountNumber = acctid;
+      customUserModel.FullName = name;
+      customUserModel.Email = email;
+      
+      var model = _secretSantaBl.CheckUserByUserId(customUserModel);
 
 
 

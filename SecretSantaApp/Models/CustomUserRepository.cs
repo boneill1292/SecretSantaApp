@@ -25,15 +25,36 @@ namespace SecretSantaApp.Models
       var result = new CustomUser();
       result = _appDbContext.CustomUsers.FirstOrDefault(u => u.UserId == id);
       return result;
-      //return _appDbContext.Groups.FirstOrDefault(g => g.GroupId == groupid);
+      
+    }
+
+    public bool CustomUserByAccountNumber(string acctno)
+    {
+      var result = new CustomUser();
+      result = _appDbContext.CustomUsers.FirstOrDefault(u => u.AccountNumber == acctno);
+      if (result == null)
+      {
+        return false;
+      }
+      else
+      {
+        return true;
+      }
+      
+      //return result;
     }
 
 
 
     public CustomUser SaveUser(CustomUser u)
     {
-
       var result = new CustomUser();
+      result.Email = u.Email;
+      result.FullName = u.FullName;
+      result.AccountNumber = u.AccountNumber;
+
+      _appDbContext.CustomUsers.Add(result);
+      _appDbContext.SaveChanges();
 
       return result;
       //_appDbContext.Groups.Add(result);
