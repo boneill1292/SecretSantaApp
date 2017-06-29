@@ -103,6 +103,7 @@ namespace SecretSantaApp
       // Add the cookie middleware
       app.UseCookieAuthentication(new CookieAuthenticationOptions
       {
+        LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/LoginExternal"),
         AutomaticAuthenticate = true,
         AutomaticChallenge = true
       });
