@@ -3,16 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace SecretSantaApp.Models
 {
   public class CustomUserRepository : ICustomUserRepository
   {
     private readonly AppDbContext _appDbContext;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public CustomUserRepository(AppDbContext appDbContext)
+    public CustomUserRepository(AppDbContext appDbContext, IHttpContextAccessor httpContextAccessor)
     {
       _appDbContext = appDbContext;
+      _httpContextAccessor = httpContextAccessor;
     }
     public List<CustomUser> AllUsers()
     {
@@ -41,9 +44,11 @@ namespace SecretSantaApp.Models
     public CustomUser SaveUser(CustomUser u)
     {
       var result = new CustomUser();
-      result.Email = u.Email;
-      result.FullName = u.FullName;
-      result.AccountNumberString = u.AccountNumberString;
+      result.Update(u);
+      
+      //result.Email = u.Email;
+      //result.FullName = u.FullName;
+      //result.AccountNumberString = u.AccountNumberString;
 
       _appDbContext.CustomUsers.Add(result);
       _appDbContext.SaveChanges();

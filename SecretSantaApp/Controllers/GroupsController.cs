@@ -39,8 +39,6 @@ namespace SecretSantaApp.Controllers
       //var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
       //var model = _secretSantaBl.DefaultTestDataViewModel();
       //var test = HttpContext.Session.GetObjectFromJson<TestDataViewModel>("Test");
-
-
       //var user = HttpContext.Session.GetObjectFromJson<CustomUser>("LoggedInUser");
 
       

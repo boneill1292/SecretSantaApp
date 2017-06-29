@@ -13,6 +13,8 @@ namespace SecretSantaApp.Models
 
     List<Group> AllActiveGroups();
 
+    List<Group> GroupByGroupName(string groupname);
+
     void CreateGroup(Group g);
   }
 }

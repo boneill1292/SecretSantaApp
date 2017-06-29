@@ -27,10 +27,10 @@ namespace SecretSantaApp.BL
       _httpContextAccessor = httpContextAccessor;
     }
 
-    public CustomUser CustomUserModelByLoggedInUser(ClaimsPrincipal user)
+    public CustomUserEditModel CustomUserModelByLoggedInUser(ClaimsPrincipal user)
     {
       //var test = HttpContext.User.Identity.GetUserId();
-      var result = new CustomUser();
+      var result = new CustomUserEditModel();
       var acctid = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
       var name = user.Identity.Name;
       var email = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
@@ -69,16 +69,13 @@ namespace SecretSantaApp.BL
         throw new Exception("Name is Required");
       }
 
+      var groups = _groupRepository.GroupByGroupName(model.GroupName);
 
-      //Need to play with my check user to see if i should add the person there or not.
-      var testuser = _httpContextAccessor.HttpContext.User;
-      var user = CustomUserModelByLoggedInUser(testuser);
-      //var acctid = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+      if (groups.Count > 0)
+      {
+        throw new Exception("This group already exists");
+      }
 
-      model.Active = true;
-      model.InsertedDateTime = DateTime.Now;
-      //var user = HttpContext.Session.GetObjectFromJson<CustomUser>("LoggedInUser");
-      //model.InsertedBy = 
 
       _groupRepository.CreateGroup(model);
 
@@ -87,7 +84,7 @@ namespace SecretSantaApp.BL
     }
 
 
-    public CustomUser CheckUserByCustomUserAccountNumber(CustomUser model)
+    public CustomUserEditModel CheckUserByCustomUserAccountNumber(CustomUserEditModel model)
     {
       //First check to see if this user exists
       //_customUserRepository.SaveUser(model);
