@@ -10,7 +10,7 @@ namespace SecretSantaApp.Models
   {
     List<CustomUser> AllUsers();
     CustomUser CustomUserByUserId(int id);
-    bool CustomUserByAccountNumber(string acctno);
+    CustomUser CustomUserByAccountNumber(string acctno);
 
 
     CustomUser SaveUser(CustomUser u);

@@ -122,14 +122,7 @@ namespace SecretSantaApp.Controllers
       var url = Url.Action("CheckUser", "Account");
 
       return RedirectToAction(nameof(AccountController.CheckUser), "Account");
-      //if (Url.IsLocalUrl(returnUrl))
-      //{
-      //  return Redirect(returnUrl);
-      //}
-      //else
-      //{
-      //  return RedirectToAction(nameof(HomeController.Index), "Home");
-      //}
+
     }
 
 
@@ -137,27 +130,16 @@ namespace SecretSantaApp.Controllers
     [HttpGet]
     public IActionResult CheckUser()
     {
-      //We have logged in externally -
-      //Now i need to compare the user with the user table,
-      //If the user exists... continue as him
-      //If the user does not exist... create a new one.
 
-      var customUserModel = new CustomUserEditModel();
-      
-      var acctid = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
-      var name = User.Identity.Name;
-      var email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
+      var usermodel = _secretSantaBl.CustomUserEditModelByLoggedInUser(User);
+      var model = _secretSantaBl.CheckUserByCustomUserAccountNumber(usermodel);
 
-      customUserModel.AccountNumber = acctid;
-      customUserModel.FullName = name;
-      customUserModel.Email = email;
-      
-      var model = _secretSantaBl.CheckUserByUserId(customUserModel);
+      //Save the user in my session variable
+      HttpContext.Session.SetObjectAsJson("LoggedInUser", model);
 
 
+      return RedirectToAction(nameof(GroupsController.Index), "Groups");
 
-
-      return View("Admin");
     }
 
 

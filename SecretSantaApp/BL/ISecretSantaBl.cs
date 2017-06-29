@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using SecretSantaApp.Models;
 using SecretSantaApp.ViewModels;
 using SecretSantaApp.Views.Groups;
 
@@ -10,7 +12,7 @@ namespace SecretSantaApp.BL
 {
   public interface ISecretSantaBl
   {
-    string TestStringMethod();
+    CustomUser CustomUserEditModelByLoggedInUser(ClaimsPrincipal user);
 
     TestDataViewModel DefaultTestDataViewModel();
 
@@ -20,6 +22,6 @@ namespace SecretSantaApp.BL
 
     GroupEditModel SaveNewGroup(GroupEditModel model);
 
-    CustomUserEditModel CheckUserByUserId(CustomUserEditModel model);
+    CustomUser CheckUserByCustomUserAccountNumber(CustomUser model);
   }
 }

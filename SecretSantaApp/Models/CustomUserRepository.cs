@@ -28,20 +28,12 @@ namespace SecretSantaApp.Models
       
     }
 
-    public bool CustomUserByAccountNumber(string acctno)
+    public CustomUser CustomUserByAccountNumber(string acctno)
     {
       var result = new CustomUser();
-      result = _appDbContext.CustomUsers.FirstOrDefault(u => u.AccountNumber == acctno);
-      if (result == null)
-      {
-        return false;
-      }
-      else
-      {
-        return true;
-      }
-      
-      //return result;
+      result = _appDbContext.CustomUsers.FirstOrDefault(u => u.AccountNumberString == acctno);
+   
+      return result;
     }
 
 
@@ -51,7 +43,7 @@ namespace SecretSantaApp.Models
       var result = new CustomUser();
       result.Email = u.Email;
       result.FullName = u.FullName;
-      result.AccountNumber = u.AccountNumber;
+      result.AccountNumberString = u.AccountNumberString;
 
       _appDbContext.CustomUsers.Add(result);
       _appDbContext.SaveChanges();

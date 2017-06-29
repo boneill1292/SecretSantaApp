@@ -12,7 +12,7 @@ namespace SecretSantaApp.Models
     [Key]
     public int UserId { get; set; }
     public string Email { get; set; }
-    public string AccountNumber { get; set; } //* unique assigned by auth0
+    public string AccountNumberString { get; set; } //* unique assigned by auth0
     public string FullName { get; set; }
 
    

@@ -11,18 +11,18 @@
   <form asp-controller="Groups" asp-action="SaveNewGroup" method="POST" class="form-horizontal" role="form">
     <h4>Test it out</h4>
     <div asp-validation-summary="All" class="text-danger"></div>
-    @*<div class="form-group">
-        <label asp-for="GroupId" class="col-md-2 control-label"></label>
-        <div class="col-md-5">
-          <input asp-for="GroupId" class="form-control" />
-          <span asp-validation-for="GroupId" class="text-danger"></span>
-        </div>
-      </div>*@
     <div class="form-group">
       <label asp-for="GroupName" class="col-md-2 control-label"></label>
       <div class="col-md-5">
         <input asp-for="GroupName" class="form-control" />
         <span asp-validation-for="GroupName" class="text-danger"></span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label asp-for="GroupPassWord" class="col-md-2 control-label"></label>
+      <div class="col-md-5">
+        <input asp-for="GroupPassWord" class="form-control" />
+        <span asp-validation-for="GroupPassWord" class="text-danger"></span>
       </div>
     </div>
     <div class="form-group">

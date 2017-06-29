@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SecretSantaApp.BL;
+using SecretSantaApp.Models;
+using SecretSantaApp.ViewModels;
 using SecretSantaApp.Views.Groups;
 
 namespace SecretSantaApp.Controllers
@@ -32,10 +34,16 @@ namespace SecretSantaApp.Controllers
     {
       //var user = await _userManager.GetUserAsync(HttpContext.User);
       //var LoggedInUser => User.Identity;
-      
+
       //gets the id... dunno what to do with it
       //var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-    //var model = _secretSantaBl.DefaultTestDataViewModel();
+      //var model = _secretSantaBl.DefaultTestDataViewModel();
+      //var test = HttpContext.Session.GetObjectFromJson<TestDataViewModel>("Test");
+
+
+      //var user = HttpContext.Session.GetObjectFromJson<CustomUser>("LoggedInUser");
+
+      
     var model = _secretSantaBl.DefaultGroupAdminModel();
       return View("Index", model);
     }
