@@ -22,7 +22,7 @@ namespace SecretSantaApp.BL
       _customUserRepository = customUserRepository;
     }
 
-    public CustomUser CustomUserEditModelByLoggedInUser(ClaimsPrincipal user)
+    public CustomUser CustomUserModelByLoggedInUser(ClaimsPrincipal user)
     {
       var result = new CustomUser();
       var acctid = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
@@ -62,6 +62,8 @@ namespace SecretSantaApp.BL
       {
         throw new Exception("Name is Required");
       }
+      
+      
       //var acctid = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
 
       model.Active = true;

@@ -15,6 +15,15 @@ namespace SecretSantaApp.Models
     public string AccountNumberString { get; set; } //* unique assigned by auth0
     public string FullName { get; set; }
 
-   
+
+
+
+    public virtual void Update(CustomUser cu)
+    {
+      UserId = cu.UserId;
+      Email = cu.Email;
+      AccountNumberString = cu.AccountNumberString;
+      FullName = cu.FullName;
+    }
   }
 }

@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using SecretSantaApp.BL;
+using SecretSantaApp.Models;
 using SecretSantaApp.ViewModels;
 
 namespace SecretSantaApp.Controllers
@@ -102,6 +103,7 @@ namespace SecretSantaApp.Controllers
     [HttpGet]
     public IActionResult LoginExternal(string connection, string returnUrl = "/")
     {
+      //Sends the user to our RedirectToLocal Action
       var url = Url.Action("RedirectToLocal", "Account");
       var properties = new AuthenticationProperties()
       {
@@ -119,7 +121,7 @@ namespace SecretSantaApp.Controllers
     [HttpGet]
     public IActionResult RedirectToLocal(string returnUrl)
     {
-      var url = Url.Action("CheckUser", "Account");
+      //var url = Url.Action("CheckUser", "Account");
 
       return RedirectToAction(nameof(AccountController.CheckUser), "Account");
 
@@ -131,7 +133,10 @@ namespace SecretSantaApp.Controllers
     public IActionResult CheckUser()
     {
 
-      var usermodel = _secretSantaBl.CustomUserEditModelByLoggedInUser(User);
+  
+      var usermodel = _secretSantaBl.CustomUserModelByLoggedInUser(User);
+      
+      //Sends the user to see if it is already in our database, or if should be added
       var model = _secretSantaBl.CheckUserByCustomUserAccountNumber(usermodel);
 
       //Save the user in my session variable

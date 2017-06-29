@@ -12,7 +12,7 @@ namespace SecretSantaApp.BL
 {
   public interface ISecretSantaBl
   {
-    CustomUser CustomUserEditModelByLoggedInUser(ClaimsPrincipal user);
+    CustomUser CustomUserModelByLoggedInUser(ClaimsPrincipal user);
 
     TestDataViewModel DefaultTestDataViewModel();
 

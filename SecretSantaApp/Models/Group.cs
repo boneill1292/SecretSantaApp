@@ -12,8 +12,21 @@ namespace SecretSantaApp.Models
     public string GroupName { get; set; }
     public string GroupPassWord { get; set; }
     public bool Active { get; set; }
-    
+
     public string InsertedBy { get; set; }
     public DateTime InsertedDateTime { get; set; }
+
+
+
+    public virtual void Update(Group g)
+    {
+      GroupId = g.GroupId;
+      GroupName = g.GroupName;
+      GroupPassWord = g.GroupPassWord;
+      Active = g.Active;
+      InsertedBy = g.InsertedBy;
+      InsertedDateTime = g.InsertedDateTime;
+    }
+
   }
 }
