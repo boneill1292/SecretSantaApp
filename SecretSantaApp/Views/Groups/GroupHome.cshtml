@@ -1,1 +1,20 @@
-﻿<h1>You in the group breh</h1>
+﻿@model GroupHomeEditModel
+
+
+<h1>Welcome to Group: @Model.GroupName</h1>
+
+<div>
+  @if (Model.GroupMembers.Count > 0)
+  {
+    <h4>Say Hello To Your Members:</h4>
+    foreach (var u in Model.GroupMembers)
+    {
+      <p>User: @u.FullName</p>
+    }
+  }
+  else
+  {
+    <p>No Body Is in this group</p>
+  }
+
+</div>

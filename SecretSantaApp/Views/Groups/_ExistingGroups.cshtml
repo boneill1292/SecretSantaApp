@@ -14,6 +14,7 @@
       <th>PassWord</th>
       <th>InsertedBy</th>
       <th>&nbsp;</th>
+      <th>&nbsp;</th>
     </tr>
     </thead>
     <tbody>
@@ -28,6 +29,11 @@
         <td>
           <form >
             <input asp-controller="Groups" asp-action="JoinGroup" asp-route-id="@g.GroupId" method="GET" type="submit" class="btn btn-group" value="Join Group" />
+          </form>
+        </td>
+        <td>
+          <form >
+            <input asp-controller="Groups" asp-action="GroupHome" asp-route-id="@g.GroupId" method="GET" type="submit" class="btn btn-info" value="Group Home" />
           </form>
         </td>
       </tr>

@@ -27,5 +27,7 @@ namespace SecretSantaApp.BL
     void JoinGroupAsCustomUser(CustomUserEditModel user, int groupid);
 
     MyGroupsViewModel MyGroupsViewModelByUserId(CustomUserEditModel user);
+
+    GroupHomeEditModel GroupHomeEditModelByGroupId(int groupid);
   }
 }

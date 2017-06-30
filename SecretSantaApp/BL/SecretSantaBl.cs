@@ -55,7 +55,7 @@ namespace SecretSantaApp.BL
     {
       var result = new GroupAdminModel();
       result.ActiveGroups = _groupDal.AllActiveGroups();
-      
+
       return result;
     }
 
@@ -129,7 +129,7 @@ namespace SecretSantaApp.BL
       var result = new MyGroupsViewModel();
       result.MyGroups = new List<Group>();
       var grouplist = new List<Group>();
-      
+
       var groupsibelongto = _groupMembershipDal.GroupsBelongingToUserAccountNumberString(user.AccountNumberString);
 
       foreach (var g in groupsibelongto)
@@ -145,6 +145,32 @@ namespace SecretSantaApp.BL
     }
 
 
+
+    public GroupHomeEditModel GroupHomeEditModelByGroupId(int groupid)
+    {
+      var result = new GroupHomeEditModel();
+      var userlist = new List<CustomUser>();
+
+      var group = _groupDal.GetGroupById(groupid);
+
+      result.Update(group);
+
+      var groupmembership = _groupMembershipDal.AllGroupMembersByGroupId(groupid);
+
+      foreach (var g in groupmembership)
+      {
+        var user = new CustomUser();
+
+        user = _customUserDal.CustomUserByAccountNumber(g.AccountNumberString);
+        userlist.Add(user);
+      }
+
+      result.GroupMembers = userlist;
+      
+      
+      
+      return result;
+    }
 
   }
 }

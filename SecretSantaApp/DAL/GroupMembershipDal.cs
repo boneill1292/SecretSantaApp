@@ -43,6 +43,13 @@ namespace SecretSantaApp.Models
     }
 
 
+    public List<GroupMembership> AllGroupMembersByGroupId(int groupid)
+    {
+      var result = new List<GroupMembership>();
+      result = _appDbContext.GroupMembership.Where(x => x.GroupId == groupid).ToList();
+      return result;
+    }
+
     //public List<GroupMembership> GroupsUserDoesNotBelongToByAccountNumberString(string acctno)
     //{
     //  var result = new List<GroupMembership>();

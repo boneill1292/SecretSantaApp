@@ -12,5 +12,7 @@ namespace SecretSantaApp.Models
     GroupMembership SaveMemberToGroup(GroupMembership g);
     List<GroupMembership> GroupsBelongingToUserAccountNumberString(string acctno);
 
+    List<GroupMembership> AllGroupMembersByGroupId(int groupid);
+
   }
 }

@@ -109,5 +109,15 @@ namespace SecretSantaApp.Controllers
 
       return View("MyGroups", usergroupsvm);
     }
+
+
+    [HttpGet]
+    [Authorize]
+    public ActionResult GroupHome(int id)
+    {
+      var model = _secretSantaBl.GroupHomeEditModelByGroupId(id);
+
+      return View("GroupHome",model);
+    }
   }
 }
