@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SecretSantaApp.Models
 {
-  public interface ICustomUserRepository
+  public interface ICustomUserDal
   {
     List<CustomUser> AllUsers();
     CustomUser CustomUserByUserId(int id);

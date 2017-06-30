@@ -39,12 +39,12 @@ namespace SecretSantaApp.Controllers
       //var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
       //var model = _secretSantaBl.DefaultTestDataViewModel();
       //var test = HttpContext.Session.GetObjectFromJson<TestDataViewModel>("Test");
-      
-      
+
+
       //var user = HttpContext.Session.GetObjectFromJson<CustomUser>("LoggedInUser");
 
-      
-    var model = _secretSantaBl.DefaultGroupAdminModel();
+
+      var model = _secretSantaBl.DefaultGroupAdminModel();
       return View("Index", model);
     }
 
@@ -52,7 +52,7 @@ namespace SecretSantaApp.Controllers
     public ActionResult NewGroupPage()
     {
       var model = _secretSantaBl.DefaultGroupEditModel();
-      return View("NewGroup",model);
+      return View("NewGroup", model);
     }
 
     [HttpPost]
@@ -91,6 +91,21 @@ namespace SecretSantaApp.Controllers
 
 
       return View("GroupHome");
+    }
+
+
+
+    [HttpGet]
+    [Authorize]
+    // [Route("benapp/test")]
+    public ActionResult MyGroups()
+    {
+      var usermodel = _secretSantaBl.CustomUserModelByLoggedInUser(User);
+
+      var usergroupsvm = _secretSantaBl.MyGroupsViewModelByUserId(usermodel);
+
+
+      return View("MyGroups", usergroupsvm);
     }
   }
 }

@@ -8,12 +8,12 @@ using Microsoft.AspNetCore.Http;
 
 namespace SecretSantaApp.Models
 {
-  public class GroupRepository : IGroupRepository
+  public class GroupDal : IGroupDal
   {
     private readonly AppDbContext _appDbContext;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public GroupRepository(AppDbContext appDbContext, IHttpContextAccessor httpContextAccessor)
+    public GroupDal(AppDbContext appDbContext, IHttpContextAccessor httpContextAccessor)
     {
       _appDbContext = appDbContext;
       _httpContextAccessor = httpContextAccessor;

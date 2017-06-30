@@ -1,0 +1,13 @@
+﻿@model MyGroupsViewModel
+
+@if (Model.MyGroups.Count > 0)
+{
+  foreach (var g in Model.MyGroups)
+  {
+    <p>Group Name: @g.GroupName</p>
+  }
+}
+else
+{
+  <h3>You belong to no groups. Why dont you add one</h3>
+}

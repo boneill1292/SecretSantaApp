@@ -47,8 +47,9 @@ namespace SecretSantaApp
       services.AddIdentity<IdentityUser, IdentityRole>()
         .AddEntityFrameworkStores<AppDbContext>();
 
-      services.AddTransient<IGroupRepository, GroupRepository>();
-      services.AddTransient<ICustomUserRepository, CustomUserRepository>();
+      services.AddTransient<IGroupDal, GroupDal>();
+      services.AddTransient<ICustomUserDal, CustomUserDal>();
+      services.AddTransient<IGroupMemberDetailDal, GroupMemberDetailDal>();
 
       // Add authentication services
       services.AddAuthentication(

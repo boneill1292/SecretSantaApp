@@ -15,5 +15,14 @@ namespace SecretSantaApp.Models
     public int GroupId { get; set; }
 
     public string AccountNumberString { get; set; }
+
+
+
+    public virtual void Update(GroupMemberDetails m)
+    {
+      ID = m.ID;
+      GroupId = m.GroupId;
+      AccountNumberString = m.AccountNumberString;
+    }
   }
 }

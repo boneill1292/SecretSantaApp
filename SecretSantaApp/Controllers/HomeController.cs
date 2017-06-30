@@ -25,11 +25,7 @@ namespace SecretSantaApp.Controllers
     public IActionResult Index()
     {
       //HttpContext.Session.SetString("Test", "Ben Rules!");  
-      var test = new TestDataViewModel();
-      test.GroupId = 123;
-      test.GroupName = "sup";
 
-      HttpContext.Session.SetObjectAsJson("Test", test);
 
       //var model = _secretSantaBl.DefaultTestDataViewModel();
       return View("Index");

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SecretSantaApp.Models
 {
-  public interface IGroupRepository
+  public interface IGroupDal
   {
 
     Group GetGroupById(int groupid);

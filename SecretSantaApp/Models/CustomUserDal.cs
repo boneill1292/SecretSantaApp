@@ -7,12 +7,12 @@ using Microsoft.AspNetCore.Http;
 
 namespace SecretSantaApp.Models
 {
-  public class CustomUserRepository : ICustomUserRepository
+  public class CustomUserDal : ICustomUserDal
   {
     private readonly AppDbContext _appDbContext;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public CustomUserRepository(AppDbContext appDbContext, IHttpContextAccessor httpContextAccessor)
+    public CustomUserDal(AppDbContext appDbContext, IHttpContextAccessor httpContextAccessor)
     {
       _appDbContext = appDbContext;
       _httpContextAccessor = httpContextAccessor;

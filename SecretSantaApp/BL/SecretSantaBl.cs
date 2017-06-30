@@ -15,16 +15,19 @@ namespace SecretSantaApp.BL
   public class SecretSantaBl : ISecretSantaBl
   {
 
-    private readonly IGroupRepository _groupRepository;
-    private readonly ICustomUserRepository _customUserRepository;
+    private readonly IGroupDal _groupDal;
+    private readonly ICustomUserDal _customUserDal;
     private readonly IHttpContextAccessor _httpContextAccessor;
-    public SecretSantaBl(IGroupRepository groupRepository,
-                         ICustomUserRepository customUserRepository,
-                         IHttpContextAccessor httpContextAccessor)
+    private readonly IGroupMemberDetailDal _groupMemberDetailDal;
+    public SecretSantaBl(IGroupDal groupDal,
+                         ICustomUserDal customUserDal,
+                         IHttpContextAccessor httpContextAccessor,
+                          IGroupMemberDetailDal groupMemberDetailDal)
     {
-      _groupRepository = groupRepository;
-      _customUserRepository = customUserRepository;
+      _groupDal = groupDal;
+      _customUserDal = customUserDal;
       _httpContextAccessor = httpContextAccessor;
+      _groupMemberDetailDal = groupMemberDetailDal;
     }
 
     public CustomUserEditModel CustomUserModelByLoggedInUser(ClaimsPrincipal user)
@@ -51,7 +54,7 @@ namespace SecretSantaApp.BL
     public GroupAdminModel DefaultGroupAdminModel()
     {
       var result = new GroupAdminModel();
-      result.ActiveGroups = _groupRepository.AllActiveGroups();
+      result.ActiveGroups = _groupDal.AllActiveGroups();
       return result;
     }
 
@@ -69,7 +72,7 @@ namespace SecretSantaApp.BL
         throw new Exception("Name is Required");
       }
 
-      var groups = _groupRepository.GroupByGroupName(model.GroupName);
+      var groups = _groupDal.GroupByGroupName(model.GroupName);
 
       if (groups.Count > 0)
       {
@@ -77,7 +80,7 @@ namespace SecretSantaApp.BL
       }
 
 
-      _groupRepository.CreateGroup(model);
+      _groupDal.CreateGroup(model);
 
       model.Saved = true;
       return model;
@@ -87,8 +90,8 @@ namespace SecretSantaApp.BL
     public CustomUserEditModel CheckUserByCustomUserAccountNumber(CustomUserEditModel model)
     {
       //First check to see if this user exists
-      //_customUserRepository.SaveUser(model);
-      var exists = _customUserRepository.CustomUserByAccountNumber(model.AccountNumberString);
+      //_customUserDal.SaveUser(model);
+      var exists = _customUserDal.CustomUserByAccountNumber(model.AccountNumberString);
 
       if (exists != null)
       {
@@ -98,7 +101,7 @@ namespace SecretSantaApp.BL
       else
       {
         //Create a new user
-        var newuser = _customUserRepository.SaveUser(model);
+        var newuser = _customUserDal.SaveUser(model);
         model.UserId = newuser.UserId;
       }
 
@@ -110,8 +113,34 @@ namespace SecretSantaApp.BL
 
     public void JoinGroupAsCustomUser(CustomUserEditModel user, int groupid)
     {
-      var model = user;
-        //now that we in here with the logged in user - lets add them to the group
+
+      var gmd = new GroupMemberDetailEditModel();
+      gmd.AccountNumberString = user.AccountNumberString;
+      gmd.GroupId = groupid;
+
+      _groupMemberDetailDal.SaveMemberToGroup(gmd);
+
+    }
+
+
+    public MyGroupsViewModel MyGroupsViewModelByUserId(CustomUserEditModel user)
+    {
+      var result = new MyGroupsViewModel();
+      result.MyGroups = new List<Group>();
+      var grouplist = new List<Group>();
+      
+      var groupsibelongto = _groupMemberDetailDal.GroupsBelongingToUserAccountNumberString(user.AccountNumberString);
+
+      foreach (var g in groupsibelongto)
+      {
+        var group = new Group();
+        group = _groupDal.GetGroupById(g.GroupId);
+        grouplist.Add(group);
+      }
+
+      result.MyGroups = grouplist;
+
+      return result;
     }
 
 

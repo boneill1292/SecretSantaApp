@@ -25,5 +25,7 @@ namespace SecretSantaApp.BL
     CustomUserEditModel CheckUserByCustomUserAccountNumber(CustomUserEditModel model);
 
     void JoinGroupAsCustomUser(CustomUserEditModel user, int groupid);
+
+    MyGroupsViewModel MyGroupsViewModelByUserId(CustomUserEditModel user);
   }
 }
