@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SecretSantaApp.Models
 {
-  public class GroupMemberDetails
+  public class GroupMembership
   {
     [Key]
     public int ID { get; set; }
@@ -18,7 +18,7 @@ namespace SecretSantaApp.Models
 
 
 
-    public virtual void Update(GroupMemberDetails m)
+    public virtual void Update(GroupMembership m)
     {
       ID = m.ID;
       GroupId = m.GroupId;

@@ -18,16 +18,16 @@ namespace SecretSantaApp.BL
     private readonly IGroupDal _groupDal;
     private readonly ICustomUserDal _customUserDal;
     private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly IGroupMemberDetailDal _groupMemberDetailDal;
+    private readonly IGroupMembershipDal _groupMembershipDal;
     public SecretSantaBl(IGroupDal groupDal,
                          ICustomUserDal customUserDal,
                          IHttpContextAccessor httpContextAccessor,
-                          IGroupMemberDetailDal groupMemberDetailDal)
+                          IGroupMembershipDal groupMembershipDal)
     {
       _groupDal = groupDal;
       _customUserDal = customUserDal;
       _httpContextAccessor = httpContextAccessor;
-      _groupMemberDetailDal = groupMemberDetailDal;
+      _groupMembershipDal = groupMembershipDal;
     }
 
     public CustomUserEditModel CustomUserModelByLoggedInUser(ClaimsPrincipal user)
@@ -55,6 +55,7 @@ namespace SecretSantaApp.BL
     {
       var result = new GroupAdminModel();
       result.ActiveGroups = _groupDal.AllActiveGroups();
+      
       return result;
     }
 
@@ -114,11 +115,11 @@ namespace SecretSantaApp.BL
     public void JoinGroupAsCustomUser(CustomUserEditModel user, int groupid)
     {
 
-      var gmd = new GroupMemberDetailEditModel();
+      var gmd = new GroupMembershipEditModel();
       gmd.AccountNumberString = user.AccountNumberString;
       gmd.GroupId = groupid;
 
-      _groupMemberDetailDal.SaveMemberToGroup(gmd);
+      _groupMembershipDal.SaveMemberToGroup(gmd);
 
     }
 
@@ -129,7 +130,7 @@ namespace SecretSantaApp.BL
       result.MyGroups = new List<Group>();
       var grouplist = new List<Group>();
       
-      var groupsibelongto = _groupMemberDetailDal.GroupsBelongingToUserAccountNumberString(user.AccountNumberString);
+      var groupsibelongto = _groupMembershipDal.GroupsBelongingToUserAccountNumberString(user.AccountNumberString);
 
       foreach (var g in groupsibelongto)
       {

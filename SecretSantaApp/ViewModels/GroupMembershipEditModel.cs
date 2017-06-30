@@ -7,7 +7,7 @@ using SecretSantaApp.Models;
 
 namespace SecretSantaApp.ViewModels
 {
-    public class GroupMemberDetailEditModel :GroupMemberDetails
+    public class GroupMembershipEditModel :GroupMembership
     {
       public bool Saved { get; set; }
     }

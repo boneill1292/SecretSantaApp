@@ -49,7 +49,7 @@ namespace SecretSantaApp
 
       services.AddTransient<IGroupDal, GroupDal>();
       services.AddTransient<ICustomUserDal, CustomUserDal>();
-      services.AddTransient<IGroupMemberDetailDal, GroupMemberDetailDal>();
+      services.AddTransient<IGroupMembershipDal, GroupMembershipDal>();
 
       // Add authentication services
       services.AddAuthentication(
