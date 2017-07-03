@@ -5,100 +5,78 @@
 
 <h1>Welcome to Group: @Model.GroupName</h1>
 
-@*@if (Model.NewGroup)
-  {*@
-
-<div class="container">
-  <div class="row">
-    <form asp-controller="Groups" asp-action="SendInvitesTousers" method="POST" class="form-horizontal" role="form">
-
-      <div class="col-xs-12" style="outline: 1px blue solid; text-align:center">
-        <label>Invite People To Play!</label> <br />
-        <div class="btn-group btn-toggle">
-
-          <button class="btn btn-default" data-toggle="collapse" data-target="#collapsible">Phone</button>
-          <button class="btn btn-primary active" data-toggle="collapse" data-target="#collapsible">Email</button>
-        </div>
-      </div>
-
-      <div class="clearfix"></div>
-
-      <div class="col-xs-12">
-        
-        @for (var i = 0; i < Model.InviteUsersCollection.UsersToInvite.Count; i++)
-        {
-          <div id="invitefields">
-            <div class="form-group col-xs-6" style="outline: 1px green solid">
-              <label asp-for="@Model.InviteUsersCollection.UsersToInvite[i].Name" class="col-md-2 control-label"></label>
-              <input asp-for="@Model.InviteUsersCollection.UsersToInvite[i].Name" class="form-control"/>
-              <span asp-validation-for="@Model.InviteUsersCollection.UsersToInvite[i].Name" class="text-danger"></span>
-            </div>
-
-            <div class="form-group col-xs-6" style="outline: 1px red solid">
-              <label asp-for="@Model.InviteUsersCollection.UsersToInvite[i].Email" class="col-md-2 control-label"></label>
-              <input asp-for="@Model.InviteUsersCollection.UsersToInvite[i].Email" class="form-control"/>
-              <span asp-validation-for="@Model.InviteUsersCollection.UsersToInvite[i].Email" class="text-danger"></span>
-            </div>
-          </div>
-
-
-        }
-      </div>
-
-
-      <div class="clearfix"></div>
-      @*<div id="invitefields">
-          <div>
-            <div class="form-group col-xs-6" style="outline:1px green solid">
-              <label for="exampleInputEmail1">Name</label>
-              <input style="width:100%!important;" type="text" class="form-control" id="exampleInputEmail1" placeholder="Enter aah">
-            </div>
-
-            <div class="form-group col-xs-6" style="outline:1px red solid">
-              <label for="exampleInputEmail1">Email</label>
-              <input type="text" class="form-control" type="email" id="exampleInputEmail1" placeholder="Email">
-            </div>
-          </div>
-        </div>*@
-
-
-
-
-      <div class="clearfix"></div>
-      <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
-        <button id="btnInviteMoreUsers" type="button" class="btn btn-default" onclick="">Invite More People</button>
-        <button type="submit" class="btn btn-default">Submit</button>
-      </div>
-
-    </form>
-
-
-
-    <form></form>
-    <div class="clearfix"></div>
-
-    <br /><br />
-  </div>
-</div>
-
-@*}
-  else*@
+@if (Model.NewGroup)
 {
-<div>
-  @if (Model.GroupMembers.Count > 0)
-  {
-    <h4>Say Hello To Your Members:</h4>
-
+  <div class="container">
     <div class="row">
-      <table class="table table-responsive table-striped">
-        <thead>
+      <form asp-controller="Groups" asp-action="SendInvitesTousers" method="POST" class="form-horizontal" role="form">
+
+        <div class="col-xs-12" style="outline: 1px blue solid; text-align: center">
+          <label>Invite People To Play!</label> <br/>
+          <div class="btn-group btn-toggle">
+
+            <button class="btn btn-default" data-toggle="collapse" data-target="#collapsible">Phone</button>
+            <button class="btn btn-primary active" data-toggle="collapse" data-target="#collapsible">Email</button>
+          </div>
+        </div>
+
+        <div class="clearfix"></div>
+
+        <div class="col-xs-12">
+
+          @for (var i = 0; i < Model.InviteUsersCollection.UsersToInvite.Count; i++)
+          {
+            <div id="invitefields">
+              <div class="form-group col-xs-6" style="outline: 1px green solid">
+                <label asp-for="@Model.InviteUsersCollection.UsersToInvite[i].Name" class="col-md-2 control-label"></label>
+                <input asp-for="@Model.InviteUsersCollection.UsersToInvite[i].Name" class="form-control"/>
+                <span asp-validation-for="@Model.InviteUsersCollection.UsersToInvite[i].Name" class="text-danger"></span>
+              </div>
+
+              <div class="form-group col-xs-6" style="outline: 1px red solid">
+                <label asp-for="@Model.InviteUsersCollection.UsersToInvite[i].Email" class="col-md-2 control-label"></label>
+                <input asp-for="@Model.InviteUsersCollection.UsersToInvite[i].Email" class="form-control"/>
+                <span asp-validation-for="@Model.InviteUsersCollection.UsersToInvite[i].Email" class="text-danger"></span>
+              </div>
+            </div>
+
+          }
+        </div>
+
+        <div class="clearfix"></div>
+
+        <div class="clearfix"></div>
+        <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
+          <button id="btnInviteMoreUsers" type="button" class="btn btn-default" onclick="">Invite More People</button>
+          <button type="submit" class="btn btn-default">Submit</button>
+        </div>
+
+      </form>
+
+      <div class="clearfix"></div>
+
+      <br/><br/>
+    </div>
+  </div>
+
+}
+else
+{
+  <div>
+    @if (Model.GroupMembers.Count > 0)
+    {
+      <h4>Say Hello To Your Members:</h4>
+
+      <div class="row">
+        <table class="table table-responsive table-striped">
+          <thead>
           <tr>
             <th>Name</th>
             <th>Email</th>
 
           </tr>
-        </thead>
-        <tbody>
+          </thead>
+          <tbody>
           @foreach (var u in Model.GroupMembers)
           {
             <tr>
@@ -106,16 +84,16 @@
               <td>@u.Email</td>
             </tr>
           }
-        </tbody>
-      </table>
-    </div>
-  }
-  else
-  {
-    <p>No Body Is in this group</p>
-  }
+          </tbody>
+        </table>
+      </div>
+    }
+    else
+    {
+      <p>No Body Is in this group</p>
+    }
+}
 
-  @*<button id="invitebtn" onclick="InviteUsers()">Invite!</button>*@
 
 </div>
 }

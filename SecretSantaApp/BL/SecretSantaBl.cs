@@ -176,7 +176,7 @@ namespace SecretSantaApp.BL
       }
 
       result.GroupMembers = userlist;
-
+      result.NewGroup = false;
 
 
       return result;

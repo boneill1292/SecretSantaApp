@@ -4,28 +4,31 @@
   var newgroupurl = Url.Action("NewGroupPage", "Groups");
   var joingroupurl = Url.Action("GroupsUserDoesNotBelongTo", "Groups");
 }
-<h1>If you are logged in. You can play the game!</h1>
 
-
-
-<form>
+@*<form>
   <button asp-action="NewGroupPage" asp-controller="Groups" class="btn btn-primary">Create New Group</button>
-</form>
+</form>*@
 
-<h3>Lets Santify </h3>
+<div class="clearfix"></div>
+<div class="col-xs-12" style="text-align:center; color:black; padding-top: 2%;">
+  <h3>Santify your Destiny </h3>
+</div>
+
+<div class="clearfix"></div>
 <div class="container">
   <div class="row JoinOrCreateDiv">
-
-    <div class="col-xs-6" style="background-color: white">
-      <div style="outline: 1px red solid; margin: auto; text-align: center">
-        <h5><button class="btn-info alert" onclick="NewGroup();">Create a group</button></h5>
+    <div class="col-xs-6" style="background-color: white;">
+      <div style="outline: 3px red solid; margin: auto; text-align: center">
+        <h5><button style="background-color:green"class="btn-info alert" onclick="NewGroup();">Create a group</button></h5>
+        <p>picture of an elf making a toy</p>
       </div>
     </div>
 
     <div class="col-xs-6" style="background-color:white">
       <div>
-        <div style="outline: 1px red solid; margin: auto; text-align: center;">
-          <h5><button class="btn-info alert" onclick="JoinGroup();">Join a group</button></h5>
+        <div style="outline: 3px red solid; margin: auto; text-align: center;">
+          <h5><button style="background-color:green" class="btn-info alert" onclick="JoinGroup();">Join a group</button></h5>
+          <p>pic of reindeers joining together?</p>
         </div>
       </div>
     </div>
@@ -34,10 +37,12 @@
 </div>
 
 
-<div style="padding-top: 10%">
-<h4>Groups I Belong To:</h4>
-@Html.Partial("_ExistingGroups", Model)
-  </div>
+@*<div style="padding-top: 10%">
+  <h4>Groups I Belong To:</h4>
+  @Html.Partial("_ExistingGroups", Model)
+</div>*@
+
+
 @section scripts{
   <script>
     $("document").ready(function () {
@@ -58,6 +63,6 @@
   .JoinOrCreateDiv {
     padding: 1%;
     background-color: black;
-    outline: 3px green solid;
+    outline: 5px green solid;
   }
 </style>
