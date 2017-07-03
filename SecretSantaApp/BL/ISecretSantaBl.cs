@@ -29,5 +29,11 @@ namespace SecretSantaApp.BL
     MyGroupsViewModel MyGroupsViewModelByUserId(CustomUserEditModel user);
 
     GroupHomeEditModel GroupHomeEditModelByGroupId(int groupid);
+
+    JoinGroupEditModel JoinGroupEditModelByAccountNumberString(string acctno);
+
+    InviteUsersCollectionModel InviteUsersCollectionModelByAmountToGet(int amount);
+
+    InviteUsersViewModel AdditionalInviteUsersViewModel(int tempid);
   }
 }

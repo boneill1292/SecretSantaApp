@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -21,8 +22,11 @@ namespace SecretSantaApp.Models
 
     public GroupMembership SaveMemberToGroup(GroupMembership g)
     {
+      var u = _httpContextAccessor.HttpContext.Session.GetObjectFromJson<CustomUser>("LoggedInUser");
+
       var result = new GroupMembership();
       result.Update(g);
+      result.AccountNumberString = u.AccountNumberString;
       _appDbContext.Add(result);
 
       _appDbContext.SaveChanges();
@@ -50,14 +54,14 @@ namespace SecretSantaApp.Models
       return result;
     }
 
-    //public List<GroupMembership> GroupsUserDoesNotBelongToByAccountNumberString(string acctno)
-    //{
-    //  var result = new List<GroupMembership>();
+    public List<GroupMembership> GroupsUserDoesNotBelongToByAccountNumberString(string acctno)
+    {
+      var result = new List<GroupMembership>();
 
-    //  result = _appDbContext.GroupMembership.Where(x => x.AccountNumberString != acctno).ToList()
+      result = _appDbContext.GroupMembership.Where(x => x.AccountNumberString != acctno).ToList();
 
-    //    return result;
-    //}
+      return result;
+    }
 
   }
 }

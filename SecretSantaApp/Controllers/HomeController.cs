@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SecretSantaApp.BL;
 using SecretSantaApp.Models;
@@ -25,37 +26,32 @@ namespace SecretSantaApp.Controllers
     public IActionResult Index()
     {
       //HttpContext.Session.SetString("Test", "Ben Rules!");  
-
-
       //var model = _secretSantaBl.DefaultTestDataViewModel();
       return View("Index");
     }
 
-    [HttpPost]
-    public IActionResult Checkout(TestDataViewModel model)
-    {
-
-      return View("Index");
-    }
-
+    
+   
+    [Authorize]
     public IActionResult About()
     {
       var test = HttpContext.Session.GetObjectFromJson<TestDataViewModel>("Test");
       ViewData["Message"] = "Your application description page.";
 
-      return View();
+      return View("About");
     }
 
+    [Authorize]
     public IActionResult Contact()
     {
       ViewData["Message"] = "Your contact page.";
 
-      return View();
+      return View("Contact");
     }
 
     public IActionResult Error()
     {
-      return View();
+      return View("Error");
     }
   }
 }

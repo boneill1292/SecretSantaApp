@@ -37,7 +37,7 @@ namespace SecretSantaApp.Models
     }
 
 
-    public void CreateGroup(Group g)
+    public Group SaveNewGroup(Group g)
     {
 
       var result = new Group();
@@ -49,6 +49,8 @@ namespace SecretSantaApp.Models
 
       _appDbContext.Groups.Add(result);
       _appDbContext.SaveChanges();
+
+      return result;
     }
 
 

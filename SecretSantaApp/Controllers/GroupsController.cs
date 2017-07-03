@@ -8,10 +8,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using SecretSantaApp.BL;
 using SecretSantaApp.Models;
 using SecretSantaApp.ViewModels;
 using SecretSantaApp.Views.Groups;
+using Serilog;
 
 namespace SecretSantaApp.Controllers
 {
@@ -20,15 +22,16 @@ namespace SecretSantaApp.Controllers
   {
     private readonly ISecretSantaBl _secretSantaBl;
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly ILogger<GroupsController> _log;
 
-    public GroupsController(ISecretSantaBl secretSantaBl, IHttpContextAccessor httpContextAccessor)
+    public GroupsController(ISecretSantaBl secretSantaBl, IHttpContextAccessor httpContextAccessor, ILogger<GroupsController> log)
     {
       _secretSantaBl = secretSantaBl;
       _httpContextAccessor = httpContextAccessor;
+      _log = log;
     }
 
     [HttpGet]
-    [Authorize]
     // [Route("benapp/test")]
     public ActionResult Index()
     {
@@ -67,14 +70,23 @@ namespace SecretSantaApp.Controllers
       }
       try
       {
+        //save the new group
         var m = _secretSantaBl.SaveNewGroup(model);
-        var result = _secretSantaBl.DefaultGroupAdminModel();
-        return View("Index", result);
+
+        //get the group homepage data
+        var grouphome = _secretSantaBl.GroupHomeEditModelByGroupId(m.GroupId);
+        grouphome.InviteUsersCollection = _secretSantaBl.InviteUsersCollectionModelByAmountToGet(4);
+
+
+        //var result = _secretSantaBl.DefaultGroupAdminModel();
+        grouphome.NewGroup = true;
+        return View("GroupHome", grouphome);
 
       }
       catch (Exception ex)
       {
         ModelState.AddModelError("", ex.Message);
+        _log.LogError(" - ", ex.Message);
       }
       return View("Index");
     }
@@ -93,7 +105,7 @@ namespace SecretSantaApp.Controllers
 
 
       var usergroupsvm = _secretSantaBl.MyGroupsViewModelByUserId(usereditmodel);
-      return View("MyGroups",usergroupsvm);
+      return View("MyGroups", usergroupsvm);
     }
 
 
@@ -112,12 +124,43 @@ namespace SecretSantaApp.Controllers
 
 
     [HttpGet]
-    [Authorize]
     public ActionResult GroupHome(int id)
     {
       var model = _secretSantaBl.GroupHomeEditModelByGroupId(id);
 
-      return View("GroupHome",model);
+      return View("GroupHome", model);
     }
+
+
+
+
+    [HttpGet]
+    public ActionResult GroupsUserDoesNotBelongTo()
+    {
+      var usermodel = _secretSantaBl.CustomUserModelByLoggedInUser(User);
+      var model = _secretSantaBl.JoinGroupEditModelByAccountNumberString(usermodel.AccountNumberString);
+
+      return View("JoinGroups", model);
+    }
+
+
+    [HttpGet]
+    public ActionResult GetInviteUsersFields(int count)
+    {
+     // var model = _secretSantaBl.InviteUsersCollectionModelByAmountToGet(count);
+      var model = _secretSantaBl.AdditionalInviteUsersViewModel(count);
+      return PartialView("_InviteUsersRow", model);
+    }
+
+
+
+    [HttpPost]
+    public ActionResult SendInvitesTousers(GroupHomeEditModel model)
+    {
+      var m = new Group();
+      m.Update(model);
+      return View("index");
+    }
+
   }
 }

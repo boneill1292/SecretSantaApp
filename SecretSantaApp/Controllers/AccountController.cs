@@ -96,10 +96,8 @@ namespace SecretSantaApp.Controllers
       return View("Login", vm);
     }
 
-
-
-
-    //TODO - Log someone in.... if they do not exist, add a new row to the custom users table that i need to create
+    
+    
     [HttpGet]
     public IActionResult LoginExternal(string connection, string returnUrl = "/")
     {

@@ -68,6 +68,7 @@ namespace SecretSantaApp.BL
 
     public GroupEditModel SaveNewGroup(GroupEditModel model)
     {
+      //Check to make sure there are values
       if (model.GroupName == null)
       {
         throw new Exception("Name is Required");
@@ -75,13 +76,22 @@ namespace SecretSantaApp.BL
 
       var groups = _groupDal.GroupByGroupName(model.GroupName);
 
-      if (groups.Count > 0)
-      {
-        throw new Exception("This group already exists");
-      }
+      //There could be the same name.
+      //if (groups.Count > 0)
+      //{
+      //  throw new Exception("This group already exists");
+      //}
 
+      //Save the new group
+      var saved = _groupDal.SaveNewGroup(model);
+      model.Update(saved);
 
-      _groupDal.CreateGroup(model);
+      //Now we will add the user who is creating the group to the new group
+      var gmd = new GroupMembershipEditModel();
+      gmd.AccountNumberString = "";
+      gmd.GroupId = saved.GroupId;
+
+      _groupMembershipDal.SaveMemberToGroup(gmd);
 
       model.Saved = true;
       return model;
@@ -166,11 +176,94 @@ namespace SecretSantaApp.BL
       }
 
       result.GroupMembers = userlist;
-      
-      
-      
+
+
+
       return result;
     }
 
+
+
+
+    public JoinGroupEditModel JoinGroupEditModelByAccountNumberString(string acctno)
+    {
+      var result = new JoinGroupEditModel();
+      var groupslist = new List<Group>();
+      var user = _customUserDal.CustomUserByAccountNumber(acctno);
+
+      var activegroupsidlist = new List<int>();
+      var groupsmemberofidlist = new List<int>();
+
+      var allactivegroups = _groupDal.AllActiveGroups();
+      var groupsmemberof = _groupMembershipDal.GroupsBelongingToUserAccountNumberString(user.AccountNumberString);
+
+
+      foreach (var ag in allactivegroups)
+      {
+        activegroupsidlist.Add(ag.GroupId);
+      }
+
+      foreach (var ag in groupsmemberof)
+      {
+        groupsmemberofidlist.Add(ag.GroupId);
+      }
+
+
+      var results = activegroupsidlist.Where(m => !groupsmemberofidlist.Contains(m));
+
+      foreach (var r in results)
+      {
+        var group = new Group();
+        group = _groupDal.GetGroupById(r);
+        groupslist.Add(group);
+      }
+
+      //var matchItem = List1.Intersect(List2).First();
+
+
+
+      //foreach (var g in groupsmemberof)
+      //{
+      //  var group = new Group();
+      //  group = _groupDal.GetGroupById(g.GroupId);
+      //  groupslist.Add(group);
+      //}
+
+      result.CustomUser = user;
+      result.GroupsNotMemberOf = groupslist;
+
+      return result;
+    }
+
+
+
+    public InviteUsersCollectionModel InviteUsersCollectionModelByAmountToGet(int amount)
+    {
+
+      var result = new InviteUsersCollectionModel();
+      result.UsersToInvite = new List<InviteUsersViewModel>();
+
+      if (amount <= 0)
+      {
+        return result;
+      }
+      else
+      {
+        for (var a = 0; a < amount; a++)
+        {
+          var usertoinvite = new InviteUsersViewModel();
+          result.UsersToInvite.Add(usertoinvite);
+        }
+      }
+      return result;
+    }
+
+
+    public InviteUsersViewModel AdditionalInviteUsersViewModel(int tempid)
+    {
+      var result = new InviteUsersViewModel();
+      result.TempId = tempid;
+      return result;
+    }
   }
 }

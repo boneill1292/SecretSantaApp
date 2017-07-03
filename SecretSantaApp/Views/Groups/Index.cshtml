@@ -1,23 +1,63 @@
 ﻿@using SecretSantaApp.Views.Groups
 @model SecretSantaApp.Views.Groups.GroupAdminModel
+@{
+  var newgroupurl = Url.Action("NewGroupPage", "Groups");
+  var joingroupurl = Url.Action("GroupsUserDoesNotBelongTo", "Groups");
+}
 <h1>If you are logged in. You can play the game!</h1>
 
-@* First we should list the groups that this user has created. *@
+
 
 <form>
   <button asp-action="NewGroupPage" asp-controller="Groups" class="btn btn-primary">Create New Group</button>
 </form>
 
+<h3>Lets Santify </h3>
+<div class="container">
+  <div class="row JoinOrCreateDiv">
 
+    <div class="col-xs-6" style="background-color: white">
+      <div style="outline: 1px red solid; margin: auto; text-align: center">
+        <h5><button class="btn-info alert" onclick="NewGroup();">Create a group</button></h5>
+      </div>
+    </div>
+
+    <div class="col-xs-6" style="background-color:white">
+      <div>
+        <div style="outline: 1px red solid; margin: auto; text-align: center;">
+          <h5><button class="btn-info alert" onclick="JoinGroup();">Join a group</button></h5>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<div style="padding-top: 10%">
 <h4>Groups I Belong To:</h4>
-
 @Html.Partial("_ExistingGroups", Model)
-
+  </div>
 @section scripts{
   <script>
     $("document").ready(function () {
       console.log("group home ready");
     });
 
+    function NewGroup() {
+      window.location.href = '@newgroupurl';
+    }
+
+    function JoinGroup() {
+      window.location.href = '@joingroupurl';
+    }
   </script>
 }
+
+<style>
+  .JoinOrCreateDiv {
+    padding: 1%;
+    background-color: black;
+    outline: 3px green solid;
+  }
+</style>

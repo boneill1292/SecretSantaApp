@@ -25,15 +25,6 @@
 </div>
 <script>
 
-  function getLayoutPopup() {
-    //refactor Areas\Boar\Views\SemenOrdering\_SemenOrderDayCell.cshtml so we can get rid of this
-    return $("#@popup");
-  }
-
-  function getLayoutPopupContent() {
-    //refactor Areas\Boar\Views\SemenOrdering\_SemenOrderDayCell.cshtml so we can get rid of this
-    return $("#@content");
-  }
 
   function LayoutLoadPopup(url, options) {
 
@@ -68,7 +59,7 @@
 
     //open the popup
     var popup = $("#@popup");
-    popup.popup("open");
+    popup.popover('show'); //("open");
 
     //go fetch the content
     $.ajax({
@@ -78,9 +69,9 @@
       success: function (data) {
         content.html(data);
         content.trigger('create');
-        popup.popup("close");
+        popup.popover("hide"); //popup("close");
         loading.hide();
-        popup.popup("open");
+        popup.popover("show"); //popup("open");
 
         try {
           if (successcallbackfunction != null) {
@@ -111,6 +102,6 @@
 
   function LayoutCloseAnyPopup() {
     //only one popup can be open at a time, so if you want one closed, you want them all closed.
-    $(".ui-popup").popup("close");
+    $(".ui-popup").hide(); // ("close");
   }
 </script>

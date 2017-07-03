@@ -14,5 +14,7 @@ namespace SecretSantaApp.Models
 
     List<GroupMembership> AllGroupMembersByGroupId(int groupid);
 
+    List<GroupMembership> GroupsUserDoesNotBelongToByAccountNumberString(string acctno);
+
   }
 }

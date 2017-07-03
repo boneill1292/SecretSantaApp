@@ -44,9 +44,9 @@ namespace SecretSantaApp
         options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
 
-      services.AddIdentity<IdentityUser, IdentityRole>()
-        .AddEntityFrameworkStores<AppDbContext>();
+      services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
 
+      //Data Access Layer Services
       services.AddTransient<IGroupDal, GroupDal>();
       services.AddTransient<ICustomUserDal, CustomUserDal>();
       services.AddTransient<IGroupMembershipDal, GroupMembershipDal>();
@@ -89,6 +89,8 @@ namespace SecretSantaApp
         app.UseExceptionHandler("/Home/Error");
       }
 
+      loggerFactory.AddFile("Logs/SecretSantaApp-{Date}.txt");
+
       //app related settings
       app.UseStaticFiles();
       
@@ -101,6 +103,7 @@ namespace SecretSantaApp
       {
         LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/LoginExternal"),
         AutomaticAuthenticate = true,
+        //ExpireTimeSpan = DateTime.Now.Subtract(DateTime.UtcNow).Add(TimeSpan.FromMinutes(5)), //not sure if this works
         AutomaticChallenge = true
       });
 
