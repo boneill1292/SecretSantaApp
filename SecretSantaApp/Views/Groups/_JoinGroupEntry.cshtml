@@ -1,0 +1,40 @@
+﻿
+<div class="">
+  <div class="modal-title" style="color: black">
+    <h3>Join Group: mamas cookies</h3>
+    
+  </div>
+  <br />
+  
+@using (Html.BeginForm("CheckPasswordInput", "Groups", FormMethod.Post))
+{
+  @*<div class="form-group">
+    <label asp-for="" class="col-md-2 control-label"></label>
+    <div class="col-md-5">
+      <input asp-for="" class="form-control" />
+      <span asp-validation-for="" class="text-danger"></span>
+    </div>
+  </div>*@
+
+
+
+  <div class="row">
+    <div class="col-md-4 col-md-offset-4">
+      <button type="submit" id="btnSave" class="btn btn">Save</button>
+      <button type="button" class="btn " data-dismiss="modal">Cancel</button>
+    </div>
+  </div>
+}
+  
+</div>
+
+
+<script>
+  $(function() {
+    $('#btnSave').click(function() {
+      console.log("save");
+      // $('#modal-container').modal('hide');
+      //https://codemagik.wordpress.com/2015/04/07/render-mvc-partial-view-inside-bootstrap-modal-dialog/
+    });
+  });
+</script>

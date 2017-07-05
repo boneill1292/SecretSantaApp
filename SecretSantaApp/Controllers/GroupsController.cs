@@ -162,5 +162,18 @@ namespace SecretSantaApp.Controllers
       return View("index");
     }
 
+
+    [HttpGet]
+    public ActionResult PromptUserForPassword()
+    {
+      return PartialView("_JoinGroupEntry");
+    }
+
+    [HttpPost]
+    public ActionResult CheckPasswordInput()
+    {
+      return PartialView("_JoinGroupEntry");
+    }
+
   }
 }

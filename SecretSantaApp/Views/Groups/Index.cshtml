@@ -6,49 +6,69 @@
 }
 
 @*<form>
-  <button asp-action="NewGroupPage" asp-controller="Groups" class="btn btn-primary">Create New Group</button>
-</form>*@
+    <button asp-action="NewGroupPage" asp-controller="Groups" class="btn btn-primary">Create New Group</button>
+  </form>*@
 
 <div class="clearfix"></div>
-<div class="col-xs-12" style="text-align:center; color:black; padding-top: 2%;">
-  <h3>Santify your Destiny </h3>
+<div class="col-xs-12" style="text-align:center; color:black; padding-top: 2%; ">
+  <h3> </h3>
 </div>
-
 <div class="clearfix"></div>
+
 <div class="container">
-  <div class="row JoinOrCreateDiv">
+  <div class="row">
     <div class="col-xs-6" style="background-color: white;">
-      <div style="outline: 3px red solid; margin: auto; text-align: center">
-        <h5><button style="background-color:green"class="btn-info alert" onclick="NewGroup();">Create a group</button></h5>
-        <p>picture of an elf making a toy</p>
+      @*<div style="outline:5px green dotted;">*@
+      <div class="ControlBox" style="">
+        <h5><button style="background-color: #B21815" class="btn-success alert" onclick="NewGroup();">Create a Group</button></h5>
+        @*<span><img src="images/smElf.png" alt="Elves" class="img-responsive" style="margin: 0 auto !important" /></span>*@
       </div>
+      @*</div>*@
     </div>
 
     <div class="col-xs-6" style="background-color:white">
       <div>
-        <div style="outline: 3px red solid; margin: auto; text-align: center;">
-          <h5><button style="background-color:green" class="btn-info alert" onclick="JoinGroup();">Join a group</button></h5>
-          <p>pic of reindeers joining together?</p>
+        @*<div style="outline:3px green solid;">*@
+        <div class="ControlBox" style="">
+          <h5><button style="background-color: #B21815" class="btn-info alert" onclick="JoinGroup();">Join a Group</button></h5>
+          @*<span> <img src="images/smSantaAndReindeer.png" alt="Santa" class="img-responsive" style="margin: 0 auto !important"></span>*@
         </div>
+        @*</div>*@
       </div>
     </div>
 
   </div>
 </div>
 
-
-@*<div style="padding-top: 10%">
-  <h4>Groups I Belong To:</h4>
-  @Html.Partial("_ExistingGroups", Model)
-</div>*@
+<div>
+  <button type="button" class="btn btn-default" id="btnDetails">Details</button>
+  
+  @Html.ActionLink("Test Modal", "PromptUserForPassword", "Groups",null, new  {@class="modal-link", title="Add modal" })
+  
+  <div class="modal" id="DetailsPopup" tabindex="-1" role="dialog" data-backdrop=""
+       data-keyboard="true" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        @*@Html.Partial("../Controller/DetailsPartialView")*@
+        @*@Html.Partial("_JoinGroupEntry")*@
+      </div>
+    </div>
+  </div>
+</div>
 
 
 @section scripts{
   <script>
     $("document").ready(function () {
-      console.log("group home ready");
+      //console.log("group home ready");
+
+      $("#btnDetails").click(function () {
+        $('#DetailsPopup').appendTo("body").modal('show');
+      });
+
     });
 
+  
     function NewGroup() {
       window.location.href = '@newgroupurl';
     }
@@ -60,9 +80,20 @@
 }
 
 <style>
-  .JoinOrCreateDiv {
-    padding: 1%;
-    background-color: black;
-    outline: 5px green solid;
+  .ControlBox {
+    /*outline: 5px #008F2F solid;*/
+    border: 3px solid green; /*will round*/
+    margin: auto;
+    text-align: center;
+    box-shadow: 0 2px 25px;
+    background-color: lightgray;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    /*box-shadow: 0 0 5px rgba(1, 1, 1, 0.7);*/
+    /*-moz- box-shadow: 0 0 5px rgba(1, 1, 1, 0.7);
+    -webkit- box-shadow: 0 0 5px rgba(1, 1, 1, 0.7);*/
   }
+  
+  
 </style>
