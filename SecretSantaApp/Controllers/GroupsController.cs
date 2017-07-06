@@ -24,6 +24,7 @@ namespace SecretSantaApp.Controllers
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly ILogger<GroupsController> _log;
 
+
     public GroupsController(ISecretSantaBl secretSantaBl, IHttpContextAccessor httpContextAccessor, ILogger<GroupsController> log)
     {
       _secretSantaBl = secretSantaBl;
@@ -178,13 +179,14 @@ namespace SecretSantaApp.Controllers
       try
       {
         var m = _secretSantaBl.CheckPasswordInput(model);
-        return PartialView("_JoinGroupEntry",m);
+        ModelState.Clear();
+        return PartialView("InviteUsers",m);
       }
       catch (Exception ex)
       {
         _log.LogWarning(ex.Message);
       }
-      return PartialView("_JoinGroupEntry", model);
+      return PartialView("InviteUsers", model);
     }
 
   }

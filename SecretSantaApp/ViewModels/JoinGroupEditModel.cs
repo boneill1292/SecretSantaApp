@@ -21,5 +21,7 @@ namespace SecretSantaApp.ViewModels
       [Display(Name ="Enter the Group Password")]
       public string UserInputGroupPassword { get; set; }
       
+      public bool Verified { get; set; }
+      
     }
 }

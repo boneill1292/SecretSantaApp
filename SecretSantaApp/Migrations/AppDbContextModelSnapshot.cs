@@ -196,9 +196,11 @@ namespace SecretSantaApp.Migrations
 
                     b.Property<bool>("Active");
 
-                    b.Property<string>("GroupName");
+                    b.Property<string>("GroupName")
+                        .IsRequired();
 
-                    b.Property<string>("GroupPassWord");
+                    b.Property<string>("GroupPassWord")
+                        .IsRequired();
 
                     b.Property<string>("InsertedBy");
 

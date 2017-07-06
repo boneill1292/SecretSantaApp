@@ -1,46 +1,143 @@
 ﻿@model JoinGroupEditModel
-<div class="">
-  <div class="modal-title" style="color: black">
-    <h3>Join Group: @Model.Group.GroupName</h3>
-    
-    
-  </div>
-  <br />
-  
-@using (Html.BeginForm("CheckPasswordInput", "Groups", FormMethod.Post))
-{
-
-  
-  <div class="row">
-    <div class="col-md-12">
-      <div class="form-group">
-        <label asp-for="UserInputGroupPassword" class="col-md-12 control-label"></label>
-        <input asp-for="UserInputGroupPassword" class="form-control" />
-        <span asp-validation-for="UserInputGroupPassword" class="text-danger"></span>
-
-      </div>
-    </div>
-  </div>
-
-
-
-  <div class="row">
-    <div class="col-md-4 col-md-offset-4">
-      <button type="submit" id="btnSave" class="btn btn">Save</button>
-      <button type="button" class="btn " data-dismiss="modal">Cancel</button>
-    </div>
-  </div>
+@{
+  var uid = Guid.NewGuid();
+  var containerid = $"divcontainerid-{uid}";
+  var ajaxurl = Url.Action("CheckPasswordInput", "Groups");
 }
+
+<div id="@containerid">
   
-</div>
 
+@if (Model.Verified)
+{
+  //var url = Url.Action("", "", new {groupid = Model.GroupId});
 
-<script>
-  $(function() {
-    $('#btnSave').click(function() {
-      console.log("save");
-      // $('#modal-container').modal('hide');
-      //https://codemagik.wordpress.com/2015/04/07/render-mvc-partial-view-inside-bootstrap-modal-dialog/
+  <p>You are in the group (not really) - </p>
+  <script>
+    $(function() {
+      console.log("you in!");
     });
-  });
-</script>
+  </script>
+}
+else
+{
+  
+  <div class="panel-body">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div id="resultcontainer">
+      <form asp-action="CheckPasswordInput" method="post"
+            data-ajax="true" 
+            data-ajax-method="POST" 
+            data-ajax-mode="replace" 
+            data-ajax-update="#@containerid"
+      >
+        <div class="form-group">
+          <label asp-for="UserInputGroupPassword"></label>
+          <input asp-for="UserInputGroupPassword" class="form form-control" />
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Create</button>
+          <a asp-action="Index" class="btn btn-default">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  
+  <div class="">
+    <div class="modal-title" style="color: black">
+      <h3>Join Group: @Model.Group.GroupName</h3>
+    </div>
+    <br />
+
+    <form asp-controller="Groups"
+          asp-action="CheckPasswordInput"
+          data-ajax="true"
+          data-ajax-method="POST"
+          data-ajax-mode="replace"
+          data-ajax-update="#content">
+      
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label asp-for="UserInputGroupPassword" class="col-md-12 control-label"></label>
+            <input asp-for="UserInputGroupPassword" class="form-control" required="" placeholder="Group Password" oninvalid="this.setCustomValidity('Please Enter the Password')"/>
+            <span asp-validation-for="UserInputGroupPassword" class="text-danger"></span>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+          <button type="submit" id="btnSave" class="btn btn">Save</button>
+          <button type="button" class="btn " data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn " id="testajax">AJAX</button>
+        </div>
+      </div>
+      @Html.HiddenFor(x => x.GroupId)
+      @Html.HiddenFor(x => x.CustomUser)
+    </form>
+    
+    <div id="content">repalce me</div>
+  
+  </div>
+
+
+  <script>
+    @*$('#testajax').click(function (e) {
+      e.preventDefault();
+      var formdata = new FormData($('form').get(0));
+      $.ajax({
+        url: '@Url.Action("CheckPasswordInput", "Groups")',
+        type: 'POST',
+        data: formdata,
+        processData: false,
+        contentType: false,
+        success: function (data) {
+          alert("Upload successful!");
+        },
+        error: function () {
+          alert("Error");
+        }
+      });
+    });*@
+
+    
+    @*$(".modal-body form").submit(function(e) {
+      var url = "@ajaxurl"; // the script where you handle the form input.
+      $.ajax({
+        type: "POST",
+        url: url,
+        data: $(this).serialize(), // serializes the form's elements.
+        success: function(data) {
+          $(this).html("Thank you!!!");
+        }
+      });
+      e.preventDefault(); // avoid to execute the actual submit of the form.
+    });*@
+    
+    @*$("#testajax").click(function () {
+      
+      console.log("ello");
+      
+      $.ajax({
+        url: "@ajaxurl",
+        type: "post",
+        data: $("form").serialize(), //if you need to post Model data, use this
+        success: function(result) {
+          $("#content").html(result);
+        }
+    });*@
+    
+    
+    $(function() {
+      $('#btnSave').click(function() {
+        console.log("save");
+        // $('#modal-container').modal('hide');
+        //https://codemagik.wordpress.com/2015/04/07/render-mvc-partial-view-inside-bootstrap-modal-dialog/
+      });
+    }); //end function
+  </script>
+}
+</div>

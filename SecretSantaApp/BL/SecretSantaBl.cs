@@ -281,6 +281,7 @@ namespace SecretSantaApp.BL
       var result = new JoinGroupEditModel();
       result.Group = group;
       result.GroupId = groupid;
+      result.Verified = false;
 
       return result;
 
@@ -307,9 +308,10 @@ namespace SecretSantaApp.BL
       {
         throw new Exception("Incorrect password");
       }
-      var result = new JoinGroupEditModel();
 
-      return result;
+
+      model.Verified = true;
+      return model;
     }
   }
 }

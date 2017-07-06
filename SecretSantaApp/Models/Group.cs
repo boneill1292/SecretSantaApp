@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,8 +10,17 @@ namespace SecretSantaApp.Models
 {
   public class Group
   {
+    //[Display(ResourceType = typeof(SiteResource), Name = "AlarmExpFailureNoteName",
+    //  Description = "AlarmExpFailureNoteDescription")]
+    //[StringLength(250, ErrorMessageResourceType = typeof(SiteResource), ErrorMessage = "",
+    //  ErrorMessageResourceName = "AlarmExpFailureNoteTooLong")]
     public int GroupId { get; set; }
+    [DisplayName("Group Name")]
+    [Required(ErrorMessage = "The Name is Required!")]
     public string GroupName { get; set; }
+
+    [DisplayName("Group Pass Word")]
+   [Required (ErrorMessage ="The Password is Required!")]
     public string GroupPassWord { get; set; }
     public bool Active { get; set; }
 
