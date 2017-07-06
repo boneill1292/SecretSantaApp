@@ -174,6 +174,7 @@ namespace SecretSantaApp.Controllers
     [HttpPost]
     public ActionResult CheckPasswordInput(JoinGroupEditModel model)
     {
+      //We need to pass the correct password - if the user does that. Add them to the group, and load the group  homepage.
       try
       {
         var m = _secretSantaBl.CheckPasswordInput(model);
