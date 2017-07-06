@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,5 +12,14 @@ namespace SecretSantaApp.ViewModels
     {
       public CustomUser CustomUser { get; set; }
       public List<Group> GroupsNotMemberOf { get; set; }
+      
+      //group info
+      public Group Group { get; set; }
+      public int GroupId { get; set; }
+      
+      [Required]
+      [Display(Name ="Enter the Groups Password")]
+      public string UserInputGroupPassword { get; set; }
+      
     }
 }

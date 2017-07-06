@@ -1,14 +1,15 @@
 ﻿@model JoinGroupEditModel
 
+@{
+  var joingrouppopupurl = Url.Action("PromptUserForPassword", "Groups");
+}
 <h3>These are the available groups you can join</h3>
 <div class="row">
   <table class="table table-responsive table-striped">
     <thead>
       <tr>
-        <th>Group ID</th>
         <th>Group Name</th>
-        <th>Active</th>
-        <th>PassWord</th>
+        <th>Password</th>
         <th>InsertedBy</th>
         <th>&nbsp;</th>
         <th>&nbsp;</th>
@@ -17,22 +18,15 @@
     <tbody>
       @foreach (var g in Model.GroupsNotMemberOf)
       {
+        var url = Url.Action("PromptUserForPassword", "Groups", new { id = g.GroupId });
         <tr>
-          <td>@g.GroupId</td>
           <td>@g.GroupName</td>
-          <td>@g.Active</td>
           <td>@g.GroupPassWord</td>
           <td>@g.InsertedBy</td>
           <td>
-            <form>
-              <input asp-controller="Groups" asp-action="JoinGroup" asp-route-id="@g.GroupId" method="GET" type="submit" class="btn btn-group" value="Join Group" />
-            </form>
+            <button class="btn btn-group modal-link" href="@url" title="Add modal" data-target="#modal-container" data-toggle="modal">Join Group</button>
           </td>
-          <td>
-            @*<form>
-              <input asp-controller="Groups" asp-action="GroupHome" asp-route-id="@g.GroupId" method="GET" type="submit" class="btn btn-info" value="Group Home" />
-            </form>*@
-          </td>
+          <td></td>
         </tr>
       }
     </tbody>

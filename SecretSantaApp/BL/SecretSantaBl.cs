@@ -265,5 +265,51 @@ namespace SecretSantaApp.BL
       result.TempId = tempid;
       return result;
     }
+
+
+    public JoinGroupEditModel JoinGroupEditModelByGroupId(int groupid)
+    {
+      var group = _groupDal.GetGroupById(groupid);
+
+      if (group == null)
+      {
+        throw new Exception("Error loading group");
+      }
+
+
+
+      var result = new JoinGroupEditModel();
+      result.Group = group;
+      result.GroupId = groupid;
+
+      return result;
+
+    }
+
+
+    public JoinGroupEditModel CheckPasswordInput(JoinGroupEditModel model)
+    {
+      var group = _groupDal.GetGroupById(model.GroupId);
+
+      if (group == null)
+      {
+        throw new Exception("Error loading group");
+      }
+
+      if (model.UserInputGroupPassword == null)
+      {
+        throw new Exception("Password is required");
+      }
+
+      var password = group.GroupPassWord;
+
+      if (model.UserInputGroupPassword != password)
+      {
+        throw new Exception("Incorrect password");
+      }
+      var result = new JoinGroupEditModel();
+
+      return result;
+    }
   }
 }

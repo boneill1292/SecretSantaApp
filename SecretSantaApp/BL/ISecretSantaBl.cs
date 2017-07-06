@@ -35,5 +35,9 @@ namespace SecretSantaApp.BL
     InviteUsersCollectionModel InviteUsersCollectionModelByAmountToGet(int amount);
 
     InviteUsersViewModel AdditionalInviteUsersViewModel(int tempid);
+
+    JoinGroupEditModel JoinGroupEditModelByGroupId(int groupid);
+
+    JoinGroupEditModel CheckPasswordInput(JoinGroupEditModel model);
   }
 }

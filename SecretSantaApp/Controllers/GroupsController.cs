@@ -164,15 +164,26 @@ namespace SecretSantaApp.Controllers
 
 
     [HttpGet]
-    public ActionResult PromptUserForPassword()
+    [Route("secretsanta/joingroup/{id}")]
+    public ActionResult PromptUserForPassword(int id)
     {
-      return PartialView("_JoinGroupEntry");
+      var model = _secretSantaBl.JoinGroupEditModelByGroupId(id);
+      return PartialView("_JoinGroupEntry",model);
     }
 
     [HttpPost]
-    public ActionResult CheckPasswordInput()
+    public ActionResult CheckPasswordInput(JoinGroupEditModel model)
     {
-      return PartialView("_JoinGroupEntry");
+      try
+      {
+        var m = _secretSantaBl.CheckPasswordInput(model);
+        return PartialView("_JoinGroupEntry",m);
+      }
+      catch (Exception ex)
+      {
+        _log.LogWarning(ex.Message);
+      }
+      return PartialView("_JoinGroupEntry", model);
     }
 
   }

@@ -1,20 +1,26 @@
-﻿
+﻿@model JoinGroupEditModel
 <div class="">
   <div class="modal-title" style="color: black">
-    <h3>Join Group: mamas cookies</h3>
+    <h3>Join Group: @Model.Group.GroupName</h3>
+    
     
   </div>
   <br />
   
 @using (Html.BeginForm("CheckPasswordInput", "Groups", FormMethod.Post))
 {
-  @*<div class="form-group">
-    <label asp-for="" class="col-md-2 control-label"></label>
-    <div class="col-md-5">
-      <input asp-for="" class="form-control" />
-      <span asp-validation-for="" class="text-danger"></span>
+
+  
+  <div class="row">
+    <div class="col-md-12">
+      <div class="form-group">
+        <label asp-for="UserInputGroupPassword" class="col-md-12 control-label"></label>
+        <input asp-for="UserInputGroupPassword" class="form-control" />
+        <span asp-validation-for="UserInputGroupPassword" class="text-danger"></span>
+
+      </div>
     </div>
-  </div>*@
+  </div>
 
 
 
