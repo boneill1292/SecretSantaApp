@@ -179,14 +179,15 @@ namespace SecretSantaApp.Controllers
       try
       {
         var m = _secretSantaBl.CheckPasswordInput(model);
-        ModelState.Clear();
-        return PartialView("InviteUsers",m);
+        //ModelState.Clear();
+        m.Verified = true;
+        return PartialView("_JoinGroupEntry",m);
       }
       catch (Exception ex)
       {
         _log.LogWarning(ex.Message);
       }
-      return PartialView("InviteUsers", model);
+      return PartialView("_JoinGroupEntry", model);
     }
 
   }

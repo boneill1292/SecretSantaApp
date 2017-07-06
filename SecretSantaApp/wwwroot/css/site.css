@@ -43,3 +43,23 @@ textarea {
   background-color: green!important;
   text-decoration: none;
 }
+
+
+.ControlBox {
+  border: 3px solid green; /*will round*/
+  margin: auto;
+  text-align: center;
+  box-shadow: 0 2px 25px;
+  background-color: lightgray;
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+
+}
+
+.RoundCornerBox {
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+}
+  

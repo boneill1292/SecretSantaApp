@@ -309,8 +309,8 @@ namespace SecretSantaApp.BL
         throw new Exception("Incorrect password");
       }
 
-
-      model.Verified = true;
+      model.Group = group;
+      //model.Verified = true;
       return model;
     }
   }
