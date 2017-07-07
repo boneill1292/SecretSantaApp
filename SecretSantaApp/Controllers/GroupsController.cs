@@ -179,6 +179,11 @@ namespace SecretSantaApp.Controllers
       //We need to pass the correct password - if the user does that. Add them to the group, and load the group  homepage.
       try
       {
+        var u = _httpContextAccessor.HttpContext.Session.GetObjectFromJson<CustomUser>("LoggedInUser");
+        var cu = new CustomUserEditModel();
+        cu.Update(u);
+
+        model.CustomUser = cu;
         var m = _secretSantaBl.CheckPasswordInput(model);
         //ModelState.Clear();
         m.Verified = true;

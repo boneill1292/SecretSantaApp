@@ -10,7 +10,7 @@ namespace SecretSantaApp.ViewModels
 {
     public class JoinGroupEditModel
     {
-      public CustomUser CustomUser { get; set; }
+      public CustomUserEditModel CustomUser { get; set; }
       public List<Group> GroupsNotMemberOf { get; set; }
       
       //group info

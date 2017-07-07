@@ -10,7 +10,7 @@
 
   @if (Model.Verified)
   {
-    //var url = Url.Action("", "", new {groupid = Model.GroupId});
+    var url = Url.Action("GroupHome", "Groups", new {id = Model.GroupId});
 
     <h3>You are in the group : @Model.Group.GroupName - @Model.Group.GroupId : (not really) - </h3>
     <br />
@@ -19,6 +19,7 @@
     <script>
       $(function () {
         console.log("you in!");
+        window.location.href = '@url';
       });
     </script>
   }

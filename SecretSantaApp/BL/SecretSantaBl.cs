@@ -155,7 +155,6 @@ namespace SecretSantaApp.BL
     }
 
 
-
     public GroupHomeEditModel GroupHomeEditModelByGroupId(int groupid)
     {
       var result = new GroupHomeEditModel();
@@ -229,7 +228,9 @@ namespace SecretSantaApp.BL
       //  groupslist.Add(group);
       //}
 
-      result.CustomUser = user;
+      result.CustomUser = new CustomUserEditModel();
+      result.CustomUser.Update(user);
+
       result.GroupsNotMemberOf = groupslist;
 
       return result;
@@ -310,7 +311,10 @@ namespace SecretSantaApp.BL
       }
 
       model.Group = group;
-      //model.Verified = true;
+      model.GroupId = group.GroupId;
+
+      JoinGroupAsCustomUser(model.CustomUser, model.GroupId);
+      
       return model;
     }
   }

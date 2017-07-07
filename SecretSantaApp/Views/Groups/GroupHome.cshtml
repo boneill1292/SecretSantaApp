@@ -3,7 +3,11 @@
 //var inviteurl = Url.Action("GetInviteUsersFields", "Groups", new { count = -1 });
 }
 
-<h1>Welcome to Group: @Model.GroupName</h1>
+<div style="text-align:center">
+  <span> <img src="~/images/smNorthPole.png" alt="NorthPole" class="img-circle" style="display: inline !important"></span>
+  <h3 style="display:inline!important">Welcome to Group: @Model.GroupName</h3>
+  <span> <img src="~/images/smNorthPole.png" alt="NorthPole" class="img-circle" style="display: inline !important"></span>
+</div>
 
 @if (Model.NewGroup)
 {
@@ -60,7 +64,7 @@
   </div>
 
 }
-else
+else //its just the standard group home
 {
   <div>
     @if (Model.GroupMembers.Count > 0)
@@ -92,7 +96,7 @@ else
     {
       <p>No Body Is in this group</p>
     }
-    }
+
 
 
   </div>
