@@ -130,12 +130,11 @@ namespace SecretSantaApp.Controllers
     [HttpGet]
     public IActionResult CheckUser()
     {
-
-  
       var usermodel = _secretSantaBl.CustomUserModelByLoggedInUser(User);
       
       //Sends the user to see if it is already in our database, or if should be added
       var model = _secretSantaBl.CheckUserByCustomUserAccountNumber(usermodel);
+      model.ProfileImage = User.Claims.FirstOrDefault(c => c.Type == "picture")?.Value;
 
       //Save the user in my session variable
       HttpContext.Session.SetObjectAsJson("LoggedInUser", model);

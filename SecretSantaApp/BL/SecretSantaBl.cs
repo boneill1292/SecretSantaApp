@@ -158,7 +158,7 @@ namespace SecretSantaApp.BL
     public GroupHomeEditModel GroupHomeEditModelByGroupId(int groupid)
     {
       var result = new GroupHomeEditModel();
-      var userlist = new List<CustomUser>();
+      var userlist = new List<CustomUserEditModel>();
 
       var group = _groupDal.GetGroupById(groupid);
 
@@ -169,9 +169,11 @@ namespace SecretSantaApp.BL
       foreach (var g in groupmembership)
       {
         var user = new CustomUser();
-
+        var cu = new CustomUserEditModel();
         user = _customUserDal.CustomUserByAccountNumber(g.AccountNumberString);
-        userlist.Add(user);
+        //cu = _httpContextAccessor.HttpContext.Session.GetObjectFromJson<CustomUserEditModel>("LoggedInUser");
+        cu.Update(user);
+        userlist.Add(cu);
       }
 
       result.GroupMembers = userlist;

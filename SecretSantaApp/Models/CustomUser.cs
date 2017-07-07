@@ -15,6 +15,7 @@ namespace SecretSantaApp.Models
     public string AccountNumberString { get; set; } //* unique assigned by auth0
     public string FullName { get; set; }
 
+    public string ProfileImage { get; set; }
 
 
 
@@ -24,6 +25,7 @@ namespace SecretSantaApp.Models
       Email = cu.Email;
       AccountNumberString = cu.AccountNumberString;
       FullName = cu.FullName;
+      ProfileImage = cu.ProfileImage;
     }
   }
 }

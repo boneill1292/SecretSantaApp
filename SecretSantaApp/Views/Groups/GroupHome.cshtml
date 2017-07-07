@@ -74,19 +74,24 @@ else //its just the standard group home
       <div class="row">
         <table class="table table-responsive table-striped">
           <thead>
-            <tr>
-              <th>Name</th>
-              <th>Email</th>
+          <tr>
+            <th>&nbsp;</th>
+            <th>Name</th>
+            <th>Email</th>
 
-            </tr>
+          </tr>
           </thead>
           <tbody>
             @foreach (var u in Model.GroupMembers)
           {
-              <tr>
-                <td>@u.FullName</td>
-                <td>@u.Email</td>
-              </tr>
+            <tr>
+              <td>
+                <img src="@u.ProfileImage"
+                          alt="" class="img-rounded img-responsive"/>
+              </td>
+              <td>@u.FullName</td>
+              <td>@u.Email</td>
+            </tr>
             }
           </tbody>
         </table>

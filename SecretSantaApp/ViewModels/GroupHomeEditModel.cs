@@ -12,7 +12,7 @@ namespace SecretSantaApp.ViewModels
   {
     public bool Saved { get; set; }
     public bool NewGroup { get; set; }
-    public List<CustomUser> GroupMembers { get; set; }
+    public List<CustomUserEditModel> GroupMembers { get; set; }
     public InviteUsersCollectionModel InviteUsersCollection { get; set; }
   }
 }
