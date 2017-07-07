@@ -10,9 +10,7 @@
       <tr>
         <th>Group Name</th>
         <th>Password</th>
-        <th>InsertedBy</th>
-        <th>&nbsp;</th>
-        <th>&nbsp;</th>
+        <td>&nbsp;</td>
       </tr>
     </thead>
     <tbody>
@@ -22,12 +20,11 @@
         <tr>
           <td>@g.GroupName</td>
           <td>@g.GroupPassWord</td>
-          <td>@g.InsertedBy</td>
           <td>
-            <button class="btn btn-group modal-link" href="@url" title="Add modal" data-target="#modal-container" data-toggle="modal">Join Group</button>
-          </td>
-          <td></td>
-        </tr>
+            <button class="btn btn-group modal-link BtnGreen" href="@url" title="Add modal" data-target="#modal-container" data-toggle="modal">Join Group</button>
+            @*<span> <img src="~/images/smChristmasElf.png" alt="Reindeer" class="img-circle" style="display:inline!important"></span>*@
+            </td>
+         </tr>
       }
     </tbody>
   </table>

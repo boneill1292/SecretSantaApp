@@ -7,75 +7,81 @@
   <h3>Saved</h3>
 }
 
-@*<div class="container">
-  <div class="row" style="outline: 1px red solid; text-align: center">
-    <div style="outline: 2px orange solid; margin:0 auto!important">
-      <form asp-controller="Groups" asp-action="SaveNewGroup" method="POST" class="form-horizontal" role="form">
-        <h3>New Group!</h3>
-        
-        <div asp-validation-summary="All" class="text-danger"></div>
-        <div class="form-group" style="outline: 1px green solid;">
-          <label asp-for="GroupName" class="col-md-2 control-label"></label>
-          <div class="col-md-6">
-            <input asp-for="GroupName" class="form-control" />
-            <span asp-validation-for="GroupName" class="text-danger"></span>
-          </div>
-        </div>
-        <div class="form-group" style="outline: 1px green solid">
-          <label asp-for="GroupPassWord" class="col-md-2 control-label"></label>
-          <div class="col-md-6" style="outline: yellow solid">
-            <input asp-for="GroupPassWord" class="form-control" />
-            <span asp-validation-for="GroupPassWord" class="text-danger"></span>
-          </div>
-        </div>
+  @*<div class="container">
+      <div class="row" style="outline: 1px red solid; text-align: center">
+        <div style="outline: 2px orange solid; margin:0 auto!important">
+          <form asp-controller="Groups" asp-action="SaveNewGroup" method="POST" class="form-horizontal" role="form">
+            <h3>New Group!</h3>
 
-        <div class="form-group">
-          <div class="col-md-12">
-            <input type="submit" class="btn btn-danger" value="Create" />
-          </div>
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group" style="outline: 1px green solid;">
+              <label asp-for="GroupName" class="col-md-2 control-label"></label>
+              <div class="col-md-6">
+                <input asp-for="GroupName" class="form-control" />
+                <span asp-validation-for="GroupName" class="text-danger"></span>
+              </div>
+            </div>
+            <div class="form-group" style="outline: 1px green solid">
+              <label asp-for="GroupPassWord" class="col-md-2 control-label"></label>
+              <div class="col-md-6" style="outline: yellow solid">
+                <input asp-for="GroupPassWord" class="form-control" />
+                <span asp-validation-for="GroupPassWord" class="text-danger"></span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-md-12">
+                <input type="submit" class="btn btn-danger" value="Create" />
+              </div>
+            </div>
+            @Html.HiddenFor(x => x.Active)
+          </form>
         </div>
-        @Html.HiddenFor(x => x.Active)
-      </form>
+      </div>
+    </div>*@
+
+  <br />
+  <br />
+
+  <div class="container col-lg-12 ControlBox" style="background-color: green">
+    <div class="">
+      <div class="" style="display:inline!important">
+        <span> <img src="~/images/smReindeer.png" alt="Reindeer" class="img-responsive" style="display:inline!important"></span>
+        <h3 class="text-center" style="color: white; display:inline!important">New Group!</h3>
+        <span> <img src="~/images/smReindeer.png" alt="Reindeer" class="img-responsive" style="display:inline!important"></span>
+      </div>
+      <div class="row col-xs-12 center-block RoundCornerBox" style="background-color: lightgray; padding-bottom:2%;">
+
+        @*<form method="post" action="/signin" class="form-horizontal" role="form" align="center">*@
+        <form asp-controller="Groups" asp-action="SaveNewGroup" method="POST" class="form-horizontal" role="form" style="padding-top:2%">
+
+          <div class="form-group">
+            <label class="control-label col-sm-3" style="margin: 0 auto !important" for="username">Group Name<em>*</em></label>
+            <div class="col-sm-8 col-xs-12" sstyle="text-align: center !important; margin: 0 auto !important">
+              @*<input type="text" name="username" id="usernameold" placeholder="Group Name" required="true" class="form-control" />*@
+              <input type="text" asp-for="GroupName" placeholder="Group Name" required="" oninvalid="this.setCustomValidity('Please Enter the Group Name')" asp-for="GroupName" class="form-control" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-3" for="password">Password<em>*</em></label>
+            <div class="col-sm-8 col-xs-12">
+              @*<input type="text"  placeholder="Group Password" required="true" class="form-control" />*@
+              @*<input asp-for="GroupPassWord" class="form-control" />*@
+              <input type="text" asp-for="GroupPassWord" placeholder="Group Password" required="" oninvalid="this.setCustomValidity('Please Enter the Password')" asp-for="GroupPassWord" class="form-control" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-8">
+              <input type="submit" name="signin" id="signin" value="Submit" class="btn btn-default btn-lg BtnGreen" />
+              
+            </div>
+          </div>
+          @Html.HiddenFor(x => x.Active)
+        </form>
+      </div>
     </div>
+
   </div>
-</div>*@
-
-<br />
-<br />
-
-<div class="container col-lg-12 ControlBox" style="background-color: green">
-  <div class="">
-    <div class="" style="display:inline!important">
-      <span> <img src="~/images/smReindeer.png" alt="Reindeer" class="img-responsive" style="display:inline!important"></span>
-      <h3 class="text-center" style="color: white; display:inline!important">New Group!</h3>
-      <span> <img src="~/images/smReindeer.png" alt="Reindeer" class="img-responsive" style="display:inline!important"></span>
-    </div>
-    <div class="row col-xs-12 center-block RoundCornerBox" style="background-color: lightgray;">
-      
-      <form method="post" action="/signin" class="form-horizontal" role="form" align="center">
-
-        <div class="form-group">
-          <label class="control-label col-sm-3" style="margin: 0 auto !important" for="username">Group Name<em>*</em></label>
-          <div class="col-sm-8 col-xs-12" sstyle="text-align: center !important; margin: 0 auto !important">
-            <input type="text" name="username" id="username" placeholder="Group Name" required="true" class="form-control" />
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="control-label col-sm-3" for="password">Password<em>*</em></label>
-          <div class="col-sm-8 col-xs-12">
-            <input type="text" name="password" id="password" placeholder="Group Password"required="true" class="form-control"/>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <div class="col-sm-offset-2 col-sm-8">
-            <input type="submit" name="signin" id="signin" value="sign in" class="btn btn-default"/>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
-
-</div>
-<!-- /.container -->
+  <!-- /.container -->

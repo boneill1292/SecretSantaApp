@@ -128,6 +128,7 @@ namespace SecretSantaApp.Controllers
     public ActionResult GroupHome(int id)
     {
       var model = _secretSantaBl.GroupHomeEditModelByGroupId(id);
+      model.InviteUsersCollection = _secretSantaBl.InviteUsersCollectionModelByAmountToGet(4);
 
       return View("GroupHome", model);
     }
