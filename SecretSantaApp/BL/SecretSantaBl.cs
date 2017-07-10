@@ -45,12 +45,7 @@ namespace SecretSantaApp.BL
       return result;
     }
 
-    public TestDataViewModel DefaultTestDataViewModel()
-    {
-      var result = new TestDataViewModel();
-      return result;
-    }
-
+   
     public GroupAdminModel DefaultGroupAdminModel()
     {
       var result = new GroupAdminModel();
@@ -74,14 +69,7 @@ namespace SecretSantaApp.BL
         throw new Exception("Name is Required");
       }
 
-      var groups = _groupDal.GroupByGroupName(model.GroupName);
-
-      //There could be the same name.
-      //if (groups.Count > 0)
-      //{
-      //  throw new Exception("This group already exists");
-      //}
-
+    
       //Save the new group
       var saved = _groupDal.SaveNewGroup(model);
       model.Update(saved);
@@ -159,8 +147,16 @@ namespace SecretSantaApp.BL
     {
       var result = new GroupHomeEditModel();
       var userlist = new List<CustomUserEditModel>();
+      var loggedinuser = _httpContextAccessor.HttpContext.Session.GetObjectFromJson<CustomUserEditModel>("LoggedInUser");
 
       var group = _groupDal.GetGroupById(groupid);
+
+
+      var admin = _customUserDal.CustomUserByAccountNumber(group.InsertedBy);
+
+      result.GroupAdmin = admin;
+      //if the user is the person who created the group assign them to admin.
+      result.GroupAdminBool = @group.InsertedBy == loggedinuser.AccountNumberString;
 
       result.Update(group);
 
@@ -171,7 +167,6 @@ namespace SecretSantaApp.BL
         var user = new CustomUser();
         var cu = new CustomUserEditModel();
         user = _customUserDal.CustomUserByAccountNumber(g.AccountNumberString);
-        //cu = _httpContextAccessor.HttpContext.Session.GetObjectFromJson<CustomUserEditModel>("LoggedInUser");
         cu.Update(user);
         userlist.Add(cu);
       }

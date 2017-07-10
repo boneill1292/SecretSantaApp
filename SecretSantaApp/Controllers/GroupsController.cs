@@ -48,12 +48,48 @@ namespace SecretSantaApp.Controllers
       var usermodel = _secretSantaBl.CustomUserModelByLoggedInUser(User);
       //var usergroupsvm = _secretSantaBl.MyGroupsViewModelByUserId(usermodel);
 
-
-
       var model = _secretSantaBl.DefaultGroupAdminModel();
       return View("Index", model);
     }
 
+    /// <summary>
+    /// Used to link the user back to the groups they are a member of
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet]
+    [Authorize]
+    // [Route("benapp/test")]
+    public ActionResult MyGroups()
+    {
+      var usermodel = _secretSantaBl.CustomUserModelByLoggedInUser(User);
+      var usergroupsvm = _secretSantaBl.MyGroupsViewModelByUserId(usermodel);
+
+
+      return View("MyGroups", usergroupsvm);
+    }
+
+
+
+    /// <summary>
+    /// Going to get used a lot. Used to generate the Group Home
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpGet]
+    public ActionResult GroupHome(int id)
+    {
+      var model = _secretSantaBl.GroupHomeEditModelByGroupId(id);
+      model.InviteUsersCollection = _secretSantaBl.InviteUsersCollectionModelByAmountToGet(4);
+
+      return View("GroupHome", model);
+    }
+
+
+
+    /// <summary>
+    /// Get the NewGroup View. 
+    /// </summary>
+    /// <returns></returns>
     [HttpGet]
     public ActionResult NewGroupPage()
     {
@@ -61,6 +97,12 @@ namespace SecretSantaApp.Controllers
       return View("NewGroup", model);
     }
 
+    
+    /// <summary>
+    /// Saves the new group that the user submitted.
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
     [HttpPost]
     //[Route("tickets/{department}/newcategoryonticketview/edit")]
     public ActionResult SaveNewGroup(GroupEditModel model)
@@ -93,51 +135,43 @@ namespace SecretSantaApp.Controllers
     }
 
 
-
-
+    /// <summary>
+    /// This is the extra field used when we want to add more people to invite.
+    /// </summary>
+    /// <param name="count"></param>
+    /// <returns></returns>
     [HttpGet]
-    public ActionResult JoinGroup(int id)
+    public ActionResult GetInviteUsersFields(int count)
     {
-      var user = HttpContext.Session.GetObjectFromJson<CustomUser>("LoggedInUser");
-      var usereditmodel = new CustomUserEditModel();
-      usereditmodel.Update(user);
-
-      _secretSantaBl.JoinGroupAsCustomUser(usereditmodel, id);
-
-
-      var usergroupsvm = _secretSantaBl.MyGroupsViewModelByUserId(usereditmodel);
-      return View("MyGroups", usergroupsvm);
+      // var model = _secretSantaBl.InviteUsersCollectionModelByAmountToGet(count);
+      var model = _secretSantaBl.AdditionalInviteUsersViewModel(count);
+      return PartialView("_InviteUsersRow", model);
     }
 
 
 
-    [HttpGet]
-    [Authorize]
-    // [Route("benapp/test")]
-    public ActionResult MyGroups()
+    /// <summary>
+    /// Called from the GroupHome View.
+    /// This is note quite used yet. This will be coming soon.
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
+    [HttpPost]
+    public ActionResult SendInvitesTousers(GroupHomeEditModel model)
     {
-      var usermodel = _secretSantaBl.CustomUserModelByLoggedInUser(User);
-      var usergroupsvm = _secretSantaBl.MyGroupsViewModelByUserId(usermodel);
-
-
-      return View("MyGroups", usergroupsvm);
+      var m = new Group();
+      m.Update(model);
+      return View("Index");
     }
 
 
+    
+    /// <summary>
+    /// Gets the Join Groups page
+    /// </summary>
+    /// <returns></returns>
     [HttpGet]
-    public ActionResult GroupHome(int id)
-    {
-      var model = _secretSantaBl.GroupHomeEditModelByGroupId(id);
-      model.InviteUsersCollection = _secretSantaBl.InviteUsersCollectionModelByAmountToGet(4);
-
-      return View("GroupHome", model);
-    }
-
-
-
-
-    [HttpGet]
-    public ActionResult GroupsUserDoesNotBelongTo()
+    public ActionResult AvailableGroupsToJoin()
     {
       var usermodel = _secretSantaBl.CustomUserModelByLoggedInUser(User);
       var model = _secretSantaBl.JoinGroupEditModelByAccountNumberString(usermodel.AccountNumberString);
@@ -146,35 +180,27 @@ namespace SecretSantaApp.Controllers
     }
 
 
-    [HttpGet]
-    public ActionResult GetInviteUsersFields(int count)
-    {
-     // var model = _secretSantaBl.InviteUsersCollectionModelByAmountToGet(count);
-      var model = _secretSantaBl.AdditionalInviteUsersViewModel(count);
-      return PartialView("_InviteUsersRow", model);
-    }
-
-
-
-    [HttpPost]
-    public ActionResult SendInvitesTousers(GroupHomeEditModel model)
-    {
-      var m = new Group();
-      m.Update(model);
-      return View("index");
-    }
-
-
+    /// <summary>
+    /// Used to prompt the user for a password to join a group
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpGet]
     [Route("secretsanta/joingroup/{id}")]
     public ActionResult PromptUserForPassword(int id)
     {
       var model = _secretSantaBl.JoinGroupEditModelByGroupId(id);
-      return PartialView("_JoinGroupEntry",model);
+      return PartialView("_JoinGroupEntry", model);
     }
 
+
+    /// <summary>
+    /// checks to see if the users password was correct
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
     [HttpPost]
-    public ActionResult CheckPasswordInput(JoinGroupEditModel model)
+    public ActionResult SubmitJoinGroup(JoinGroupEditModel model)
     {
       //We need to pass the correct password - if the user does that. Add them to the group, and load the group  homepage.
       try
@@ -187,7 +213,7 @@ namespace SecretSantaApp.Controllers
         var m = _secretSantaBl.CheckPasswordInput(model);
         //ModelState.Clear();
         m.Verified = true;
-        return PartialView("_JoinGroupEntry",m);
+        return PartialView("_JoinGroupEntry", m);
       }
       catch (Exception ex)
       {
@@ -196,5 +222,31 @@ namespace SecretSantaApp.Controllers
       return PartialView("_JoinGroupEntry", model);
     }
 
+
+
+
+
+   
+
+    
+    
+    
+
+
+
+
+
+
+    ////Will not use
+    //[HttpGet]
+    //public ActionResult JoinGroup(int id)
+    //{
+    //  var user = HttpContext.Session.GetObjectFromJson<CustomUser>("LoggedInUser");
+    //  var usereditmodel = new CustomUserEditModel();
+    //  usereditmodel.Update(user);
+    //  _secretSantaBl.JoinGroupAsCustomUser(usereditmodel, id);
+    //  var usergroupsvm = _secretSantaBl.MyGroupsViewModelByUserId(usereditmodel);
+    //  return View("MyGroups", usergroupsvm);
+    //}
   }
 }

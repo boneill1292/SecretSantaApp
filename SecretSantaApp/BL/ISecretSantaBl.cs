@@ -14,7 +14,7 @@ namespace SecretSantaApp.BL
   {
     CustomUserEditModel CustomUserModelByLoggedInUser(ClaimsPrincipal user);
 
-    TestDataViewModel DefaultTestDataViewModel();
+    //TestDataViewModel DefaultTestDataViewModel();
 
     GroupAdminModel DefaultGroupAdminModel();
 

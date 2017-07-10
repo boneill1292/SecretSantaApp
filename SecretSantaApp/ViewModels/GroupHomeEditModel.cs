@@ -14,5 +14,8 @@ namespace SecretSantaApp.ViewModels
     public bool NewGroup { get; set; }
     public List<CustomUserEditModel> GroupMembers { get; set; }
     public InviteUsersCollectionModel InviteUsersCollection { get; set; }
+    
+    public bool GroupAdminBool { get; set; }
+    public CustomUser GroupAdmin { get; set; }
   }
 }

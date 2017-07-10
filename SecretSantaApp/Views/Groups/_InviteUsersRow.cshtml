@@ -27,34 +27,3 @@
     <span class="text-danger field-validation-valid" data-valmsg-for="@emailname" data-valmsg-replace="true"></span>
   </div>
 
-
-
-
-
-@*<div class="form-group col-xs-6" style="outline: 1px green solid">
-    <label class="col-md-2 control-label" for="InviteUsersCollection_UsersToInvite_3__Name">Name</label>
-    <input class="form-control" type="text" id="InviteUsersCollection_UsersToInvite_3__Name" name="InviteUsersCollection.UsersToInvite[3].Name" value="">
-    <span class="text-danger field-validation-valid" data-valmsg-for="InviteUsersCollection.UsersToInvite[3].Name" data-valmsg-replace="true"></span>
-  </div>*@
-
-@*@foreach (var i in Model.UsersToInvite)
-  {
-
-              @Html.FieldLabelFor(x => x.StringValue)
-            <input class="" id="@stringvalueid" name="AvailableValuesList[@Model.TempId].StringValue" type="text" value="">
-
-    <div>
-      <div class="form-group col-xs-6" style="outline: 1px green solid">
-        <label asp-for="@Model.InviteUsersCollection.UsersToInvite[i].Name" class="col-md-2 control-label"></label>
-        <input asp-for="@Model.InviteUsersCollection.UsersToInvite[i].Name" class="form-control" />
-        <span asp-validation-for="@Model.InviteUsersCollection.UsersToInvite[i].Name" class="text-danger"></span>
-      </div>
-
-      <div class="form-group col-xs-6" style="outline: 1px red solid">
-        <label asp-for="@Model.InviteUsersCollection.UsersToInvite[i].Email" class="col-md-2 control-label"></label>
-        <input asp-for="@Model.InviteUsersCollection.UsersToInvite[i].Email" class="form-control" />
-        <span asp-validation-for="@Model.InviteUsersCollection.UsersToInvite[i].Email" class="text-danger"></span>
-      </div>
-    </div>
-
-  }*@

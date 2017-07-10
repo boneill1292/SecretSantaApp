@@ -2,7 +2,7 @@
 @model SecretSantaApp.Views.Groups.GroupAdminModel
 @{
   var newgroupurl = Url.Action("NewGroupPage", "Groups");
-  var joingroupurl = Url.Action("GroupsUserDoesNotBelongTo", "Groups");
+  var joingroupurl = Url.Action("AvailableGroupsToJoin", "Groups");
 }
 
 @*<form>
@@ -66,20 +66,5 @@
 }
 
 <style>
-  /*.ControlBox {*/
-    /*outline: 5px #008F2F solid;*/
-    /*border: 3px solid green; 
-    margin: auto;
-    text-align: center;
-    box-shadow: 0 2px 25px;
-    background-color: lightgray;
-    border-radius: 10px;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;*/
-    /*box-shadow: 0 0 5px rgba(1, 1, 1, 0.7);*/
-    /*-moz- box-shadow: 0 0 5px rgba(1, 1, 1, 0.7);
-    -webkit- box-shadow: 0 0 5px rgba(1, 1, 1, 0.7);*/
-  /*}*/
-  
-  
+
 </style>
