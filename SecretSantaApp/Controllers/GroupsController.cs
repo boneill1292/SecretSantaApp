@@ -206,13 +206,13 @@ namespace SecretSantaApp.Controllers
       try
       {
         var u = _httpContextAccessor.HttpContext.Session.GetObjectFromJson<CustomUserEditModel>("LoggedInUser");
-        var cu = new CustomUserEditModel();
-        cu.Update(u);
+        //var cu = new CustomUserEditModel();
+        //cu.Update(u);
 
-        model.CustomUser = cu;
+        model.CustomUser = u;
         var m = _secretSantaBl.CheckPasswordInput(model);
         //ModelState.Clear();
-        m.Verified = true;
+        //m.Verified = true;
         return PartialView("_JoinGroupEntry", m);
       }
       catch (Exception ex)
@@ -223,11 +223,21 @@ namespace SecretSantaApp.Controllers
     }
 
 
+    [HttpGet]
+    public ActionResult GetManageRulesPopup(int groupid)
+    {
+      var model = _secretSantaBl.NewRuleEditModelByGroupId(groupid);
+      return PartialView("_NewRulePopup", model);
+    }
 
 
 
-   
-
+    [HttpGet]
+    public ActionResult GetGroupRulesPartial(int groupid)
+    {
+      var model = _secretSantaBl.GroupRulesEditModelByGroupId(groupid);
+      return PartialView("_GroupRules", model);
+    }
     
     
     

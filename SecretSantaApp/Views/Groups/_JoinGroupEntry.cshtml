@@ -40,6 +40,12 @@
             <label asp-for="UserInputGroupPassword" class="col-md-12 control-label"></label>
             <input asp-for="UserInputGroupPassword" class="form-control" required="" placeholder="Group Password" oninvalid="this.setCustomValidity('Please Enter the Password')" />
             <span asp-validation-for="UserInputGroupPassword" class="text-danger"></span>
+            
+            @if (Model.ErrorMsg != null)
+            {
+              <span class="text-danger"> @Model.ErrorMsg</span>
+            }
+            
           </div>
           <div class="">
             <span> <img src="~/images/smChristmasElf.png" alt="Reindeer" class="img-circle" style="display: inline !important"></span>
@@ -59,8 +65,12 @@
 
 
       $(function () {
+
+
+        
         $('#btnSave').click(function () {
           console.log("save");
+ 
           // $('#modal-container').modal('hide');
           //https://codemagik.wordpress.com/2015/04/07/render-mvc-partial-view-inside-bootstrap-modal-dialog/
         });
@@ -68,3 +78,25 @@
     </script>
   }
 </div>
+
+<style>
+  .spinner {
+    display: inline-block;
+    opacity: 0;
+    max-width: 0;
+
+    -webkit-transition: opacity 0.25s, max-width 0.45s; 
+    -moz-transition: opacity 0.25s, max-width 0.45s;
+    -o-transition: opacity 0.25s, max-width 0.45s;
+    transition: opacity 0.25s, max-width 0.45s; /* Duration fixed since we animate additional hidden width */
+  }
+
+  .has-spinner.active {
+    cursor:progress;
+  }
+
+  .has-spinner.active .spinner {
+    opacity: 1;
+    max-width: 50px; /* More than it will ever come, notice that this affects on animation duration */
+  }
+</style>

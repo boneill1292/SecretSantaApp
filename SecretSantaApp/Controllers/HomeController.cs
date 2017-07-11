@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using SecretSantaApp.BL;
 using SecretSantaApp.Models;
@@ -51,6 +52,16 @@ namespace SecretSantaApp.Controllers
 
     public IActionResult Error()
     {
+      var exception = HttpContext.Features
+        .Get<IExceptionHandlerFeature>();
+
+      ViewData["statusCode"] = HttpContext.
+        Response.StatusCode;
+      ViewData["message"] = exception.Error.Message;
+      ViewData["stackTrace"] = exception.
+        Error.StackTrace;
+      
+      
       return View("Error");
     }
   }

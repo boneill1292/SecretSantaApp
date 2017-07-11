@@ -1,6 +1,8 @@
 ﻿@model GroupHomeEditModel
 @{
-//var inviteurl = Url.Action("GetInviteUsersFields", "Groups", new { count = -1 });
+  //var inviteurl = Url.Action("GetInviteUsersFields", "Groups", new { count = -1 });
+  var newruleurl = Url.Action("GetManageRulesPopup", "Groups", new {groupid = Model.GroupId});
+  var grouprulesurl = Url.Action("GetGroupRulesPartial", "Groups", new {groupid = Model.GroupId});
 }
 
 <div style="text-align:center">
@@ -12,7 +14,7 @@
 
 @if (Model.NewGroup)
 {
-  @Html.Partial("_NewGroupInvites",Model)
+  @Html.Partial("_NewGroupInvites", Model)
 
 }
 else //its not a new group. its the go to group home method
@@ -28,25 +30,25 @@ else //its not a new group. its the go to group home method
         <div class="row">
           <table class="table table-responsive table-striped">
             <thead>
-            <tr>
-              <th>&nbsp;</th>
-              <th>Name</th>
-              <th>Email</th>
+              <tr>
+                <th>&nbsp;</th>
+                <th>Name</th>
+                <th>Email</th>
 
-            </tr>
+              </tr>
             </thead>
             <tbody>
-            @foreach (var u in Model.GroupMembers)
-            {
-              <tr>
-                <td>
-                  <img src="@u.ProfileImage"
-                       alt="" class="img-rounded img-responsive" />
-                </td>
-                <td>@u.FullName</td>
-                <td>@u.Email</td>
-              </tr>
-            }
+              @foreach (var u in Model.GroupMembers)
+              {
+                <tr>
+                  <td>
+                    <img src="@u.ProfileImage"
+                         alt="" class="img-rounded img-responsive" />
+                  </td>
+                  <td>@u.FullName</td>
+                  <td>@u.Email</td>
+                </tr>
+              }
             </tbody>
           </table>
         </div>
@@ -58,18 +60,27 @@ else //its not a new group. its the go to group home method
         <p>No Body Is in this group</p>
       }
     </div>
-    
-    <div class="col-md-4" style="outline:1px red solid">
-      <h5>Group Rules:</h5>
+
+    <div id="rulesdiv" class="col-md-4" style="outline: 1px red solid">
+      @*@Html.Action("GetGroupRulesPartial", "Groups", new { groupid = Model.GroupId})*@
+
     </div>
 
-    
-    
     <div class="clearfix"></div>
-    
-    
-    
-    
+
+    @if (Model.GroupAdminBool)
+    {
+      <div class="col-md-12">
+        <div style="text-align: center;">
+          <div class="">
+            <button class="btn btn-group modal-link BtnRed" href="@newruleurl" title="Add modal" data-target="#modal-container" data-toggle="modal">Create Rule</button>
+        <button type="button" id="btnDrawNames" class="btn BtnGreen " data-dismiss="modal">Draw Names</button>
+          </div>
+        </div>
+      </div>
+    }
+
+
     <div style="padding-top: 5%">
       @if (Model.GroupAdminBool)
       {
@@ -79,7 +90,7 @@ else //its not a new group. its the go to group home method
       {
         <p>You are not the group admin </p>
       }
-      
+
     </div>
 
 
@@ -93,6 +104,8 @@ else //its not a new group. its the go to group home method
   <script>
     $(document).ready(function() {
 
+      LoadRules();
+      
       var isnew = '@Model.NewGroup';
       console.log(isnew);
 
@@ -120,6 +133,13 @@ else //its not a new group. its the go to group home method
         } //If the group is not new
 
     }); //doc ready
+
+    function LoadRules() {
+      $.get('@grouprulesurl',
+        function (data) {
+          $("#rulesdiv").html(data); //append(data);
+        });
+    }
   </script>
 }
 

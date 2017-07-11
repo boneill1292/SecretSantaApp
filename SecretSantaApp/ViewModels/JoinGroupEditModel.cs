@@ -23,5 +23,7 @@ namespace SecretSantaApp.ViewModels
       
       public bool Verified { get; set; }
       
+      public string ErrorMsg { get; set; }
+      
     }
 }

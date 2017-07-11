@@ -304,15 +304,47 @@ namespace SecretSantaApp.BL
 
       if (model.UserInputGroupPassword != password)
       {
-        throw new Exception("Incorrect password");
+        //throw new Exception("Incorrect password");
+        model.Verified = false;
+        model.ErrorMsg = "Incorrect Password";
+        model.Group = group;
+        model.GroupId = group.GroupId;
+        return model;
       }
+      else
+      {
+        model.Group = group;
+        model.GroupId = group.GroupId;
 
-      model.Group = group;
-      model.GroupId = group.GroupId;
-
-      JoinGroupAsCustomUser(model.CustomUser, model.GroupId);
+        JoinGroupAsCustomUser(model.CustomUser, model.GroupId);
+        model.Verified = true;
+        model.ErrorMsg = null;
+        return model;
+      }
       
-      return model;
+    }
+
+
+
+
+
+    public NewRuleEditModel NewRuleEditModelByGroupId(int groupid)
+    {
+      var group = _groupDal.GetGroupById(groupid);
+
+      var result = new NewRuleEditModel();
+      result.GroupName = group.GroupName;
+      return result;
+    }
+    
+
+    public GroupRulesEditModel GroupRulesEditModelByGroupId(int groupid)
+    {
+      var group = _groupDal.GetGroupById(groupid);
+
+      var result = new GroupRulesEditModel();
+      result.GroupName = group.GroupName;
+      return result;
     }
   }
 }
