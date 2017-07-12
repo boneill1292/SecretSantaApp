@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
+using SecretSantaApp.DAL;
 using SecretSantaApp.Models;
 using SecretSantaApp.ViewModels;
 using SecretSantaApp.Views.Groups;
@@ -19,15 +20,18 @@ namespace SecretSantaApp.BL
     private readonly ICustomUserDal _customUserDal;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IGroupMembershipDal _groupMembershipDal;
+    private readonly IGroupRulesDal _groupRulesDal;
     public SecretSantaBl(IGroupDal groupDal,
                          ICustomUserDal customUserDal,
                          IHttpContextAccessor httpContextAccessor,
-                          IGroupMembershipDal groupMembershipDal)
+                          IGroupMembershipDal groupMembershipDal,
+                          IGroupRulesDal groupRulesDal)
     {
       _groupDal = groupDal;
       _customUserDal = customUserDal;
       _httpContextAccessor = httpContextAccessor;
       _groupMembershipDal = groupMembershipDal;
+      _groupRulesDal = groupRulesDal;
     }
 
     public CustomUserEditModel CustomUserModelByLoggedInUser(ClaimsPrincipal user)
@@ -45,7 +49,17 @@ namespace SecretSantaApp.BL
       return result;
     }
 
-   
+
+
+    public string UserFullNameByAccountNumberString(string acctno)
+    {
+      var user = _customUserDal.CustomUserByAccountNumber(acctno);
+
+      var result = user.FullName;
+
+      return result;
+    }
+
     public GroupAdminModel DefaultGroupAdminModel()
     {
       var result = new GroupAdminModel();
@@ -69,7 +83,7 @@ namespace SecretSantaApp.BL
         throw new Exception("Name is Required");
       }
 
-    
+
       //Save the new group
       var saved = _groupDal.SaveNewGroup(model);
       model.Update(saved);
@@ -321,7 +335,7 @@ namespace SecretSantaApp.BL
         model.ErrorMsg = null;
         return model;
       }
-      
+
     }
 
 
@@ -335,28 +349,56 @@ namespace SecretSantaApp.BL
       var result = new GroupRulesEditModel();
       result.GroupName = group.GroupName;
       result.GroupId = groupid;
-      
-      
+
+
       return result;
     }
 
 
-    public GroupRulesEditModel SaveGroupRules(GroupRulesEditModel model)
+
+    public GroupRulesEditModel GroupRuleEditModelByRuleId(int ruleid)
     {
+      var rule = _groupRulesDal.GetRuleByRuleId(ruleid);
+      var group = _groupDal.GetGroupById(rule.GroupId);
       var result = new GroupRulesEditModel();
-      result.Update(model);
+      result.Update(rule);
+      result.ID = ruleid;
+      result.GroupName = group.GroupName;
 
       return result;
+
     }
     
-
-    public GroupRulesEditModel GroupRulesEditModelByGroupId(int groupid)
+    
+    public GroupRulesEditModel SaveGroupRules(GroupRulesEditModel model)
     {
-      var group = _groupDal.GetGroupById(groupid);
+      if (model.Rule == null)
+      {
+        throw new Exception("Required");
+      }
 
+      var saved = _groupRulesDal.SaveRules(model);
+      
       var result = new GroupRulesEditModel();
-      result.GroupName = group.GroupName;
+      result.Update(saved);
+
       return result;
     }
+
+
+    public GroupRulesDisplayModel GroupRulesDisplayModelByGroupId(int groupid)
+    {
+      var group = _groupDal.GetGroupById(groupid);
+      var grouprules = _groupRulesDal.RulesByGroupId(groupid);
+
+      var result = new GroupRulesDisplayModel();
+      result.GroupName = group.GroupName;
+      result.GroupRules = grouprules;
+      return result;
+    }
+
+
+
+
   }
 }

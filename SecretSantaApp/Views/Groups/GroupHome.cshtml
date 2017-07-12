@@ -20,7 +20,7 @@
 else //its not a new group. its the go to group home method
 {
   <div>
-    <div class="col-md-8" style="outline:1px green solid">
+    <div class="col-md-7" style="outline:1px green solid">
       @if (Model.GroupMembers.Count > 0)
       {
 
@@ -61,16 +61,14 @@ else //its not a new group. its the go to group home method
       }
     </div>
 
-    <div id="rulesdiv" class="col-md-4" style="outline: 1px red solid">
-      @*@Html.Action("GetGroupRulesPartial", "Groups", new { groupid = Model.GroupId})*@
-
-    </div>
+    <div id="rulesdiv" class="col-md-5" style="outline: 1px red solid">
+      </div>
 
     <div class="clearfix"></div>
 
     @if (Model.GroupAdminBool)
     {
-      <div class="col-md-12">
+      <div class="col-md-12" style="padding-top:2%">
         <div style="text-align: center;">
           <div class="">
             <button class="btn btn-group modal-link BtnRed" href="@newruleurl" title="Add modal" data-target="#modal-container" data-toggle="modal">Create Rule</button>
@@ -135,6 +133,7 @@ else //its not a new group. its the go to group home method
     }); //doc ready
 
     function LoadRules() {
+      console.log("we talkin rules");
       $.get('@grouprulesurl',
         function (data) {
           $("#rulesdiv").html(data); //append(data);

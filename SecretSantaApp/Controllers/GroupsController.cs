@@ -230,6 +230,15 @@ namespace SecretSantaApp.Controllers
       return PartialView("_NewRulePopup", model);
     }
 
+    [HttpGet]
+    public ActionResult EditRulePopup(int ruleid)
+    {
+      var model = _secretSantaBl.GroupRuleEditModelByRuleId(ruleid);
+      return PartialView("_NewRulePopup", model);
+    }
+
+
+
     [HttpPost]
     public ActionResult SaveGroupRule(GroupRulesEditModel model)
     {
@@ -252,7 +261,7 @@ namespace SecretSantaApp.Controllers
     [HttpGet]
     public ActionResult GetGroupRulesPartial(int groupid)
     {
-      var model = _secretSantaBl.GroupRulesEditModelByGroupId(groupid);
+      var model = _secretSantaBl.GroupRulesDisplayModelByGroupId(groupid);
       return PartialView("_GroupRules", model);
     }
     

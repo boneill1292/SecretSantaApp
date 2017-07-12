@@ -7,11 +7,13 @@ using SecretSantaApp.Models;
 
 namespace SecretSantaApp.DAL
 {
-    public interface IGroupRulesDal
-    {
+  public interface IGroupRulesDal
+  {
 
     GroupRules SaveRules(GroupRules g);
-      
-      List<GroupRules> RulesByGroupId(int groupid);
+
+    List<GroupRules> RulesByGroupId(int groupid);
+
+    GroupRules GetRuleByRuleId(int ruleid);
   }
 }

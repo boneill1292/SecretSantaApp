@@ -25,20 +25,35 @@ namespace SecretSantaApp.DAL
     {
       var u = _httpContextAccessor.HttpContext.Session.GetObjectFromJson<CustomUser>("LoggedInUser");
 
-      var result = new GroupRules();
-      result.Update(g);
-      result.InsertedBy = u.FullName;
-      //result.AccountNumberString = u.AccountNumberString;
-      _appDbContext.Add(result);
-
-      _appDbContext.SaveChanges();
-
-      return result;
+      if (g.ID >= 1)
+      {
+        _appDbContext.Update(g);
+        _appDbContext.SaveChanges();
+        return g;
+      }
+      else
+      {
+        var result = new GroupRules();
+        result.Update(g);
+        result.InsertedBy = u.AccountNumberString;
+        //result.AccountNumberString = u.AccountNumberString;
+        _appDbContext.Add(result);
+        _appDbContext.SaveChanges();
+        return result;
+      }
     }
 
     public List<GroupRules> RulesByGroupId(int groupid)
     {
-      throw new NotImplementedException();
+      var result = new List<GroupRules>();
+      result = _appDbContext.GroupRules.Where(x => x.GroupId == groupid).ToList();
+      return result;
+    }
+
+
+    public GroupRules GetRuleByRuleId(int ruleid)
+    {
+      return _appDbContext.GroupRules.FirstOrDefault(g => g.ID == ruleid);
     }
   }
 }

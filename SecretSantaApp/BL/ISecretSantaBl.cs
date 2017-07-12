@@ -14,7 +14,7 @@ namespace SecretSantaApp.BL
   {
     CustomUserEditModel CustomUserModelByLoggedInUser(ClaimsPrincipal user);
 
-    //TestDataViewModel DefaultTestDataViewModel();
+    string UserFullNameByAccountNumberString(string acctno);
 
     GroupAdminModel DefaultGroupAdminModel();
 
@@ -42,8 +42,9 @@ namespace SecretSantaApp.BL
 
 
     GroupRulesEditModel NewRuleEditModelByGroupId(int groupid);
+    GroupRulesEditModel GroupRuleEditModelByRuleId(int ruleid);
 
     GroupRulesEditModel SaveGroupRules(GroupRulesEditModel model);
-    GroupRulesEditModel GroupRulesEditModelByGroupId(int groupid);
+    GroupRulesDisplayModel GroupRulesDisplayModelByGroupId(int groupid);
   }
 }
