@@ -328,12 +328,24 @@ namespace SecretSantaApp.BL
 
 
 
-    public NewRuleEditModel NewRuleEditModelByGroupId(int groupid)
+    public GroupRulesEditModel NewRuleEditModelByGroupId(int groupid)
     {
       var group = _groupDal.GetGroupById(groupid);
 
-      var result = new NewRuleEditModel();
+      var result = new GroupRulesEditModel();
       result.GroupName = group.GroupName;
+      result.GroupId = groupid;
+      
+      
+      return result;
+    }
+
+
+    public GroupRulesEditModel SaveGroupRules(GroupRulesEditModel model)
+    {
+      var result = new GroupRulesEditModel();
+      result.Update(model);
+
       return result;
     }
     

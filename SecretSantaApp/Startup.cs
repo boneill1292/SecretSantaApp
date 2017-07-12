@@ -15,6 +15,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using SecretSantaApp.BL;
+using SecretSantaApp.DAL;
 using SecretSantaApp.Models;
 
 namespace SecretSantaApp
@@ -50,6 +51,7 @@ namespace SecretSantaApp
       services.AddTransient<IGroupDal, GroupDal>();
       services.AddTransient<ICustomUserDal, CustomUserDal>();
       services.AddTransient<IGroupMembershipDal, GroupMembershipDal>();
+      services.AddTransient<IGroupRulesDal, GroupRulesDal>();
 
       // Add authentication services
       services.AddAuthentication(

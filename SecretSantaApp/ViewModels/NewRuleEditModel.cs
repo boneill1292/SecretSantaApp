@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SecretSantaApp.ViewModels
 {
-    public class NewRuleEditModel
+    public class NewRuleEditModel 
     {
         public string GroupName { get; set; }
     }

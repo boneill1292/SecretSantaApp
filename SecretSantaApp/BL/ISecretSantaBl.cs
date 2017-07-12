@@ -41,7 +41,9 @@ namespace SecretSantaApp.BL
     JoinGroupEditModel CheckPasswordInput(JoinGroupEditModel model);
 
 
-    NewRuleEditModel NewRuleEditModelByGroupId(int groupid);
+    GroupRulesEditModel NewRuleEditModelByGroupId(int groupid);
+
+    GroupRulesEditModel SaveGroupRules(GroupRulesEditModel model);
     GroupRulesEditModel GroupRulesEditModelByGroupId(int groupid);
   }
 }

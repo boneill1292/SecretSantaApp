@@ -230,6 +230,23 @@ namespace SecretSantaApp.Controllers
       return PartialView("_NewRulePopup", model);
     }
 
+    [HttpPost]
+    public ActionResult SaveGroupRule(GroupRulesEditModel model)
+    {
+      try
+      {
+        //var u = _httpContextAccessor.HttpContext.Session.GetObjectFromJson<CustomUserEditModel>("LoggedInUser");
+        var m = _secretSantaBl.SaveGroupRules(model);
+        m.Saved = true;
+        return PartialView("_NewRulePopup", m);
+        //return PartialView("_JoinGroupEntry", m);
+      }
+      catch (Exception ex)
+      {
+        _log.LogWarning(ex.Message);
+      }
+      return PartialView("_NewRulePopup", model);
+    }
 
 
     [HttpGet]
