@@ -27,6 +27,7 @@ namespace SecretSantaApp.DAL
 
       if (g.ID >= 1)
       {
+        _appDbContext.Add(g);
         _appDbContext.Update(g);
         _appDbContext.SaveChanges();
         return g;
@@ -41,6 +42,17 @@ namespace SecretSantaApp.DAL
         _appDbContext.SaveChanges();
         return result;
       }
+    }
+
+    public GroupRules DeleteRule(GroupRules g)
+    {
+      var result = new GroupRules();
+      result.Update(g);
+
+      //_appDbContext.Add(result);
+      _appDbContext.Remove(result);
+      _appDbContext.SaveChanges();
+      return result;
     }
 
     public List<GroupRules> RulesByGroupId(int groupid)

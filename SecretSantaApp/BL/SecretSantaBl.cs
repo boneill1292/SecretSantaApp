@@ -362,14 +362,13 @@ namespace SecretSantaApp.BL
       var group = _groupDal.GetGroupById(rule.GroupId);
       var result = new GroupRulesEditModel();
       result.Update(rule);
-      result.ID = ruleid;
       result.GroupName = group.GroupName;
 
       return result;
 
     }
-    
-    
+
+
     public GroupRulesEditModel SaveGroupRules(GroupRulesEditModel model)
     {
       if (model.Rule == null)
@@ -377,11 +376,24 @@ namespace SecretSantaApp.BL
         throw new Exception("Required");
       }
 
-      var saved = _groupRulesDal.SaveRules(model);
-      
+      var m = new GroupRules();
+      m.Update(model);
+      var saved = _groupRulesDal.SaveRules(m);
+
       var result = new GroupRulesEditModel();
       result.Update(saved);
 
+      return result;
+    }
+
+    public GroupRulesEditModel DeleteGroupRule(GroupRulesEditModel model)
+    {
+      var m = new GroupRules();
+      m.Update(model);
+
+      var deleted = _groupRulesDal.DeleteRule(m);
+      var result = new GroupRulesEditModel();
+      result.Update(deleted);
       return result;
     }
 
@@ -398,6 +410,15 @@ namespace SecretSantaApp.BL
     }
 
 
+    public GroupChatDisplayModel GroupChatDisplayModelByGroupId(int groupid)
+    {
+      var group = _groupDal.GetGroupById(groupid);
+
+      var result = new GroupChatDisplayModel();
+      result.GroupName = group.GroupName;
+
+      return result;
+    }
 
 
   }

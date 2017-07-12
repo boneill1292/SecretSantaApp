@@ -236,6 +236,32 @@ namespace SecretSantaApp.Controllers
       var model = _secretSantaBl.GroupRuleEditModelByRuleId(ruleid);
       return PartialView("_NewRulePopup", model);
     }
+    
+    [HttpGet]
+    public ActionResult DeleteRulePopup(int ruleid)
+    {
+      var model = _secretSantaBl.GroupRuleEditModelByRuleId(ruleid);
+      return PartialView("_DeleteRulePopup", model);
+    }
+
+    [HttpPost]
+    public ActionResult DeleteGroupRule(GroupRulesEditModel model)
+    {
+      try
+      {
+        //var u = _httpContextAccessor.HttpContext.Session.GetObjectFromJson<CustomUserEditModel>("LoggedInUser");
+        //var m = _secretSantaBl.SaveGroupRules(model);
+        var m = _secretSantaBl.DeleteGroupRule(model);
+        m.Saved = true;
+        return PartialView("_NewRulePopup", m);
+        //return PartialView("_JoinGroupEntry", m);
+      }
+      catch (Exception ex)
+      {
+        _log.LogWarning(ex.Message);
+      }
+      return PartialView("_NewRulePopup", model);
+    }
 
 
 
@@ -264,9 +290,15 @@ namespace SecretSantaApp.Controllers
       var model = _secretSantaBl.GroupRulesDisplayModelByGroupId(groupid);
       return PartialView("_GroupRules", model);
     }
-    
-    
-    
+
+
+    [HttpGet]
+    public ActionResult GetChatPartial(int groupid)
+    {
+      var model = _secretSantaBl.GroupChatDisplayModelByGroupId(groupid);
+      return PartialView("_GroupChat", model);
+    }
+
 
 
 

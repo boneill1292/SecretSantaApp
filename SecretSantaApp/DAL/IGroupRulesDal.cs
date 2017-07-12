@@ -12,6 +12,7 @@ namespace SecretSantaApp.DAL
 
     GroupRules SaveRules(GroupRules g);
 
+    GroupRules DeleteRule(GroupRules g);
     List<GroupRules> RulesByGroupId(int groupid);
 
     GroupRules GetRuleByRuleId(int ruleid);

@@ -45,6 +45,10 @@ namespace SecretSantaApp.BL
     GroupRulesEditModel GroupRuleEditModelByRuleId(int ruleid);
 
     GroupRulesEditModel SaveGroupRules(GroupRulesEditModel model);
+
+    GroupRulesEditModel DeleteGroupRule(GroupRulesEditModel model);
     GroupRulesDisplayModel GroupRulesDisplayModelByGroupId(int groupid);
+
+    GroupChatDisplayModel GroupChatDisplayModelByGroupId(int groupid);
   }
 }

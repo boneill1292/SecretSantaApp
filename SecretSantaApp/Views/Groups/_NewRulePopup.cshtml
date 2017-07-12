@@ -55,7 +55,9 @@
                 <input type="submit" name="signin" id="signin" value="Submit" class="btn btn-default btn-lg BtnGreen" />
               </div>
             </div>
+            @Html.HiddenFor(x=> x.ID)
             @Html.HiddenFor(x=> x.GroupId)
+            @Html.HiddenFor(x=> x.InsertedBy)
           </form>
         </div>
       </div>

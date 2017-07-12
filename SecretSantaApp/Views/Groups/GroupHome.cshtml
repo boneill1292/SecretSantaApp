@@ -1,8 +1,9 @@
 ﻿@model GroupHomeEditModel
 @{
-  //var inviteurl = Url.Action("GetInviteUsersFields", "Groups", new { count = -1 });
-  var newruleurl = Url.Action("GetManageRulesPopup", "Groups", new {groupid = Model.GroupId});
-  var grouprulesurl = Url.Action("GetGroupRulesPartial", "Groups", new {groupid = Model.GroupId});
+
+  var newruleurl = Url.Action("GetManageRulesPopup", "Groups", new { groupid = Model.GroupId });
+  var grouprulesurl = Url.Action("GetGroupRulesPartial", "Groups", new { groupid = Model.GroupId });
+  var chaturl = Url.Action("GetChatPartial", "Groups", new { groupid = Model.GroupId });
 }
 
 <div style="text-align:center">
@@ -19,8 +20,8 @@
 }
 else //its not a new group. its the go to group home method
 {
-  <div>
-    <div class="col-md-7" style="outline:1px green solid">
+  <div id="existinggroupdiv">
+    <div class="col-md-8" style="outline:1px green solid">
       @if (Model.GroupMembers.Count > 0)
       {
 
@@ -34,6 +35,7 @@ else //its not a new group. its the go to group home method
                 <th>&nbsp;</th>
                 <th>Name</th>
                 <th>Email</th>
+                <th>&nbsp;</th>
 
               </tr>
             </thead>
@@ -47,6 +49,15 @@ else //its not a new group. its the go to group home method
                   </td>
                   <td>@u.FullName</td>
                   <td>@u.Email</td>
+                  <td>
+                    <button class="btn btn-group modal-link BtnGreen"
+                            href="#"
+                            title="Add modal"
+                            data-target="#modal-container"
+                            data-toggle="modal">
+                      Stipulations
+                    </button>
+                  </td>
                 </tr>
               }
             </tbody>
@@ -61,8 +72,14 @@ else //its not a new group. its the go to group home method
       }
     </div>
 
-    <div id="rulesdiv" class="col-md-5" style="outline: 1px red solid">
-      </div>
+    <div id="rulesdiv" class="col-md-4" style="outline: 1px red solid">
+    </div>
+
+    <div class="clearfix"></div>
+    <br />
+
+    <div id="chatdiv" class="col-md-12" style="outline: 1px green solid; ">
+    </div>
 
     <div class="clearfix"></div>
 
@@ -71,8 +88,12 @@ else //its not a new group. its the go to group home method
       <div class="col-md-12" style="padding-top:2%">
         <div style="text-align: center;">
           <div class="">
-            <button class="btn btn-group modal-link BtnRed" href="@newruleurl" title="Add modal" data-target="#modal-container" data-toggle="modal">Create Rule</button>
-        <button type="button" id="btnDrawNames" class="btn BtnGreen " data-dismiss="modal">Draw Names</button>
+            <button class="btn btn-group modal-link BtnRed"
+                    href="@newruleurl"
+                    title="Add modal" data-target="#modal-container" data-toggle="modal">
+              Create Rule
+            </button>
+            <button type="button" id="btnDrawNames" class="btn BtnGreen " data-dismiss="modal">Draw Names</button>
           </div>
         </div>
       </div>
@@ -88,9 +109,7 @@ else //its not a new group. its the go to group home method
       {
         <p>You are not the group admin </p>
       }
-
     </div>
-
 
   </div>
 }
@@ -103,7 +122,8 @@ else //its not a new group. its the go to group home method
     $(document).ready(function() {
 
       LoadRules();
-      
+      LoadChat();
+
       var isnew = '@Model.NewGroup';
       console.log(isnew);
 
@@ -132,12 +152,30 @@ else //its not a new group. its the go to group home method
 
     }); //doc ready
 
+
+    //load the rules partial on the right
     function LoadRules() {
       console.log("we talkin rules");
       $.get('@grouprulesurl',
         function (data) {
           $("#rulesdiv").html(data); //append(data);
         });
+    }
+
+
+    //Load the chat partial view
+    function LoadChat() {
+      console.log("we chat");
+      $.get('@chaturl',
+        function (data) {
+          $("#chatdiv").html(data); //append(data);
+        });
+
+
+      function ClosePopup()
+      {
+        $('#modal-container').modal('hide');
+      }
     }
   </script>
 }
