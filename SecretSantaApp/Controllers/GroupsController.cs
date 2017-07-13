@@ -304,6 +304,36 @@ namespace SecretSantaApp.Controllers
 
 
 
+    [HttpGet]
+    public ActionResult NewMessagePartial(int groupid)
+    {
+      var model = _secretSantaBl.NewGroupMessageEditModelByGroupId(groupid);
+      return PartialView("_NewMessage", model);
+    }
+
+
+    [HttpPost]
+    public ActionResult SaveGroupMessage(GroupMessageEditModel model)
+    {
+      try
+      {
+        //var u = _httpContextAccessor.HttpContext.Session.GetObjectFromJson<CustomUserEditModel>("LoggedInUser");
+       // var m = _secretSantaBl.SaveGroupRules(model);
+        var m = _secretSantaBl.SaveGroupMessage(model);
+        m.Saved = true;
+        return PartialView("_NewMessage", m);
+        //return PartialView("_JoinGroupEntry", m);
+      }
+      catch (Exception ex)
+      {
+        _log.LogWarning(ex.Message);
+      }
+      return PartialView("_NewMessage", model);
+    }
+
+
+
+
 
 
 

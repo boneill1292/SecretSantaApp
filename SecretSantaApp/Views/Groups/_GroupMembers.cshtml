@@ -1,0 +1,51 @@
+﻿@model GroupHomeEditModel  
+@{
+ }
+
+@if (Model.GroupMembers.Count > 0)
+  {
+
+    <h5>Group Members:</h5>
+
+
+    <div class="row">
+      <table class="table table-responsive table-striped">
+        <thead>
+        <tr>
+          <th>&nbsp;</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>&nbsp;</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var u in Model.GroupMembers)
+        {
+          //var exclusionsurl = Url.Action("", "", new { id=u.})
+          <tr>
+            <td>
+              <img src="@u.ProfileImage"
+                   alt="" class="img-rounded img-responsive" />
+            </td>
+            <td>@u.FullName</td>
+            <td>@u.Email</td>
+            <td>
+              <button class="btn btn-group modal-link BtnGreen"
+                      href="#"
+                      title="Add modal"
+                      data-target="#modal-container"
+                      data-toggle="modal">
+                Stipulations
+              </button>
+            </td>
+          </tr>
+        }
+        </tbody>
+      </table>
+    </div>
+  }
+  else
+  {
+    <p>No Body Is in this group</p>
+  }

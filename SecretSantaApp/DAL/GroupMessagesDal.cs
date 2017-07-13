@@ -9,24 +9,26 @@ using SecretSantaApp.Models;
 
 namespace SecretSantaApp.DAL
 {
-  public class GroupRulesDal : IGroupRulesDal
-  {
-
-    private readonly AppDbContext _appDbContext;
-    private readonly IHttpContextAccessor _httpContextAccessor;
-
-    public GroupRulesDal(AppDbContext appDbContext, IHttpContextAccessor httpContextAccessor)
+    public class GroupMessagesDal : IGroupMessagesDal
     {
-      _appDbContext = appDbContext;
-      _httpContextAccessor = httpContextAccessor;
-    }
 
-  
-    public GroupRules SaveRules(GroupRules g)
+      private readonly AppDbContext _appDbContext;
+      private readonly IHttpContextAccessor _httpContextAccessor;
+
+      public GroupMessagesDal(AppDbContext appDbContext, IHttpContextAccessor httpContextAccessor)
+      {
+        _appDbContext = appDbContext;
+        _httpContextAccessor = httpContextAccessor;
+      }
+
+
+
+    public GroupMessages Save(GroupMessages g)
     {
+     
       var u = _httpContextAccessor.HttpContext.Session.GetObjectFromJson<CustomUser>("LoggedInUser");
       var liu = _httpContextAccessor.HttpContext.User;
-      //var u = _secretSantaBl.CustomUserModelByLoggedInUser(liu);
+     // var u = _secretSantaBl.CustomUserModelByLoggedInUser(liu);
 
       if (g.ID >= 1)
       {
@@ -37,7 +39,7 @@ namespace SecretSantaApp.DAL
       }
       else
       {
-        var result = new GroupRules();
+        var result = new GroupMessages();
         result.Update(g);
         result.InsertedBy = u.AccountNumberString;
         _appDbContext.Add(result);
@@ -46,9 +48,9 @@ namespace SecretSantaApp.DAL
       }
     }
 
-    public GroupRules DeleteRule(GroupRules g)
+    public GroupMessages Delete(GroupMessages g)
     {
-      var result = new GroupRules();
+      var result = new GroupMessages();
       result.Update(g);
 
       //_appDbContext.Add(result);
@@ -57,17 +59,17 @@ namespace SecretSantaApp.DAL
       return result;
     }
 
-    public List<GroupRules> RulesByGroupId(int groupid)
+    public List<GroupMessages> MessagesByGroupId(int groupid)
     {
-      var result = new List<GroupRules>();
-      result = _appDbContext.GroupRules.Where(x => x.GroupId == groupid).ToList();
+      var result = new List<GroupMessages>();
+      result = _appDbContext.GroupMessages.Where(x => x.GroupId == groupid).ToList();
       return result;
     }
 
 
-    public GroupRules GetRuleByRuleId(int ruleid)
+    public GroupMessages MessageByMessageId(int messageid)
     {
-      return _appDbContext.GroupRules.FirstOrDefault(g => g.ID == ruleid);
+      return _appDbContext.GroupMessages.FirstOrDefault(g => g.ID == messageid);
     }
   }
 }

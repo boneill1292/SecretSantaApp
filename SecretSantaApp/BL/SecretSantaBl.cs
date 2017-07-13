@@ -21,17 +21,20 @@ namespace SecretSantaApp.BL
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IGroupMembershipDal _groupMembershipDal;
     private readonly IGroupRulesDal _groupRulesDal;
+    private readonly IGroupMessagesDal _groupMessagesDal;
     public SecretSantaBl(IGroupDal groupDal,
                          ICustomUserDal customUserDal,
                          IHttpContextAccessor httpContextAccessor,
                           IGroupMembershipDal groupMembershipDal,
-                          IGroupRulesDal groupRulesDal)
+                          IGroupRulesDal groupRulesDal,
+                          IGroupMessagesDal groupMessagesDal)
     {
       _groupDal = groupDal;
       _customUserDal = customUserDal;
       _httpContextAccessor = httpContextAccessor;
       _groupMembershipDal = groupMembershipDal;
       _groupRulesDal = groupRulesDal;
+      _groupMessagesDal = groupMessagesDal;
     }
 
     public CustomUserEditModel CustomUserModelByLoggedInUser(ClaimsPrincipal user)
@@ -417,9 +420,39 @@ namespace SecretSantaApp.BL
     public GroupChatDisplayModel GroupChatDisplayModelByGroupId(int groupid)
     {
       var group = _groupDal.GetGroupById(groupid);
-
+      var messages = _groupMessagesDal.MessagesByGroupId(groupid);
+      
       var result = new GroupChatDisplayModel();
       result.GroupName = group.GroupName;
+      result.GroupId = group.GroupId;
+      result.MessagesList = messages;
+      return result;
+    }
+
+
+    public GroupMessageEditModel NewGroupMessageEditModelByGroupId(int groupid)
+    {
+      var result = new GroupMessageEditModel();
+      var group = _groupDal.GetGroupById(groupid);
+
+      result.GroupName = group.GroupName;
+      return result;
+
+    }
+
+    public GroupMessageEditModel SaveGroupMessage(GroupMessageEditModel model)
+    {
+      if (model.Message == null)
+      {
+        throw new Exception("Required");
+      }
+
+      var m = new GroupMessages();
+      m.Update(model);
+      var saved = _groupMessagesDal.Save(m);
+
+      var result = new GroupMessageEditModel();
+      result.Update(saved);
 
       return result;
     }

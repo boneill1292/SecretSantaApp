@@ -52,6 +52,7 @@ namespace SecretSantaApp
       services.AddTransient<ICustomUserDal, CustomUserDal>();
       services.AddTransient<IGroupMembershipDal, GroupMembershipDal>();
       services.AddTransient<IGroupRulesDal, GroupRulesDal>();
+      services.AddTransient<IGroupMessagesDal, GroupMessagesDal>();
 
       // Add authentication services
       services.AddAuthentication(
