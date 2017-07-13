@@ -22,11 +22,11 @@ namespace SecretSantaApp.Models
 
     public GroupMembership SaveMemberToGroup(GroupMembership g)
     {
-      var u = _httpContextAccessor.HttpContext.Session.GetObjectFromJson<CustomUser>("LoggedInUser");
+      //var u = _httpContextAccessor.HttpContext.Session.GetObjectFromJson<CustomUser>("LoggedInUser");
 
       var result = new GroupMembership();
       result.Update(g);
-      result.AccountNumberString = u.AccountNumberString;
+      //result.AccountNumberString = u.AccountNumberString;
       _appDbContext.Add(result);
 
       _appDbContext.SaveChanges();
@@ -37,7 +37,7 @@ namespace SecretSantaApp.Models
 
     public GroupMembership GroupMembershipModelByGroupMembershipId(int membershipid)
     {
-      return _appDbContext.GroupMembership.FirstOrDefault(g => g.GroupId == membershipid);
+      return _appDbContext.GroupMembership.FirstOrDefault(g => g.ID == membershipid);
     }
 
     public List<GroupMembership> GroupsBelongingToUserAccountNumberString(string acctno)

@@ -23,12 +23,12 @@
         <div class="" style="display:inline!important">
           @*<span> <img src="~/images/smRedSantaList.png" alt="Reindeer" class="img-responsive" style="display:inline!important"></span>*@
 
-            <h3 class="text-center" style="color: green; display:inline!important">Make some rules for user @Model.UserFullName membershipid = @Model.MembershipId</h3>
+          <h4 class="text-center" style="color: green; display: inline !important">
+            &nbsp;
+          </h4>
 
-
-          <span> <img src="~/images/smRedSantaList.png" alt="Reindeer" class="img-responsive" style="display:inline!important"></span>
         </div>
-        <div class="row col-xs-12 center-block RoundCornerBox" style="background-color: lightgray; padding-bottom:2%;">
+        <div class="row col-xs-12 center-block RoundCornerBox" style="background-color: white; ">
 
           <form asp-action="SaveGroupRule" method="POST"
                 data-ajax="true"
@@ -37,8 +37,15 @@
                 data-ajax-update="#@containerid">
 
             <div class="form-group">
-              <label class="control-label col-sm-3" asp-label-for="Rule" for="rule">Rule<em>*</em></label>
+              @*<label class="control-label col-sm-3" asp-label-for="Rule" for="rule">Rule<em>*</em></label>*@
               <div class="col-sm-8 col-xs-12">
+                <div>
+                  <h4>  @Model.UserFullName Cant Have: </h4>
+                  @foreach (var a in Model.OtherGroupMembers)
+                  {
+                    <p>Other Member: @a.AccountNumberString</p>
+                  }
+                </div>
                 @*<input type="text" asp-for="Rule" placeholder="Rule" required="" oninvalid="this.setCustomValidity('Please Enter A Rule')" class="form-control" />*@
               </div>
             </div>
@@ -49,7 +56,7 @@
               </div>
             </div>
             @*@Html.HiddenFor(x => x.ID)
-            @Html.HiddenFor(x => x.GroupId)*@
+              @Html.HiddenFor(x => x.GroupId)*@
             @*@Html.HiddenFor(x => x.InsertedBy)*@
           </form>
         </div>

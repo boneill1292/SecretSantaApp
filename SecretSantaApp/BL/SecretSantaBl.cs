@@ -85,7 +85,10 @@ namespace SecretSantaApp.BL
       {
         throw new Exception("Name is Required");
       }
-
+      
+      //code to get the currently logged in user
+      var liu = _httpContextAccessor.HttpContext.User;
+      var u = CustomUserModelByLoggedInUser(liu);
 
       //Save the new group
       var saved = _groupDal.SaveNewGroup(model);
@@ -93,7 +96,9 @@ namespace SecretSantaApp.BL
 
       //Now we will add the user who is creating the group to the new group
       var gmd = new GroupMembershipEditModel();
-      gmd.AccountNumberString = "";
+      
+      //gmd.AccountNumberString = "";
+      gmd.AccountNumberString = u.AccountNumberString;
       gmd.GroupId = saved.GroupId;
 
       _groupMembershipDal.SaveMemberToGroup(gmd);
@@ -385,6 +390,12 @@ namespace SecretSantaApp.BL
 
       var m = new GroupRules();
       m.Update(model);
+
+      var liu = _httpContextAccessor.HttpContext.User;
+      var u = CustomUserModelByLoggedInUser(liu);
+
+      m.InsertedBy = u.AccountNumberString;
+
       var saved = _groupRulesDal.SaveRules(m);
 
       var result = new GroupRulesEditModel();
@@ -449,6 +460,12 @@ namespace SecretSantaApp.BL
 
       var m = new GroupMessages();
       m.Update(model);
+
+      var liu = _httpContextAccessor.HttpContext.User;
+      var u = CustomUserModelByLoggedInUser(liu);
+
+      m.InsertedBy = u.AccountNumberString;
+      
       var saved = _groupMessagesDal.Save(m);
 
       var result = new GroupMessageEditModel();
@@ -463,13 +480,27 @@ namespace SecretSantaApp.BL
       var membership = _groupMembershipDal.GroupMembershipModelByGroupMembershipId(membershipid);
       var group = _groupDal.GetGroupById(membership.GroupId);
       var name = UserFullNameByAccountNumberString(membership.AccountNumberString);
+      var othergroupmembers = _groupMembershipDal.AllGroupMembersByGroupId(group.GroupId);
+
+      othergroupmembers = othergroupmembers.Where(x => x.AccountNumberString != membership.AccountNumberString).ToList();
+      
+      //foreach (var og in othergroupmembers)
+      //{
+      //  if (og.AccountNumberString != membership.AccountNumberString)
+      //  {
+          
+      //  }
+      //}
 
       var result = new MemberConditionsEditModel();
       result.GroupName = group.GroupName;
       result.UserFullName = name;
       result.MembershipId = membership.ID;
+      result.OtherGroupMembers = othergroupmembers;
       return result;
     }
+
+    
 
 
   }
