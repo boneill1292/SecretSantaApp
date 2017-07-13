@@ -46,6 +46,7 @@ namespace SecretSantaApp.Controllers
       //var user = HttpContext.Session.GetObjectFromJson<CustomUser>("LoggedInUser");
 
       var usermodel = _secretSantaBl.CustomUserModelByLoggedInUser(User);
+      HttpContext.Session.SetObjectAsJson("LoggedInUser", usermodel);
       //var usergroupsvm = _secretSantaBl.MyGroupsViewModelByUserId(usermodel);
 
       var model = _secretSantaBl.DefaultGroupAdminModel();
@@ -205,7 +206,9 @@ namespace SecretSantaApp.Controllers
       //We need to pass the correct password - if the user does that. Add them to the group, and load the group  homepage.
       try
       {
-        var u = _httpContextAccessor.HttpContext.Session.GetObjectFromJson<CustomUserEditModel>("LoggedInUser");
+        var liu = _httpContextAccessor.HttpContext.User;
+        var u = _secretSantaBl.CustomUserModelByLoggedInUser(liu);
+        //var u = _httpContextAccessor.HttpContext.Session.GetObjectFromJson<CustomUserEditModel>("LoggedInUser");
         //var cu = new CustomUserEditModel();
         //cu.Update(u);
 

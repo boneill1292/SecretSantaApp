@@ -161,7 +161,11 @@ namespace SecretSantaApp.BL
     {
       var result = new GroupHomeEditModel();
       var userlist = new List<CustomUserEditModel>();
-      var loggedinuser = _httpContextAccessor.HttpContext.Session.GetObjectFromJson<CustomUserEditModel>("LoggedInUser");
+
+      var liu = _httpContextAccessor.HttpContext.User;
+      var loggedinuser = CustomUserModelByLoggedInUser(liu);
+
+      //var loggedinuser = _httpContextAccessor.HttpContext.Session.GetObjectFromJson<CustomUserEditModel>("LoggedInUser");
 
       var group = _groupDal.GetGroupById(groupid);
 
