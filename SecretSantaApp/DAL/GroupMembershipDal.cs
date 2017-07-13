@@ -35,6 +35,10 @@ namespace SecretSantaApp.Models
 
     }
 
+    public GroupMembership GroupMembershipModelByGroupMembershipId(int membershipid)
+    {
+      return _appDbContext.GroupMembership.FirstOrDefault(g => g.GroupId == membershipid);
+    }
 
     public List<GroupMembership> GroupsBelongingToUserAccountNumberString(string acctno)
     {

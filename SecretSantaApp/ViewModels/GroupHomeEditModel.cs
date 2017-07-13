@@ -13,6 +13,10 @@ namespace SecretSantaApp.ViewModels
     public bool Saved { get; set; }
     public bool NewGroup { get; set; }
     public List<CustomUserEditModel> GroupMembers { get; set; }
+    
+    public List<GroupMembership> GroupMembershipModelList { get; set; }
+    
+    //Need the ID of this field to add stipulations
     public InviteUsersCollectionModel InviteUsersCollection { get; set; }
     
     public bool GroupAdminBool { get; set; }

@@ -98,7 +98,7 @@ namespace SecretSantaApp.Controllers
       return View("NewGroup", model);
     }
 
-    
+
     /// <summary>
     /// Saves the new group that the user submitted.
     /// </summary>
@@ -166,7 +166,7 @@ namespace SecretSantaApp.Controllers
     }
 
 
-    
+
     /// <summary>
     /// Gets the Join Groups page
     /// </summary>
@@ -239,7 +239,7 @@ namespace SecretSantaApp.Controllers
       var model = _secretSantaBl.GroupRuleEditModelByRuleId(ruleid);
       return PartialView("_NewRulePopup", model);
     }
-    
+
     [HttpGet]
     public ActionResult DeleteRulePopup(int ruleid)
     {
@@ -318,7 +318,7 @@ namespace SecretSantaApp.Controllers
       try
       {
         //var u = _httpContextAccessor.HttpContext.Session.GetObjectFromJson<CustomUserEditModel>("LoggedInUser");
-       // var m = _secretSantaBl.SaveGroupRules(model);
+        // var m = _secretSantaBl.SaveGroupRules(model);
         var m = _secretSantaBl.SaveGroupMessage(model);
         m.Saved = true;
         return PartialView("_NewMessage", m);
@@ -332,7 +332,17 @@ namespace SecretSantaApp.Controllers
     }
 
 
-
+    [HttpGet]
+    public ActionResult GetMemberConditionsPartial(int membershipid)
+    {
+      //var model = _secretSantaBl.MemberConditionsEditModelByMembershipId(membershipid);
+      var model = new MemberConditionsEditModel();
+      model.MembershipId = 5;
+      model.UserFullName = "ben oneill";
+      model.Saved = false;
+      model.GroupName = "sup";
+      return PartialView("_MemberConditions", model);
+    }
 
 
 

@@ -167,7 +167,6 @@ namespace SecretSantaApp.BL
 
       var liu = _httpContextAccessor.HttpContext.User;
       var loggedinuser = CustomUserModelByLoggedInUser(liu);
-
       //var loggedinuser = _httpContextAccessor.HttpContext.Session.GetObjectFromJson<CustomUserEditModel>("LoggedInUser");
 
       var group = _groupDal.GetGroupById(groupid);
@@ -193,6 +192,7 @@ namespace SecretSantaApp.BL
       }
 
       result.GroupMembers = userlist;
+      result.GroupMembershipModelList = groupmembership;
       result.NewGroup = false;
 
 
@@ -421,7 +421,7 @@ namespace SecretSantaApp.BL
     {
       var group = _groupDal.GetGroupById(groupid);
       var messages = _groupMessagesDal.MessagesByGroupId(groupid);
-      
+
       var result = new GroupChatDisplayModel();
       result.GroupName = group.GroupName;
       result.GroupId = group.GroupId;
@@ -454,6 +454,20 @@ namespace SecretSantaApp.BL
       var result = new GroupMessageEditModel();
       result.Update(saved);
 
+      return result;
+    }
+
+
+    public MemberConditionsEditModel MemberConditionsEditModelByMembershipId(int membershipid)
+    {
+      var membership = _groupMembershipDal.GroupMembershipModelByGroupMembershipId(membershipid);
+      var group = _groupDal.GetGroupById(membership.GroupId);
+      var name = UserFullNameByAccountNumberString(membership.AccountNumberString);
+
+      var result = new MemberConditionsEditModel();
+      result.GroupName = group.GroupName;
+      result.UserFullName = name;
+      result.MembershipId = membership.ID;
       return result;
     }
 

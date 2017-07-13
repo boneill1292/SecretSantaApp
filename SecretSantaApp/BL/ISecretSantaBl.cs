@@ -55,6 +55,6 @@ namespace SecretSantaApp.BL
 
     GroupMessageEditModel SaveGroupMessage(GroupMessageEditModel model);
 
-
+    MemberConditionsEditModel MemberConditionsEditModelByMembershipId(int membershipid);
   }
 }

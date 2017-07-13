@@ -1,4 +1,6 @@
-﻿@model GroupHomeEditModel  
+﻿@using SecretSantaApp.BL
+@model GroupHomeEditModel  
+@inject ISecretSantaBl ssbl
 @{
  }
 
@@ -20,23 +22,25 @@
         </tr>
         </thead>
         <tbody>
-        @foreach (var u in Model.GroupMembers)
+        @foreach (var u in Model.GroupMembershipModelList)
         {
+          var user = ssbl.UserFullNameByAccountNumberString(u.AccountNumberString);
+          var userconditionsurl = Url.Action("GetMemberConditionsPartial", "Groups", new { membershipid = u.ID });
           //var exclusionsurl = Url.Action("", "", new { id=u.})
           <tr>
-            <td>
+            @*<td>
               <img src="@u.ProfileImage"
                    alt="" class="img-rounded img-responsive" />
-            </td>
-            <td>@u.FullName</td>
-            <td>@u.Email</td>
+            </td>*@
+            <td>@user</td>
+            @*<td>@u.Email</td>*@
             <td>
               <button class="btn btn-group modal-link BtnGreen"
-                      href="#"
+                      href="@userconditionsurl"
                       title="Add modal"
                       data-target="#modal-container"
                       data-toggle="modal">
-                Stipulations
+                Conditions
               </button>
             </td>
           </tr>
