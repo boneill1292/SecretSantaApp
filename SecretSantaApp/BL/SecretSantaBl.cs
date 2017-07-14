@@ -502,27 +502,34 @@ namespace SecretSantaApp.BL
     }
 
 
-    public MemberConditionsEditModel MemberConditionsEditModelByMembershipId(int membershipid)
+    public MemberConditionsEditModel MemberConditionsEditModelByMembershipId(int membershipid, string acctno)
     {
+      //var userReceivingCondition = _customUserDal.CustomUserByAccountNumber(acctno);
       var members = _groupMembershipDal.GroupMembershipModelByGroupMembershipId(membershipid);
       var group = _groupDal.GetGroupById(members.GroupId);
+      
       var name = UserFullNameByAccountNumberString(members.AccountNumberString);
       var othergroupmembers = _groupMembershipDal.AllGroupMembersByGroupId(group.GroupId);
-
       othergroupmembers = othergroupmembers.Where(x => x.AccountNumberString != members.AccountNumberString).ToList();
 
 
       var result = new MemberConditionsEditModel();
       result.GroupName = group.GroupName;
-      result.UserFullName = name;
+      result.UserReceivingConditionName = name;
       result.MembershipId = members.ID;
       result.OtherGroupMembers = othergroupmembers;
+      //End the viewmodel fields - need to populate the true model
+
+      result.UserAcctNo = acctno;
+      result.ConditionalUserAcctNo = "";
+      result.GroupId = group.GroupId;
       return result;
     }
 
 
     public MemberConditionsEditModel SaveMemberCondition(MemberConditionsEditModel model)
     {
+
       return model;
     }
 

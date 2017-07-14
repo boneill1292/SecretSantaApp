@@ -4,7 +4,7 @@
 @{
   var uid = Guid.NewGuid();
   var containerid = $"divcontainerid-{uid}";
-
+  var otherpeopledropdown = ssbl.OtherUsersDropDown(Model.UserAcctNo,Model.GroupId);
 }
 
 <div id="@containerid">
@@ -43,13 +43,9 @@
 
               <div class="col-sm-8 col-xs-12">
                 <div>
-                  <h4>  @Model.UserFullName Cant Have: </h4>
-                  @foreach (var a in Model.OtherGroupMembers)
-                  {
-                    var otherpeopledropdown = ssbl.OtherUsersDropDown(a.AccountNumberString, a.GroupId);
-                    @Html.DropDownListFor(x => x.ConditionId, otherpeopledropdown, "--Selet an Available Values Category--", new {  })
-                    @*<p>Other Member: @a.AccountNumberString</p>*@
-                  }
+                  <h4 style="display:inline!important">  @Model.UserReceivingConditionName Cant Have: </h4>
+                    <span style="display:inline"> @Html.DropDownListFor(x => x.ConditionId, otherpeopledropdown, "--Selet an Available Values Category--", new { })</span>
+
                 </div>
                 </div>
             </div>

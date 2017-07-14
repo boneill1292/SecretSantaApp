@@ -14,6 +14,8 @@ namespace SecretSantaApp.Models
 
     public int GroupId { get; set; }
 
+    public string UserAcctNo { get; set; }
+
     public string ConditionalUserAcctNo { get; set; }
 
     public int ConditionType { get; set; } //Use this later to determine 'CAN HAVE' 'CANT HAVE'
@@ -22,6 +24,7 @@ namespace SecretSantaApp.Models
     {
       ConditionId = mc.ConditionId;
       GroupId = mc.GroupId;
+      UserAcctNo = mc.UserAcctNo;
       ConditionalUserAcctNo = mc.ConditionalUserAcctNo;
       ConditionType = mc.ConditionType;
     }

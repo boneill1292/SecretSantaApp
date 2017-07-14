@@ -11,7 +11,9 @@ namespace SecretSantaApp.ViewModels
   {
     public string GroupName { get; set; }
 
-    public string UserFullName { get; set; }
+    public string UserReceivingConditionName { get; set; }
+    
+    public string SelectedUserName { get; set; }
 
     public int MembershipId { get; set; }
 
