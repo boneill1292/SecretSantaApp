@@ -15,6 +15,7 @@ namespace SecretSantaApp.BL
     CustomUserEditModel CustomUserModelByLoggedInUser(ClaimsPrincipal user);
 
     string UserFullNameByAccountNumberString(string acctno);
+    string UserImageByAccountNumberString(string acctno);
 
     GroupAdminModel DefaultGroupAdminModel();
 

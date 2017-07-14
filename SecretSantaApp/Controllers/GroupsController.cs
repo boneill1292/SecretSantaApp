@@ -46,7 +46,7 @@ namespace SecretSantaApp.Controllers
       //var user = HttpContext.Session.GetObjectFromJson<CustomUser>("LoggedInUser");
 
       var usermodel = _secretSantaBl.CustomUserModelByLoggedInUser(User);
-      HttpContext.Session.SetObjectAsJson("LoggedInUser", usermodel);
+      //HttpContext.Session.SetObjectAsJson("LoggedInUser", usermodel);
       //var usergroupsvm = _secretSantaBl.MyGroupsViewModelByUserId(usermodel);
 
       var model = _secretSantaBl.DefaultGroupAdminModel();

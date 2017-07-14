@@ -1,55 +1,56 @@
 ﻿@using SecretSantaApp.BL
-@model GroupHomeEditModel  
+@model GroupHomeEditModel
 @inject ISecretSantaBl ssbl
 @{
- }
+}
 
 @if (Model.GroupMembers.Count > 0)
-  {
+{
 
-    <h5>Group Members:</h5>
+  <h5>Group Members:</h5>
 
 
     <div class="row">
       <table class="table table-responsive table-striped">
         <thead>
-        <tr>
-          <th>&nbsp;</th>
-          <th>Name</th>
-          <th>Email</th>
-          <th>&nbsp;</th>
+          <tr>
+            <th>&nbsp;</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>&nbsp;</th>
 
-        </tr>
+          </tr>
         </thead>
         <tbody>
-        @foreach (var u in Model.GroupMembershipModelList)
-        {
-          var user = ssbl.UserFullNameByAccountNumberString(u.AccountNumberString);
-          var userconditionsurl = Url.Action("GetMemberConditionsPartial", "Groups", new { membershipid = u.ID });
-          //var exclusionsurl = Url.Action("", "", new { id=u.})
-          <tr>
-            @*<td>
-              <img src="@u.ProfileImage"
-                   alt="" class="img-rounded img-responsive" />
-            </td>*@
-            <td>@user</td>
-            @*<td>@u.Email</td>*@
-            <td>
-              <button class="btn btn-group modal-link BtnGreen"
-                      href="@userconditionsurl"
-                      title="Add modal"
-                      data-target="#modal-container"
-                      data-toggle="modal">
-                Conditions
-              </button>
-            </td>
-          </tr>
-        }
+          @foreach (var u in Model.GroupMembershipModelList)
+          {
+            var user = ssbl.UserFullNameByAccountNumberString(u.AccountNumberString);
+            var image = ssbl.UserImageByAccountNumberString(u.AccountNumberString);
+            var userconditionsurl = Url.Action("GetMemberConditionsPartial", "Groups", new { membershipid = u.ID });
+            //var exclusionsurl = Url.Action("", "", new { id=u.})
+            <tr>
+              <td>
+                <img src="@image"
+                     alt="" class="img-rounded img-circle" style="max-width: 65px;" />
+              </td>
+              <td>@user</td>
+              @*<td>@u.Email</td>*@
+              <td>
+                <button class="btn btn-group modal-link BtnGreen"
+                        href="@userconditionsurl"
+                        title="Add modal"
+                        data-target="#modal-container"
+                        data-toggle="modal">
+                  Conditions
+                </button>
+              </td>
+            </tr>
+          }
         </tbody>
       </table>
     </div>
-  }
-  else
-  {
-    <p>No Body Is in this group</p>
-  }
+}
+else
+{
+  <p>No Body Is in this group</p>
+}

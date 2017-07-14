@@ -96,8 +96,8 @@ namespace SecretSantaApp.Controllers
       return View("Login", vm);
     }
 
-    
-    
+
+
     [HttpGet]
     public IActionResult LoginExternal(string connection, string returnUrl = "/")
     {
@@ -131,17 +131,13 @@ namespace SecretSantaApp.Controllers
     public IActionResult CheckUser()
     {
       var usermodel = _secretSantaBl.CustomUserModelByLoggedInUser(User);
-      
+
       //Sends the user to see if it is already in our database, or if should be added
       var model = _secretSantaBl.CheckUserByCustomUserAccountNumber(usermodel);
-      model.ProfileImage = User.Claims.FirstOrDefault(c => c.Type == "picture")?.Value;
 
-      //Save the user in my session variable
-      HttpContext.Session.SetObjectAsJson("LoggedInUser", model);
 
 
       return RedirectToAction(nameof(GroupsController.Index), "Groups");
-
     }
 
 

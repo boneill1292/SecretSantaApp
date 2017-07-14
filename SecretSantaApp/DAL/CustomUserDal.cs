@@ -28,14 +28,14 @@ namespace SecretSantaApp.Models
       var result = new CustomUser();
       result = _appDbContext.CustomUsers.FirstOrDefault(u => u.UserId == id);
       return result;
-      
+
     }
 
     public CustomUser CustomUserByAccountNumber(string acctno)
     {
       var result = new CustomUser();
       result = _appDbContext.CustomUsers.FirstOrDefault(u => u.AccountNumberString == acctno);
-   
+
       return result;
     }
 
@@ -43,20 +43,45 @@ namespace SecretSantaApp.Models
 
     public CustomUser SaveUser(CustomUser u)
     {
-      var result = new CustomUser();
-      result.Update(u);
-      
-      //result.Email = u.Email;
-      //result.FullName = u.FullName;
-      //result.AccountNumberString = u.AccountNumberString;
 
-      _appDbContext.CustomUsers.Add(result);
-      _appDbContext.SaveChanges();
+      //var result = new CustomUser();
+      //result.Update(u);
 
-      return result;
+      if (u.UserId >= 1)
+      {
+        _appDbContext.Add(u);
+        _appDbContext.Update(u);
+        _appDbContext.SaveChanges();
+        return u;
+      }
+      else
+      {
+        var result = new CustomUser();
+        result.Update(u);
+
+
+        _appDbContext.CustomUsers.Add(result);
+        _appDbContext.SaveChanges();
+
+        return result;
+      }
+
       //_appDbContext.Groups.Add(result);
       //_appDbContext.SaveChanges();
-    }
 
+      //public CustomUser UpdateCustomUserImage(CustomUser u)
+      //{
+      //  var result = new CustomUser();
+      //  result.Update(u);
+
+
+      //  _appDbContext.Add(result);
+      //  _appDbContext.Update(result);
+      //  _appDbContext.SaveChanges();
+
+      //  return result;
+
+      //}
+    }
   }
 }

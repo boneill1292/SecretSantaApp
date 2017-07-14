@@ -48,7 +48,6 @@
         }
         else
         {
-            @*<li><a asp-controller="Account" asp-route-id="10" asp-action="LoginExternal">Login</a></li>*@
           <li><a asp-controller="Account" asp-action="LoginExternal">Login</a></li>
         }
       </ul>
@@ -58,7 +57,6 @@
 
   <div class="container body-content">
     @*add the model code here so we can call it anywhere*@
-    @*<div id="modal-container" class="modal fade" tabindex="-1" role="dialog" style="border: 5px solid black;">*@
     <div id="modal-container" class="modal" tabindex="-1" role="dialog" style="border: 5px solid black;">
       <a href="#" title="Close" class="close">X</a>
       <div class="modal-content" style="max-width: 800px !important; margin: 10px auto !important;">
@@ -89,8 +87,9 @@
   <script src="~/js/modal.js"></script>>
 </environment>
 
-
-  @RenderSection("Scripts", required: false)
+  
+@Html.Partial("_LayoutCommonLoadPartial")
+@RenderSection("Scripts", required: false)
 </body>
 </html>
 

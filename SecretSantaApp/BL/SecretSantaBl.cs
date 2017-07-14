@@ -39,17 +39,33 @@ namespace SecretSantaApp.BL
 
     public CustomUserEditModel CustomUserModelByLoggedInUser(ClaimsPrincipal user)
     {
-      //var test = HttpContext.User.Identity.GetUserId();
-      var result = new CustomUserEditModel();
       var acctid = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
-      var name = user.Identity.Name;
-      var email = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
+      var existinguser = _customUserDal.CustomUserByAccountNumber(acctid);
 
-      result.AccountNumberString = acctid;
-      result.FullName = name;
-      result.Email = email;
+      if (existinguser != null)
+      {
+        var existingusereditmodel = new CustomUserEditModel();
+        existingusereditmodel.Update(existinguser);
+        existingusereditmodel.NewUser = false;
+        return existingusereditmodel;
+      }
+      else
+      {
+        var result = new CustomUserEditModel();
+        var name = user.Identity.Name;
+        var email = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
+        var pic = user.Claims.FirstOrDefault(c => c.Type == "picture")?.Value;
 
-      return result;
+        result.AccountNumberString = acctid;
+        result.FullName = name;
+        result.Email = email;
+        result.ProfileImage = pic;
+        result.NewUser = true;
+        result.UserId = 0;
+        return result;
+      }
+
+
     }
 
 
@@ -59,6 +75,15 @@ namespace SecretSantaApp.BL
       var user = _customUserDal.CustomUserByAccountNumber(acctno);
 
       var result = user.FullName;
+
+      return result;
+    }
+
+    public string UserImageByAccountNumberString(string acctno)
+    {
+      var u = _customUserDal.CustomUserByAccountNumber(acctno);
+
+      var result = u.ProfileImage;
 
       return result;
     }
@@ -85,7 +110,7 @@ namespace SecretSantaApp.BL
       {
         throw new Exception("Name is Required");
       }
-      
+
       //code to get the currently logged in user
       var liu = _httpContextAccessor.HttpContext.User;
       var u = CustomUserModelByLoggedInUser(liu);
@@ -96,7 +121,7 @@ namespace SecretSantaApp.BL
 
       //Now we will add the user who is creating the group to the new group
       var gmd = new GroupMembershipEditModel();
-      
+
       //gmd.AccountNumberString = "";
       gmd.AccountNumberString = u.AccountNumberString;
       gmd.GroupId = saved.GroupId;
@@ -112,23 +137,24 @@ namespace SecretSantaApp.BL
     {
       //First check to see if this user exists
       //_customUserDal.SaveUser(model);
-      var exists = _customUserDal.CustomUserByAccountNumber(model.AccountNumberString);
+      //var exists = _customUserDal.CustomUserByAccountNumber(model.AccountNumberString);
 
-      if (exists != null)
+      if (model.NewUser)
       {
-        model.UserId = exists.UserId;
+        var m = new CustomUser();
+        m.Update(model);
+
+        var saved = _customUserDal.SaveUser(m);
+
+        model.Update(saved);
         return model;
       }
       else
       {
-        //Create a new user
-        var newuser = _customUserDal.SaveUser(model);
-        model.UserId = newuser.UserId;
+        return model;
       }
-
-      return model;
-      //var result = new CustomUserEditModel();
-      //return result;
+     
+      
     }
 
 
@@ -465,7 +491,7 @@ namespace SecretSantaApp.BL
       var u = CustomUserModelByLoggedInUser(liu);
 
       m.InsertedBy = u.AccountNumberString;
-      
+
       var saved = _groupMessagesDal.Save(m);
 
       var result = new GroupMessageEditModel();
@@ -483,12 +509,12 @@ namespace SecretSantaApp.BL
       var othergroupmembers = _groupMembershipDal.AllGroupMembersByGroupId(group.GroupId);
 
       othergroupmembers = othergroupmembers.Where(x => x.AccountNumberString != membership.AccountNumberString).ToList();
-      
+
       //foreach (var og in othergroupmembers)
       //{
       //  if (og.AccountNumberString != membership.AccountNumberString)
       //  {
-          
+
       //  }
       //}
 
@@ -500,7 +526,7 @@ namespace SecretSantaApp.BL
       return result;
     }
 
-    
+
 
 
   }

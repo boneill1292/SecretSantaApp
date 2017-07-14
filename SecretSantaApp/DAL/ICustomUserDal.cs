@@ -14,5 +14,7 @@ namespace SecretSantaApp.Models
 
 
     CustomUser SaveUser(CustomUser u);
+
+    //CustomUser UpdateCustomUserImage(CustomUser u);
   }
 }
