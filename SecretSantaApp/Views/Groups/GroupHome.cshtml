@@ -26,14 +26,21 @@ else //its not a new group. its the go to group home method
     </div>
 
    
-
+    
+    @*The Div That Holds The Rules*@
     <div id="rulesdiv" class="col-md-4" style="outline: 1px red solid">
     </div>
 
     <div class="clearfix"></div>
     <br />
-
-
+    
+    <div class="santaloadspinner"></div>
+    <div id="displayconditionsdiv" style="outline: 3px yellowgreen solid;">hi</div>
+    
+    <div class="clearfix"></div>
+    <br />
+    
+    @*The Div That Holds The Chat*@
     <button type="button" onclick="ToggleChat()" id="btnDrawNames" class="btn BtnGreen " data-dismiss="modal">Toggle Chat</button>
     <div id="chatdiv" class="col-md-12" style="outline: 1px green solid; ">
     </div>
@@ -114,25 +121,12 @@ else //its not a new group. its the go to group home method
     //load the rules partial on the right
     function LoadRules() {
       window.LayoutLoadPartial('rulesdiv', '@grouprulesurl', { 'label': 'Loading Rules...' });
-      @*console.log("we talkin rules");
-      $.get('@grouprulesurl',
-        function (data) {
-          $("#rulesdiv").html(data); //append(data);
-        });*@
     }
 
 
     //Load the chat partial view
     function LoadChat() {
-
       window.LayoutLoadPartial('chatdiv', '@chaturl', { 'label': 'Loading Chat...' });
-      @*console.log("we chat");
-      $.get('@chaturl',
-        function (data) {
-          $("#chatdiv").html(data); //append(data);
-        });*@
-
-
     }
 
     function ClosePopup()

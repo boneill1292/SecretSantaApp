@@ -27,7 +27,6 @@
             var user = ssbl.UserFullNameByAccountNumberString(u.AccountNumberString);
             var image = ssbl.UserImageByAccountNumberString(u.AccountNumberString);
             var userconditionsurl = Url.Action("GetMemberConditionsPartial", "Groups", new { membershipid = u.ID });
-            //var exclusionsurl = Url.Action("", "", new { id=u.})
             <tr>
               <td>
                 <img src="@image"

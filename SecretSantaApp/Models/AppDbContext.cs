@@ -20,5 +20,6 @@ namespace SecretSantaApp.Models
     public DbSet<GroupMembership> GroupMembership { get; set; }
     public DbSet<GroupRules> GroupRules { get; set; }
     public DbSet<GroupMessages> GroupMessages { get; set; }
+    public DbSet<MemberConditions> MemberConditions { get; set; }
   }
 }

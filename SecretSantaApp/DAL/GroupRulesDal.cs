@@ -24,15 +24,12 @@ namespace SecretSantaApp.DAL
   
     public GroupRules SaveRules(GroupRules g)
     {
-      //var u = _httpContextAccessor.HttpContext.Session.GetObjectFromJson<CustomUser>("LoggedInUser");
-      //var liu = _httpContextAccessor.HttpContext.User;
 
-      //var u = _secretSantaBl.CustomUserModelByLoggedInUser(liu);
 
       if (g.ID >= 1)
       {
-        _appDbContext.Add(g);
         _appDbContext.Update(g);
+        _appDbContext.Add(g);
         _appDbContext.SaveChanges();
         return g;
       }
@@ -40,7 +37,6 @@ namespace SecretSantaApp.DAL
       {
         var result = new GroupRules();
         result.Update(g);
-        //result.InsertedBy = u.AccountNumberString;
         _appDbContext.Add(result);
         _appDbContext.SaveChanges();
         return result;

@@ -53,7 +53,9 @@ namespace SecretSantaApp
       services.AddTransient<IGroupMembershipDal, GroupMembershipDal>();
       services.AddTransient<IGroupRulesDal, GroupRulesDal>();
       services.AddTransient<IGroupMessagesDal, GroupMessagesDal>();
-
+      services.AddTransient<IMemberConditionsDal, MemberConditionsDal>();
+      ;
+      
       // Add authentication services
       services.AddAuthentication(
         options => options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);

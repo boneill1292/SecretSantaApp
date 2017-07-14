@@ -336,14 +336,19 @@ namespace SecretSantaApp.Controllers
     public ActionResult GetMemberConditionsPartial(int membershipid)
     {
       var model = _secretSantaBl.MemberConditionsEditModelByMembershipId(membershipid);
-      //var model = new MemberConditionsEditModel();
-      //model.MembershipId = 5;
-      //model.UserFullName = "ben oneill";
-      //model.Saved = false;
-      //model.GroupName = "sup";
       return PartialView("_MemberConditions", model);
     }
 
+
+    [HttpPost]
+    public ActionResult SaveMemberCondition(MemberConditionsEditModel model)
+    {
+      var m = _secretSantaBl.SaveMemberCondition(model);
+      m.Saved = true;
+      
+      
+      return PartialView("_MemberConditions", model);
+    }
 
 
 

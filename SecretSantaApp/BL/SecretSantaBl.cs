@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using SecretSantaApp.DAL;
 using SecretSantaApp.Models;
 using SecretSantaApp.ViewModels;
@@ -153,8 +154,8 @@ namespace SecretSantaApp.BL
       {
         return model;
       }
-     
-      
+
+
     }
 
 
@@ -503,30 +504,57 @@ namespace SecretSantaApp.BL
 
     public MemberConditionsEditModel MemberConditionsEditModelByMembershipId(int membershipid)
     {
-      var membership = _groupMembershipDal.GroupMembershipModelByGroupMembershipId(membershipid);
-      var group = _groupDal.GetGroupById(membership.GroupId);
-      var name = UserFullNameByAccountNumberString(membership.AccountNumberString);
+      var members = _groupMembershipDal.GroupMembershipModelByGroupMembershipId(membershipid);
+      var group = _groupDal.GetGroupById(members.GroupId);
+      var name = UserFullNameByAccountNumberString(members.AccountNumberString);
       var othergroupmembers = _groupMembershipDal.AllGroupMembersByGroupId(group.GroupId);
 
-      othergroupmembers = othergroupmembers.Where(x => x.AccountNumberString != membership.AccountNumberString).ToList();
+      othergroupmembers = othergroupmembers.Where(x => x.AccountNumberString != members.AccountNumberString).ToList();
 
-      //foreach (var og in othergroupmembers)
-      //{
-      //  if (og.AccountNumberString != membership.AccountNumberString)
-      //  {
-
-      //  }
-      //}
 
       var result = new MemberConditionsEditModel();
       result.GroupName = group.GroupName;
       result.UserFullName = name;
-      result.MembershipId = membership.ID;
+      result.MembershipId = members.ID;
       result.OtherGroupMembers = othergroupmembers;
       return result;
     }
 
 
+    public MemberConditionsEditModel SaveMemberCondition(MemberConditionsEditModel model)
+    {
+      return model;
+    }
+
+    public SelectList OtherUsersDropDown(string acctnostr, int groupid)
+    {
+      // var result = new GroupConditionsOtherUsersModel();
+      var allgroupmembers = _groupMembershipDal.AllGroupMembersByGroupId(groupid);
+      var othergroupmembers = allgroupmembers.Where(x => x.AccountNumberString != acctnostr).ToList();
+      var rsltlist = new List<GroupConditionsOtherUsersModel>();
+
+      foreach (var o in othergroupmembers)
+      {
+        var name = UserFullNameByAccountNumberString(o.AccountNumberString);
+        var m = new GroupConditionsOtherUsersModel();
+        m.AccountNumberString = o.AccountNumberString;
+        m.FullName = name;
+        m.MembershipId = o.ID;
+        rsltlist.Add(m);
+      }
+
+      var result = new SelectList(rsltlist, nameof(GroupConditionsOtherUsersModel.MembershipId),
+     nameof(GroupConditionsOtherUsersModel.FullName));
+
+
+      // var result = new SelectList(othergroupmembers, nameof(GroupMembership.ID),
+      //nameof(GroupMembership.AccountNumberString));
+
+      //allgroupmembers = allgroupmembers.Where(x => x.AccountNumberString != members.AccountNumberString).ToList();
+
+
+      return result;
+    }
 
 
   }

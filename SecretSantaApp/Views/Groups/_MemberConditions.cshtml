@@ -1,7 +1,10 @@
-﻿@model MemberConditionsEditModel
+﻿@using SecretSantaApp.BL
+@model MemberConditionsEditModel
+@inject ISecretSantaBl ssbl
 @{
   var uid = Guid.NewGuid();
   var containerid = $"divcontainerid-{uid}";
+
 }
 
 <div id="@containerid">
@@ -11,8 +14,8 @@
     <p>you created the rule, we need to refresh the </p>
 
     <script>
-      LoadRules();
-      $('#modal-container').modal('hide');
+     // LoadRules();
+      //$('#modal-container').modal('hide');
     </script>
   }
   else
@@ -21,7 +24,7 @@
     <div class="container col-lg-12 ControlBox" style="background-color: white">
       <div class="">
         <div class="" style="display:inline!important">
-          @*<span> <img src="~/images/smRedSantaList.png" alt="Reindeer" class="img-responsive" style="display:inline!important"></span>*@
+
 
           <h4 class="text-center" style="color: green; display: inline !important">
             &nbsp;
@@ -30,24 +33,25 @@
         </div>
         <div class="row col-xs-12 center-block RoundCornerBox" style="background-color: white; ">
 
-          <form asp-action="SaveGroupRule" method="POST"
+          <form asp-action="SaveMemberCondition" method="POST"
                 data-ajax="true"
                 data-ajax-method="POST"
                 data-ajax-mode="replace"
                 data-ajax-update="#@containerid">
 
             <div class="form-group">
-              @*<label class="control-label col-sm-3" asp-label-for="Rule" for="rule">Rule<em>*</em></label>*@
+
               <div class="col-sm-8 col-xs-12">
                 <div>
                   <h4>  @Model.UserFullName Cant Have: </h4>
                   @foreach (var a in Model.OtherGroupMembers)
                   {
-                    <p>Other Member: @a.AccountNumberString</p>
+                    var otherpeopledropdown = ssbl.OtherUsersDropDown(a.AccountNumberString, a.GroupId);
+                    @Html.DropDownListFor(x => x.ConditionId, otherpeopledropdown, "--Selet an Available Values Category--", new {  })
+                    @*<p>Other Member: @a.AccountNumberString</p>*@
                   }
                 </div>
-                @*<input type="text" asp-for="Rule" placeholder="Rule" required="" oninvalid="this.setCustomValidity('Please Enter A Rule')" class="form-control" />*@
-              </div>
+                </div>
             </div>
 
             <div class="form-group">
@@ -55,8 +59,8 @@
                 <input type="submit" name="signin" id="signin" value="Submit" class="btn btn-default btn-lg BtnGreen" />
               </div>
             </div>
-            @*@Html.HiddenFor(x => x.ID)
-              @Html.HiddenFor(x => x.GroupId)*@
+            @Html.HiddenFor(x => x.ConditionId)
+              @Html.HiddenFor(x => x.GroupId)
             @*@Html.HiddenFor(x => x.InsertedBy)*@
           </form>
         </div>

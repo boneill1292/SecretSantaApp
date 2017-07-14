@@ -7,29 +7,23 @@ using System.Threading.Tasks;
 
 namespace SecretSantaApp.Models
 {
-    public class MemberConditions
+  public class MemberConditions
+  {
+    [Key]
+    public int ConditionId { get; set; }
+
+    public int GroupId { get; set; }
+
+    public string ConditionalUserAcctNo { get; set; }
+
+    public int ConditionType { get; set; } //Use this later to determine 'CAN HAVE' 'CANT HAVE'
+
+    public virtual void Update(MemberConditions mc)
     {
-    //[Key]
-    //  public int ConditionId { get; set; }
-      
-    //  public int GroupId { get; set; }
-      
-    //  public int 
-    //  public string Email { get; set; }
-    //  public string AccountNumberString { get; set; } //* unique assigned by auth0
-    //  public string FullName { get; set; }
-
-    //  public string ProfileImage { get; set; }
-
-
-
-    //  public virtual void Update(CustomUser cu)
-    //  {
-    //    UserId = cu.UserId;
-    //    Email = cu.Email;
-    //    AccountNumberString = cu.AccountNumberString;
-    //    FullName = cu.FullName;
-    //    ProfileImage = cu.ProfileImage;
-    //  }
+      ConditionId = mc.ConditionId;
+      GroupId = mc.GroupId;
+      ConditionalUserAcctNo = mc.ConditionalUserAcctNo;
+      ConditionType = mc.ConditionType;
+    }
   }
 }
