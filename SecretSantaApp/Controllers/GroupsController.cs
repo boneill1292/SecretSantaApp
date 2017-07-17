@@ -346,9 +346,7 @@ namespace SecretSantaApp.Controllers
       var m = _secretSantaBl.SaveMemberCondition(model);
       m.Saved = true;
       
- 
-      
-      return PartialView("_MemberConditions", model);
+ return PartialView("_MemberConditions", model);
     }
 
 

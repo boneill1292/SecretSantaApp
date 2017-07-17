@@ -9,9 +9,9 @@
 
 <h3 style="text-decoration:underline">Group @Model.GroupName Rules:</h3>
 <div class="row">
-@if (Model.GroupRules.Count > 0)
-{
- 
+  @if (Model.GroupRules.Count > 0)
+  {
+
     <table class="table table-responsive table-striped">
       <thead>
         <tr>
@@ -27,26 +27,26 @@
             <td> @r.Rule</td>
 
             @if (User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value == r.InsertedBy)
-                {
-                  var editruleurl = Url.Action("EditRulePopup", "Groups", new {ruleid = r.ID}) ;
-                  var deleteruleurl = Url.Action("DeleteRulePopup", "Groups", new {ruleid = r.ID});
+            {
+              var editruleurl = Url.Action("EditRulePopup", "Groups", new { ruleid = r.ID });
+              var deleteruleurl = Url.Action("DeleteRulePopup", "Groups", new { ruleid = r.ID });
 
-                  <td>
-                    <button class="btn btn-group modal-link BtnGreen"
-                            href="@editruleurl"
-                            title="Add modal"
-                            data-target="#modal-container"
-                            data-toggle="modal">
-                      Edit
-                    </button>
-        <button class="btn btn-group modal-link BtnRed"
-                            href="@deleteruleurl"
-                            title="Add modal"
-                            data-target="#modal-container"
-                            data-toggle="modal">
-                      Delete
-                    </button>
-                  </td>
+              <td>
+                <button class="btn btn-group modal-link BtnGreen"
+                        href="@editruleurl"
+                        title="Add modal"
+                        data-target="#modal-container"
+                        data-toggle="modal">
+                  Edit
+                </button>
+                <button class="btn btn-group modal-link BtnRed"
+                        href="@deleteruleurl"
+                        title="Add modal"
+                        data-target="#modal-container"
+                        data-toggle="modal">
+                  Delete
+                </button>
+              </td>
             }
             else
             {
@@ -58,12 +58,12 @@
       </tbody>
     </table>
 
-}
-else
-{
-  <p>No Rules Yet</p>
-}
+  }
+  else
+  {
+    <p>No Rules Yet</p>
+  }
   <div class="col-md-6">
-   
+
   </div>
 </div>

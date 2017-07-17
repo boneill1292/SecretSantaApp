@@ -120,6 +120,7 @@ else //its not a new group. its the go to group home method
 
     //load the rules partial on the right
     function LoadRules() {
+      ClosePopup();
       window.LayoutLoadPartial('rulesdiv', '@grouprulesurl', { 'label': 'Loading Rules...' });
     }
 

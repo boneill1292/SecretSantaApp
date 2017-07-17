@@ -4,7 +4,7 @@
 @{
   var uid = Guid.NewGuid();
   var containerid = $"divcontainerid-{uid}";
-  var otherpeopledropdown = ssbl.OtherUsersDropDown(Model.UserAcctNo,Model.GroupId);
+  var otherpeopledropdown = ssbl.OtherUsersDropDown(Model.UserReceivingConditionAcctNo, Model.GroupId);
 }
 
 <div id="@containerid">
@@ -14,7 +14,7 @@
     <p>you created the rule, we need to refresh the </p>
 
     <script>
-     // LoadRules();
+      // LoadRules();
       //$('#modal-container').modal('hide');
     </script>
   }
@@ -37,17 +37,32 @@
                 data-ajax="true"
                 data-ajax-method="POST"
                 data-ajax-mode="replace"
-                data-ajax-update="#@containerid">
+                data-ajax-update="#@containerid" novalidate>
 
             <div class="form-group">
 
               <div class="col-sm-8 col-xs-12">
                 <div>
                   <h4 style="display:inline!important">  @Model.UserReceivingConditionName Cant Have: </h4>
-                    <span style="display:inline"> @Html.DropDownListFor(x => x.ConditionId, otherpeopledropdown, "--Selet an Available Values Category--", new { })</span>
+                  <span style="display:inline"> @Html.DropDownListFor(x => x.ConditionId, otherpeopledropdown, "--Selet a User They Cannot have--", new { id = "changepersondropdown" })</span>
 
                 </div>
+              </div>
+              <div>
+                <div class="form-group" style="display:none;">
+                  <label class="control-label col-sm-3" for="UserSelectedForConditionAcctNo"><em>*</em></label>
+                  <div class="col-sm-8 col-xs-12">
+                    @*<input type="text" asp-for="UserSelectedForConditionAcctNo" placeholder="Person" required="" oninvalid="this.setCustomValidity('Please Enter the Password')" class="form-control" />*@
+                    <input type="text" 
+                           placeholder="Person" 
+                           required="" 
+                           oninvalid="this.setCustomValidity('Please Enter the Password')" 
+                           class="form-control" 
+                           id="UserSelectedForConditionMembershipNo" 
+                           name="UserSelectedForConditionMembershipNo" value="">
+                  </div>
                 </div>
+              </div>
             </div>
 
             <div class="form-group">
@@ -55,15 +70,31 @@
                 <input type="submit" name="signin" id="signin" value="Submit" class="btn btn-default btn-lg BtnGreen" />
               </div>
             </div>
-            @Html.HiddenFor(x => x.ConditionId)
-              @Html.HiddenFor(x => x.GroupId)
-            @*@Html.HiddenFor(x => x.InsertedBy)*@
+            @Html.HiddenFor(x => x.UserReceivingConditionAcctNo)
+          
+            @Html.HiddenFor(x => x.GroupId)
+              @*@Html.HiddenFor(x => x.InsertedBy)*@
+              
+              @if (Model.ConditionId >= 1)
+              {
+                  @Html.HiddenFor(x => x.ConditionId)
+              }
           </form>
         </div>
       </div>
 
     </div>
-  <!-- /.container -->
+    <!-- /.container -->
+
+
+    <script>
+      $("#changepersondropdown").change(function () {
+        var selectedid = $("#changepersondropdown").val();
+        console.log("id: " + selectedid);
+        $('#UserSelectedForConditionMembershipNo').val(selectedid);
+        // var end = this.value;
+        //var firstDropVal = $('#pick').val();
+      });    </script>
   }
 
 

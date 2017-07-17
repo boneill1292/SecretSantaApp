@@ -23,12 +23,14 @@ namespace SecretSantaApp.BL
     private readonly IGroupMembershipDal _groupMembershipDal;
     private readonly IGroupRulesDal _groupRulesDal;
     private readonly IGroupMessagesDal _groupMessagesDal;
+    private readonly IMemberConditionsDal _memberConditionsDal;
     public SecretSantaBl(IGroupDal groupDal,
                          ICustomUserDal customUserDal,
                          IHttpContextAccessor httpContextAccessor,
                           IGroupMembershipDal groupMembershipDal,
                           IGroupRulesDal groupRulesDal,
-                          IGroupMessagesDal groupMessagesDal)
+                          IGroupMessagesDal groupMessagesDal,
+                          IMemberConditionsDal memberConditionsDal)
     {
       _groupDal = groupDal;
       _customUserDal = customUserDal;
@@ -36,6 +38,7 @@ namespace SecretSantaApp.BL
       _groupMembershipDal = groupMembershipDal;
       _groupRulesDal = groupRulesDal;
       _groupMessagesDal = groupMessagesDal;
+      _memberConditionsDal = memberConditionsDal;
     }
 
     public CustomUserEditModel CustomUserModelByLoggedInUser(ClaimsPrincipal user)
@@ -507,7 +510,7 @@ namespace SecretSantaApp.BL
       //var userReceivingCondition = _customUserDal.CustomUserByAccountNumber(acctno);
       var members = _groupMembershipDal.GroupMembershipModelByGroupMembershipId(membershipid);
       var group = _groupDal.GetGroupById(members.GroupId);
-      
+
       var name = UserFullNameByAccountNumberString(members.AccountNumberString);
       var othergroupmembers = _groupMembershipDal.AllGroupMembersByGroupId(group.GroupId);
       othergroupmembers = othergroupmembers.Where(x => x.AccountNumberString != members.AccountNumberString).ToList();
@@ -520,8 +523,8 @@ namespace SecretSantaApp.BL
       result.OtherGroupMembers = othergroupmembers;
       //End the viewmodel fields - need to populate the true model
 
-      result.UserAcctNo = acctno;
-      result.ConditionalUserAcctNo = "";
+      result.UserReceivingConditionAcctNo = acctno;
+      result.UserSelectedForConditionAcctNo = "";
       result.GroupId = group.GroupId;
       return result;
     }
@@ -529,6 +532,30 @@ namespace SecretSantaApp.BL
 
     public MemberConditionsEditModel SaveMemberCondition(MemberConditionsEditModel model)
     {
+      if (model.UserSelectedForConditionMembershipNo == null)
+      {
+        throw new Exception("Must select a person");
+      }
+
+      var membermodel =
+        _groupMembershipDal.GroupMembershipModelByGroupMembershipId(model.UserSelectedForConditionMembershipNo);
+
+
+      //var selectedperson = _customUserDal.CustomUserByAccountNumber(membermodel.AccountNumberString);
+
+      model.UserSelectedForConditionAcctNo = membermodel.AccountNumberString;
+
+      var condition = new MemberConditions();
+      condition.Update(model);
+
+      var saved = _memberConditionsDal.Save(condition);
+
+
+      //pass the user who is receiving the condition
+
+      //get the user from the selected person
+
+      //save the type of condition
 
       return model;
     }

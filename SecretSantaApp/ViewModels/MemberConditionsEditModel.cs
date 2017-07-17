@@ -16,6 +16,8 @@ namespace SecretSantaApp.ViewModels
     public string SelectedUserName { get; set; }
 
     public int MembershipId { get; set; }
+    
+    public int UserSelectedForConditionMembershipNo { get; set; }
 
     public bool Saved { get; set; }
 
