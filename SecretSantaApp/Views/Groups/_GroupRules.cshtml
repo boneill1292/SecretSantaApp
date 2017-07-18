@@ -9,61 +9,14 @@
 
 <h3 style="text-decoration:underline">Group @Model.GroupName Rules:</h3>
 <div class="row">
-  @if (Model.GroupRules.Count > 0)
-  {
+    @Html.Partial("_GroupRulesTable", Model)
 
-    <table class="table table-responsive table-striped">
-      <thead>
-        <tr>
-          <th>Rule</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        @foreach (var r in Model.GroupRules)
-        {
-          //var user = ssbl.UserFullNameByAccountNumberString(r.InsertedBy);
-          <tr>
-            <td> @r.Rule</td>
 
-            @if (User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value == r.InsertedBy)
-            {
-              var editruleurl = Url.Action("EditRulePopup", "Groups", new { ruleid = r.ID });
-              var deleteruleurl = Url.Action("DeleteRulePopup", "Groups", new { ruleid = r.ID });
 
-              <td>
-                <button class="btn btn-group modal-link BtnGreen"
-                        href="@editruleurl"
-                        title="Add modal"
-                        data-target="#modal-container"
-                        data-toggle="modal">
-                  Edit
-                </button>
-                <button class="btn btn-group modal-link BtnRed"
-                        href="@deleteruleurl"
-                        title="Add modal"
-                        data-target="#modal-container"
-                        data-toggle="modal">
-                  Delete
-                </button>
-              </td>
-            }
-            else
-            {
-              <td>you cannot edit this rule</td>
-            }
+</div>
+<div class="row">
 
-          </tr>
-        }
-      </tbody>
-    </table>
+    @Html.Partial("_GroupConditionsTable", Model)
 
-  }
-  else
-  {
-    <p>No Rules Yet</p>
-  }
-  <div class="col-md-6">
 
-  </div>
 </div>

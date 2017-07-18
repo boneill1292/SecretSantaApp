@@ -11,56 +11,62 @@ using SecretSantaApp.Views.Groups;
 
 namespace SecretSantaApp.BL
 {
-  public interface ISecretSantaBl
-  {
-    CustomUserEditModel CustomUserModelByLoggedInUser(ClaimsPrincipal user);
+    public interface ISecretSantaBl
+    {
+        CustomUserEditModel CustomUserModelByLoggedInUser(ClaimsPrincipal user);
 
-    string UserFullNameByAccountNumberString(string acctno);
-    string UserImageByAccountNumberString(string acctno);
+        string UserFullNameByAccountNumberString(string acctno);
+        string UserImageByAccountNumberString(string acctno);
 
-    GroupAdminModel DefaultGroupAdminModel();
+        GroupAdminModel DefaultGroupAdminModel();
 
-    GroupEditModel DefaultGroupEditModel();
+        GroupEditModel DefaultGroupEditModel();
 
-    GroupEditModel SaveNewGroup(GroupEditModel model);
+        GroupEditModel SaveNewGroup(GroupEditModel model);
 
-    CustomUserEditModel CheckUserByCustomUserAccountNumber(CustomUserEditModel model);
+        CustomUserEditModel CheckUserByCustomUserAccountNumber(CustomUserEditModel model);
 
-    void JoinGroupAsCustomUser(CustomUserEditModel user, int groupid);
+        void JoinGroupAsCustomUser(CustomUserEditModel user, int groupid);
 
-    MyGroupsViewModel MyGroupsViewModelByUserId(CustomUserEditModel user);
+        MyGroupsViewModel MyGroupsViewModelByUserId(CustomUserEditModel user);
 
-    GroupHomeEditModel GroupHomeEditModelByGroupId(int groupid);
+        GroupHomeEditModel GroupHomeEditModelByGroupId(int groupid);
 
-    JoinGroupEditModel JoinGroupEditModelByAccountNumberString(string acctno);
+        JoinGroupEditModel JoinGroupEditModelByAccountNumberString(string acctno);
 
-    InviteUsersCollectionModel InviteUsersCollectionModelByAmountToGet(int amount);
+        InviteUsersCollectionModel InviteUsersCollectionModelByAmountToGet(int amount);
 
-    InviteUsersViewModel AdditionalInviteUsersViewModel(int tempid);
+        InviteUsersViewModel AdditionalInviteUsersViewModel(int tempid);
 
-    JoinGroupEditModel JoinGroupEditModelByGroupId(int groupid);
+        JoinGroupEditModel JoinGroupEditModelByGroupId(int groupid);
 
-    JoinGroupEditModel CheckPasswordInput(JoinGroupEditModel model);
+        JoinGroupEditModel CheckPasswordInput(JoinGroupEditModel model);
 
 
-    GroupRulesEditModel NewRuleEditModelByGroupId(int groupid);
-    GroupRulesEditModel GroupRuleEditModelByRuleId(int ruleid);
+        GroupRulesEditModel NewRuleEditModelByGroupId(int groupid);
+        GroupRulesEditModel GroupRuleEditModelByRuleId(int ruleid);
 
-    GroupRulesEditModel SaveGroupRules(GroupRulesEditModel model);
+        GroupRulesEditModel SaveGroupRules(GroupRulesEditModel model);
 
-    GroupRulesEditModel DeleteGroupRule(GroupRulesEditModel model);
-    GroupRulesDisplayModel GroupRulesDisplayModelByGroupId(int groupid);
+        GroupRulesEditModel DeleteGroupRule(GroupRulesEditModel model);
+        GroupRulesDisplayModel GroupRulesDisplayModelByGroupId(int groupid);
 
-    GroupChatDisplayModel GroupChatDisplayModelByGroupId(int groupid);
+        GroupChatDisplayModel GroupChatDisplayModelByGroupId(int groupid);
 
-    GroupMessageEditModel NewGroupMessageEditModelByGroupId(int groupid);
+        GroupMessageEditModel NewGroupMessageEditModelByGroupId(int groupid);
 
-    GroupMessageEditModel SaveGroupMessage(GroupMessageEditModel model);
+        GroupMessageEditModel SaveGroupMessage(GroupMessageEditModel model);
 
-    MemberConditionsEditModel MemberConditionsEditModelByMembershipId(int membershipid, string acctno);
+        MemberConditionsEditModel MemberConditionsEditModelByMembershipId(int membershipid, string acctno);
 
-    MemberConditionsEditModel SaveMemberCondition(MemberConditionsEditModel model);
+        MemberConditionsEditModel SaveNewMemberCondition(MemberConditionsEditModel model);
 
-    SelectList OtherUsersDropDown(string acctnostr, int groupid);
-  }
+        SelectList OtherUsersDropDown(string acctnostr, int groupid);
+
+
+        //helpers
+
+        CustomUserEditModel GetLoggedInUser();
+        string ConditionDisplayByAccountNumbers(string ur, string us);
+    }
 }

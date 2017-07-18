@@ -126,7 +126,8 @@ else //its not a new group. its the go to group home method
 
 
     //Load the chat partial view
-    function LoadChat() {
+      function LoadChat() {
+          ClosePopup();
       window.LayoutLoadPartial('chatdiv', '@chaturl', { 'label': 'Loading Chat...' });
     }
 

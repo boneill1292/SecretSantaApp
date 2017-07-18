@@ -20,6 +20,8 @@ namespace SecretSantaApp.ViewModels
     public int UserSelectedForConditionMembershipNo { get; set; }
 
     public bool Saved { get; set; }
+      
+      public bool NewCondition { get; set; }
 
     public List<GroupMembership> OtherGroupMembers { get; set; }
   }

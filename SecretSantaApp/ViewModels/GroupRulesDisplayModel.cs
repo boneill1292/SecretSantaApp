@@ -13,5 +13,7 @@ namespace SecretSantaApp.ViewModels
       
       public string GroupName { get; set; }
       public List<GroupRules> GroupRules { get; set; }
+        
+        public List<MemberConditions> GroupConditions { get; set; }
     }
 }
