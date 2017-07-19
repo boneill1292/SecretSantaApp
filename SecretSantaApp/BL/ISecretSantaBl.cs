@@ -64,8 +64,10 @@ namespace SecretSantaApp.BL
         SelectList OtherUsersDropDown(string acctnostr, int groupid);
 
         DrawNamesDisplayModel DrawNamesDisplayModelByGroupId(int groupid);
-        //helpers
 
+        DrawNamesDisplayModel DrawNames(DrawNamesDisplayModel model);
+
+        //helpers
         CustomUserEditModel GetLoggedInUser();
         string ConditionDisplayByAccountNumbers(string ur, string us);
     }

@@ -361,6 +361,15 @@ namespace SecretSantaApp.Controllers
             return PartialView("_DrawNames", model);
 
         }
+
+
+        [HttpPost]
+        public ActionResult DrawNamesPost(DrawNamesDisplayModel model)
+        {
+            var m = _secretSantaBl.DrawNames(model);
+            m.Saved = true;
+            return PartialView("_DrawNames", m);
+        }
         ////Will not use
         //[HttpGet]
         //public ActionResult JoinGroup(int id)

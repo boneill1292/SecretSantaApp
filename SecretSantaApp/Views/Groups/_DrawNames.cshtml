@@ -15,29 +15,29 @@
 }
 else
 {
-    <h3 style="text-decoration:underline">Group @Model.Group.GroupName</h3>
-    @*<form asp-action="SaveGroupRule" method="POST"
-          data-ajax="true"
-          data-ajax-method="POST"
-          data-ajax-mode="replace"
-          data-ajax-update="#@containerid">*@
+    <div class="container col-lg-12 ControlBox" style="background-color: white"> 
+    <h3 style="text-decoration:underline">Draw Names For Group @Model.Group.GroupName?</h3>
+        <form asp-action="DrawNamesPost" method="POST"
+              data-ajax="true"
+              data-ajax-method="POST"
+              data-ajax-mode="replace"
+              data-ajax-update="#@containerid">
 
-        <div class="form-group">
-            <label class="control-label col-sm-3" asp-label-for="Rule" for="rule">Rule<em>*</em></label>
-            <div class="col-sm-8 col-xs-12">
-                @*<input type="text" asp-for="Rule" placeholder="Rule" required="" oninvalid="this.setCustomValidity('Please Enter A Rule')" class="form-control" />*@
+            <div class="form-group">
+                <label class="control-label col-sm-3" asp-label-for="Rule" for="rule">Rule<em>*</em></label>
+                <div class="col-sm-8 col-xs-12">
+                    @*<input type="text" asp-for="Rule" placeholder="Rule" required="" oninvalid="this.setCustomValidity('Please Enter A Rule')" class="form-control" />*@
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-8">
-                <input type="submit" name="signin" id="signin" value="Submit" class="btn btn-default btn-lg BtnGreen" />
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-8">
+                    <input type="submit" name="signin" id="signin" value="Submit" class="btn btn-default btn-lg BtnGreen" />
+                </div>
             </div>
-        </div>
-        @*@Html.HiddenFor(x=> x.ID)
-        @Html.HiddenFor(x=> x.GroupId)
-        @Html.HiddenFor(x=> x.InsertedBy)
-    </form>*@
+
+        </form>
+    </div>
 }
 
 </div>

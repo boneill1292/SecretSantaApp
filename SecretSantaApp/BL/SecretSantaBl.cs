@@ -622,6 +622,14 @@ namespace SecretSantaApp.BL
         }
 
 
+        public DrawNamesDisplayModel DrawNames(DrawNamesDisplayModel model)
+        {
+            var result = new DrawNamesDisplayModel();
+            result.TestStr = "We here fam";
+            return result;
+        }
+
+
 
 
 

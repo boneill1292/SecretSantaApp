@@ -2,9 +2,9 @@
 @{
 
     var newruleurl = Url.Action("GetManageRulesPopup", "Groups", new { groupid = Model.GroupId });
-    var getdrawnamesurl = Url.Action("", "Groups", new { groupid = Model.GroupId });
     var grouprulesurl = Url.Action("GetGroupRulesPartial", "Groups", new { groupid = Model.GroupId });
     var chaturl = Url.Action("GetChatPartial", "Groups", new { groupid = Model.GroupId });
+    var getdrawnamesurl = Url.Action("GetDrawNamesPartial", "Groups", new { groupid = Model.GroupId });
 }
 
 <div style="text-align:center">
@@ -55,12 +55,14 @@ else //its not a new group. its the go to group home method
                 <div class="">
                     <button class="btn btn-group modal-link BtnRed"
                             href="@newruleurl"
-                             data-target="#modal-container" data-toggle="modal">
+                            data-target="#modal-container" 
+                            data-toggle="modal">
                         Create Rule
                     </button>
                     <button class="btn btn-group modal-link BtnGreen"
                             href="@getdrawnamesurl"
-                            data-target="#modal-container" data-toggle="modal">
+                            data-target="#modal-container" 
+                            data-toggle="modal">
                         Draw Names
                     </button>
                     @*<button type="button" id="btnDrawNames" class="btn BtnGreen " data-dismiss="modal">Draw Names</button>*@
