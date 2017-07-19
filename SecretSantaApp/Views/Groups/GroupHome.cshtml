@@ -1,88 +1,94 @@
 ﻿@model GroupHomeEditModel
 @{
 
-  var newruleurl = Url.Action("GetManageRulesPopup", "Groups", new { groupid = Model.GroupId });
-  var grouprulesurl = Url.Action("GetGroupRulesPartial", "Groups", new { groupid = Model.GroupId });
-  var chaturl = Url.Action("GetChatPartial", "Groups", new { groupid = Model.GroupId });
+    var newruleurl = Url.Action("GetManageRulesPopup", "Groups", new { groupid = Model.GroupId });
+    var getdrawnamesurl = Url.Action("", "Groups", new { groupid = Model.GroupId });
+    var grouprulesurl = Url.Action("GetGroupRulesPartial", "Groups", new { groupid = Model.GroupId });
+    var chaturl = Url.Action("GetChatPartial", "Groups", new { groupid = Model.GroupId });
 }
 
 <div style="text-align:center">
-  <span> <img src="~/images/smNorthPole.png" alt="NorthPole" class="img-circle" style="display: inline !important"></span>
-  <h3 style="display: inline !important; color:#4CAF50">Welcome to Group: @Model.GroupName</h3>
-  <span> <img src="~/images/smNorthPole.png" alt="NorthPole" class="img-circle" style="display: inline !important"></span>
-  <h5>Group Admin: @Model.GroupAdmin.FullName</h5>
+    <span> <img src="~/images/smNorthPole.png" alt="NorthPole" class="img-circle" style="display: inline !important"></span>
+    <h3 style="display: inline !important; color:#4CAF50">Welcome to Group: @Model.GroupName</h3>
+    <span> <img src="~/images/smNorthPole.png" alt="NorthPole" class="img-circle" style="display: inline !important"></span>
+    <h5>Group Admin: @Model.GroupAdmin.FullName</h5>
 </div>
 
 @if (Model.NewGroup)
 {
-  @Html.Partial("_NewGroupInvites", Model)
+    @Html.Partial("_NewGroupInvites", Model)
 
 }
 else //its not a new group. its the go to group home method
 {
-  <div id="existinggroupdiv">
-    <div class="col-md-8" style="outline:1px green solid">
-     @Html.Partial("_GroupMembers",Model)
-    </div>
-
-   
-    
-    @*The Div That Holds The Rules*@
-    <div id="rulesdiv" class="col-md-4" style="outline: 1px red solid">
-    </div>
-
-    <div class="clearfix"></div>
-    <br />
-    
-    <div class="santaloadspinner"></div>
-    <div id="displayconditionsdiv" style="outline: 3px yellowgreen solid;">hi</div>
-    
-    <div class="clearfix"></div>
-    <br />
-    
-    @*The Div That Holds The Chat*@
-    <button type="button" onclick="ToggleChat()" id="btnDrawNames" class="btn BtnGreen " data-dismiss="modal">Toggle Chat</button>
-    <div id="chatdiv" class="col-md-12" style="outline: 1px green solid; ">
-    </div>
-
-    <div class="clearfix"></div>
-
-    @if (Model.GroupAdminBool)
-    {
-      <div class="col-md-12" style="padding-top:2%">
-        <div style="text-align: center;">
-          <div class="">
-            <button class="btn btn-group modal-link BtnRed"
-                    href="@newruleurl"
-                    title="Add modal" data-target="#modal-container" data-toggle="modal">
-              Create Rule
-            </button>
-            <button type="button" id="btnDrawNames" class="btn BtnGreen " data-dismiss="modal">Draw Names</button>
-          </div>
+    <div id="existinggroupdiv">
+        <div class="col-md-8" style="outline:1px green solid">
+            @Html.Partial("_GroupMembers", Model)
         </div>
-      </div>
-    }
 
 
-    <div style="padding-top: 5%">
-      @if (Model.GroupAdminBool)
-      {
-        <p>You are the group admin, feel free to do things.</p>
-      }
-      else
-      {
-        <p>You are not the group admin </p>
-      }
+
+        @*The Div That Holds The Rules*@
+        <div id="rulesdiv" class="col-md-4" style="outline: 1px red solid">
+        </div>
+
+        <div class="clearfix"></div>
+        <br />
+
+        <div class="santaloadspinner"></div>
+        <div id="displayresultsdiv" style="outline: 3px yellowgreen solid;">hi</div>
+
+        <div class="clearfix"></div>
+        <br />
+
+        @*The Div That Holds The Chat*@
+        <button type="button" onclick="ToggleChat()" id="btnDrawNames" class="btn BtnGreen " data-dismiss="modal">Toggle Chat</button>
+        <div id="chatdiv" class="col-md-12" style="outline: 1px green solid; ">
+        </div>
+
+        <div class="clearfix"></div>
+
+        @*@if (Model.GroupAdminBool)
+            {*@
+        <div class="col-md-12" style="padding-top:2%">
+            <div style="text-align: center;">
+                <div class="">
+                    <button class="btn btn-group modal-link BtnRed"
+                            href="@newruleurl"
+                             data-target="#modal-container" data-toggle="modal">
+                        Create Rule
+                    </button>
+                    <button class="btn btn-group modal-link BtnGreen"
+                            href="@getdrawnamesurl"
+                            data-target="#modal-container" data-toggle="modal">
+                        Draw Names
+                    </button>
+                    @*<button type="button" id="btnDrawNames" class="btn BtnGreen " data-dismiss="modal">Draw Names</button>*@
+                </div>
+            </div>
+        </div>
+        @*}*@
+
+
+        <div style="padding-top: 5%">
+            @if (Model.GroupAdminBool)
+            {
+                <p>You are the group admin, feel free to do things.</p>
+            }
+            else
+            {
+                <p>You are not the group admin </p>
+            }
+        </div>
+
     </div>
-
-  </div>
 }
 
 
 
 
 @section scripts{
-  <script>
+    <script>
     $(document).ready(function() {
 
       LoadRules();
@@ -140,20 +146,20 @@ else //its not a new group. its the go to group home method
     function ToggleChat() {
       $('#chatdiv').toggle();
     }
-  </script>
+    </script>
 }
 
 
 <style>
-  /*body{
-    background-color: #525252;
-  }*/
-  .centered-form {
-    margin-top: 60px;
-  }
+      /*body{
+      background-color: #525252;
+    }*/
+      .centered-form {
+          margin-top: 60px;
+      }
 
-    .centered-form .panel {
-      background: rgba(255, 255, 255, 0.8);
-      box-shadow: rgba(0, 0, 0, 0.3) 10px 10px 10px;
-    }
+          .centered-form .panel {
+              background: rgba(255, 255, 255, 0.8);
+              box-shadow: rgba(0, 0, 0, 0.3) 10px 10px 10px;
+          }
 </style>

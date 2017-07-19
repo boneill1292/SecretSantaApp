@@ -354,6 +354,13 @@ namespace SecretSantaApp.Controllers
 
 
 
+        [HttpGet]
+        public ActionResult GetDrawNamesPartial(int groupid)
+        {
+            var model = _secretSantaBl.DrawNamesDisplayModelByGroupId(groupid);
+            return PartialView("_DrawNames", model);
+
+        }
         ////Will not use
         //[HttpGet]
         //public ActionResult JoinGroup(int id)

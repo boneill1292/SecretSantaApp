@@ -610,12 +610,21 @@ namespace SecretSantaApp.BL
             return result;
         }
 
-        
-        
-        
-        
-        
-        
+
+
+        public DrawNamesDisplayModel DrawNamesDisplayModelByGroupId(int groupid)
+        {
+            var result = new DrawNamesDisplayModel();
+            var group = _groupDal.GetGroupById(groupid);
+
+            result.Group = group;
+            return result;
+        }
+
+
+
+
+
         //Helpers
         public CustomUserEditModel GetLoggedInUser()
         {
@@ -623,7 +632,7 @@ namespace SecretSantaApp.BL
             var u = CustomUserModelByLoggedInUser(liu);
             return u;
         }
-        
+
         public string ConditionDisplayByAccountNumbers(string ur, string us)
         {
             var receiving = _customUserDal.CustomUserByAccountNumber(ur);

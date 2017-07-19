@@ -1,0 +1,43 @@
+﻿@using System.Security.Claims
+@using SecretSantaApp.BL
+@model DrawNamesDisplayModel
+@inject ISecretSantaBl ssbl
+@{
+    var uid = Guid.NewGuid();
+    var containerid = $"divcontainerid-{uid}";
+}
+
+<div id="@containerid">
+
+@if (Model.Saved)
+{
+
+}
+else
+{
+    <h3 style="text-decoration:underline">Group @Model.Group.GroupName</h3>
+    @*<form asp-action="SaveGroupRule" method="POST"
+          data-ajax="true"
+          data-ajax-method="POST"
+          data-ajax-mode="replace"
+          data-ajax-update="#@containerid">*@
+
+        <div class="form-group">
+            <label class="control-label col-sm-3" asp-label-for="Rule" for="rule">Rule<em>*</em></label>
+            <div class="col-sm-8 col-xs-12">
+                @*<input type="text" asp-for="Rule" placeholder="Rule" required="" oninvalid="this.setCustomValidity('Please Enter A Rule')" class="form-control" />*@
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-8">
+                <input type="submit" name="signin" id="signin" value="Submit" class="btn btn-default btn-lg BtnGreen" />
+            </div>
+        </div>
+        @*@Html.HiddenFor(x=> x.ID)
+        @Html.HiddenFor(x=> x.GroupId)
+        @Html.HiddenFor(x=> x.InsertedBy)
+    </form>*@
+}
+
+</div>
