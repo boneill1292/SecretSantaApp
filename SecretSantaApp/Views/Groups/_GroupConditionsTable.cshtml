@@ -3,7 +3,7 @@
 @model GroupRulesDisplayModel
 @inject ISecretSantaBl ssbl
 @{
-
+//var userconditionsurl = Url.Action("NewMemberConditionPopup", "Groups", new { groupid = Model.GroupId });
 }
 
 @if (Model.GroupConditions.Count > 0)
@@ -26,18 +26,11 @@
                     @if (User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value == gc.InsertedBy)
                     {
                         //var editruleurl = Url.Action("EditRulePopup", "Groups", new { ruleid = gc.ID });
-                        //var deleteruleurl = Url.Action("DeleteRulePopup", "Groups", new { ruleid = gc.ID });
+                        var deleteruleurl = Url.Action("DeleteConditionPopup", "Groups", new { conditionid = gc.ConditionId });
 
                     <td>
-                        <button class="btn btn-group modal-link BtnGreen"
-                                href="#"
-                                title="Add modal"
-                                data-target="#modal-container"
-                                data-toggle="modal">
-                            Edit
-                        </button>
                         <button class="btn btn-group modal-link BtnRed"
-                                href="#"
+                                href="@deleteruleurl"
                                 title="Add modal"
                                 data-target="#modal-container"
                                 data-toggle="modal">
@@ -58,5 +51,5 @@
 }
 else
 {
-    <p>No Conditions Yet</p>
+    <h4>No Conditions Yet</h4>
 }

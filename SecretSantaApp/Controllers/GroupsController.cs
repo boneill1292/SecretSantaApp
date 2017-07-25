@@ -352,6 +352,20 @@ namespace SecretSantaApp.Controllers
         }
 
 
+        [HttpGet]
+        public ActionResult DeleteConditionPopup(int conditionid)
+        {
+            var model = _secretSantaBl.MemberConditionsEditModelByConditionId(conditionid);
+            return PartialView("_DeleteConditionPopup", model);
+        }
+
+        [HttpPost]
+        public ActionResult DeleteCondition(MemberConditionsEditModel model)
+        {
+            var m = _secretSantaBl.DeleteMemberCondition(model);
+            m.Saved = true;
+            return PartialView("_DeleteConditionPopup", m);
+        }
 
 
         [HttpGet]
@@ -364,7 +378,7 @@ namespace SecretSantaApp.Controllers
 
 
         [HttpPost]
-        public ActionResult DrawNamesPost(DrawNamesDisplayModel model)
+        public ActionResult SubmitDrawNames(DrawNamesDisplayModel model)
         {
             var m = _secretSantaBl.DrawNames(model);
             m.Saved = true;

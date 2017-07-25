@@ -63,5 +63,13 @@ namespace SecretSantaApp.DAL
       return result;
     }
 
+
+        public List<MemberConditions> MemberConditionsByGroupIdByAcctNo(int groupid, string acctno)
+        {
+            var result = new List<MemberConditions>();
+            result = _appDbContext.MemberConditions.Where(x => x.GroupId == groupid && x.UserReceivingConditionAcctNo == acctno ).ToList();
+            return result;
+        }
+
   }
 }

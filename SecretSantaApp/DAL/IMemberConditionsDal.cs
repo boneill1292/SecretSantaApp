@@ -7,14 +7,16 @@ using SecretSantaApp.Models;
 
 namespace SecretSantaApp.DAL
 {
-  public interface IMemberConditionsDal
-  {
-    MemberConditions MemberConditionByConditionId(int id);
+    public interface IMemberConditionsDal
+    {
+        MemberConditions MemberConditionByConditionId(int id);
 
-    List<MemberConditions> MemberConditionsByGroupId(int groupid);
+        List<MemberConditions> MemberConditionsByGroupId(int groupid);
 
-    MemberConditions Save(MemberConditions m);
+        MemberConditions Save(MemberConditions m);
 
-    MemberConditions Delete(MemberConditions m);
-  }
+        MemberConditions Delete(MemberConditions m);
+
+        List<MemberConditions> MemberConditionsByGroupIdByAcctNo(int groupid, string acctno);
+    }
 }

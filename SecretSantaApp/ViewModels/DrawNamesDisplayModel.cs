@@ -12,6 +12,8 @@ namespace SecretSantaApp.ViewModels
         public Group Group { get; set; }
         public bool Saved { get; set; }
         public string TestStr { get; set; }
+
+        public List<DrawNamesEditModel> DrawNamesList { get; set; }
     }
     
 }

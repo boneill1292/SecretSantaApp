@@ -61,6 +61,10 @@ namespace SecretSantaApp.BL
 
         MemberConditionsEditModel SaveNewMemberCondition(MemberConditionsEditModel model);
 
+        MemberConditionsEditModel MemberConditionsEditModelByConditionId(int conditionid);
+
+        MemberConditionsEditModel DeleteMemberCondition(MemberConditionsEditModel model);
+
         SelectList OtherUsersDropDown(string acctnostr, int groupid);
 
         DrawNamesDisplayModel DrawNamesDisplayModelByGroupId(int groupid);
