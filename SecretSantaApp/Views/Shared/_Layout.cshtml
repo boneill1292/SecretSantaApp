@@ -1,4 +1,5 @@
-﻿@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
 <!DOCTYPE html>
 <html>
 <head>
@@ -57,15 +58,19 @@
 
   <div class="container body-content">
     @*add the model code here so we can call it anywhere*@
-    <div id="modal-container" class="modal" tabindex="-1" role="dialog" style="border: 5px solid black;">
-      <a href="#" title="Close" class="close">X</a>
-      <div class="modal-content" style="max-width: 800px !important; margin: 10px auto !important;">
-        <div class="modal-body">
-        </div>
+      <div id="modal-container" class="modal" tabindex="-1" role="dialog" style="border: 5px solid black;">
+          <a href="#" title="Close" class="close">X</a>
+          <div class="modal-content" style="max-width: 800px !important; margin: 10px auto !important;">
+              <div class="modal-body">
+              </div>
+          </div>
       </div>
-    </div>
+      
+      @*<div class="field-validation-error">
+          @Html.ValidationSummary()
+      </div>*@
 
-    @RenderBody()
+      @RenderBody()
     <hr />
     <footer>
       <p>&copy; 2017 - SecretSantaApp</p>

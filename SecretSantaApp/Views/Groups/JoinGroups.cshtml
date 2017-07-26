@@ -5,27 +5,31 @@
 }
 <h3>These are the available groups you can join</h3>
 <div class="row">
-  <table class="table table-responsive table-striped">
-    <thead>
-      <tr>
-        <th>Group Name</th>
-        <th>Password</th>
-        <td>&nbsp;</td>
-      </tr>
-    </thead>
-    <tbody>
-      @foreach (var g in Model.GroupsNotMemberOf)
-      {
-        var url = Url.Action("PromptUserForPassword", "Groups", new { id = g.GroupId });
+    <table class="table table-responsive table-striped">
+        <thead>
         <tr>
-          <td>@g.GroupName</td>
-          <td>@g.GroupPassWord</td>
-          <td>
-            <button class="btn btn-group modal-link BtnGreen" href="@url" title="Add modal" data-target="#modal-container" data-toggle="modal">Join Group</button>
-            @*<span> <img src="~/images/smChristmasElf.png" alt="Reindeer" class="img-circle" style="display:inline!important"></span>*@
-            </td>
-         </tr>
-      }
-    </tbody>
-  </table>
+            <th>Group Name</th>
+            <th>Password</th>
+            <td>&nbsp;</td>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var g in Model.GroupsNotMemberOf)
+        {
+            var url = Url.Action("PromptUserForPassword", "Groups", new { id = g.GroupId });
+            <tr>
+                <td>@g.GroupName</td>
+                <td>@g.GroupPassWord</td>
+                <td>
+                    <button class="btn btn-group modal-link BtnGreen" href="@url" title="Add modal" data-target="#modal-container" data-toggle="modal">Join Group</button>
+                    @*<span> <img src="~/images/smChristmasElf.png" alt="Reindeer" class="img-circle" style="display:inline!important"></span>*@
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
 </div>
+
+@*@section scripts{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}*@

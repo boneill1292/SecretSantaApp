@@ -12,7 +12,7 @@
   {
     var url = Url.Action("GroupHome", "Groups", new {id = Model.GroupId});
 
-    <h3>You are in the group : @Model.Group.GroupName - @Model.Group.GroupId : (not really) - </h3>
+    <h3>You are in the group : @Model.GroupName - @Model.GroupId - </h3>
     <br />
     <br />
 
@@ -27,43 +27,49 @@
   {
     <div id="resultcontainer" style="padding: 5%">
       <div class="">
-        <div class="modal-title" style="color: black">
-          <h3>Join Group: @Model.Group.GroupName</h3>
-        </div>
-        <div asp-validation-summary="All" class="text-danger"></div>
-        <form asp-action="SubmitJoinGroup" method="POST"
-              data-ajax="true"
-              data-ajax-method="POST"
-              data-ajax-mode="replace"
-              data-ajax-update="#@containerid">
-          <div class="form-group">
-            <label asp-for="UserInputGroupPassword" class="col-md-12 control-label"></label>
-            <input asp-for="UserInputGroupPassword" class="form-control" required="" placeholder="Group Password" oninvalid="this.setCustomValidity('Please Enter the Password')" />
-            <span asp-validation-for="UserInputGroupPassword" class="text-danger"></span>
-            
-            @if (Model.ErrorMsg != null)
-            {
-              <span class="text-danger"> @Model.ErrorMsg</span>
-            }
-            
+          <div class="modal-title" style="color: black">
+              <h3>Join Group: @Model.GroupName</h3>
           </div>
-          <div class="">
-            <span> <img src="~/images/smChristmasElf.png" alt="Reindeer" class="img-circle" style="display: inline !important"></span>
-            <button type="submit" id="btnSave" class="btn BtnGreen">Submit</button>
-            <button type="button" class="btn BtnRed " data-dismiss="modal">Cancel</button>
-            <span> <img src="~/images/smChristmasElf.png" alt="Reindeer" class="img-circle" style="display: inline !important"></span>
-          </div>
-          @Html.HiddenFor(x => x.GroupId)
-          @Html.HiddenFor(x => x.CustomUser)
-        </form>
+          <div asp-validation-summary="All" class="text-danger"></div>
+          <form asp-action="SubmitJoinGroup" method="POST"
+                data-ajax="true"
+                data-ajax-method="POST"
+                data-ajax-mode="replacewith"
+                data-ajax-update="#@containerid">
+              
+              <div class="form-group">
+                  <label asp-for="UserInputGroupPassword" class="col-md-12 control-label"></label>
+                  <input asp-for="UserInputGroupPassword" class="form-control" required="" placeholder="Group Password" oninvalid="this.setCustomValidity('Please Enter the Password')"/>
+                  <span asp-validation-for="UserInputGroupPassword" class="text-danger"></span>
+
+                  @if (Model.ErrorMsg != null)
+                  {
+                      <span class="text-danger"> @Model.ErrorMsg</span>
+                  }
+
+              </div>
+              <div class="">
+                  <span> <img src="~/images/smChristmasElf.png" alt="Reindeer" class="img-circle" style="display: inline !important"></span>
+                  <button type="submit" id="btnSave" class="btn BtnGreen">Submit</button>
+                  <button type="button" class="btn BtnRed " data-dismiss="modal">Cancel</button>
+                  <span> <img src="~/images/smChristmasElf.png" alt="Reindeer" class="img-circle" style="display: inline !important"></span>
+              </div>
+              @Html.HiddenFor(x => x.GroupId)
+              @Html.HiddenFor(x => x.CustomUser)
+              @Html.HiddenFor(x=> x.GroupName)
+              @*@Html.HiddenFor(x=> x.Group.GroupName)*@
+          </form>
       </div>
     </div>
     
 
+    
+    
+@section scripts{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
+ 
     <script>
-
-
-
       $(function () {
 
 

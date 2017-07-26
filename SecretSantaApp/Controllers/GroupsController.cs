@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Logging;
 using SecretSantaApp.BL;
 using SecretSantaApp.Models;
@@ -132,7 +133,7 @@ namespace SecretSantaApp.Controllers
                 ModelState.AddModelError("", ex.Message);
                 _log.LogError(" - ", ex.Message);
             }
-            return View("Index");
+            return View("NewGroup", model);
         }
 
 
@@ -203,14 +204,22 @@ namespace SecretSantaApp.Controllers
         [HttpPost]
         public ActionResult SubmitJoinGroup(JoinGroupEditModel model)
         {
-            //We need to pass the correct password - if the user does that. Add them to the group, and load the group  homepage.
+            if (!ModelState.IsValid)
+            {
+                foreach (var modelState in ViewData.ModelState.Values)
+                {
+                    foreach (ModelError error in modelState.Errors)
+                    {
+                        Console.WriteLine("error message: " + error.ErrorMessage + " exception: " + error.Exception);
+                    }
+                }
+                return PartialView("_JoinGroupEntry", model);
+            }
+            //We need to pass the correct password - if the user does that.Add them to the group, and load the group  homepage.
             try
             {
                 var liu = _httpContextAccessor.HttpContext.User;
                 var u = _secretSantaBl.CustomUserModelByLoggedInUser(liu);
-                //var u = _httpContextAccessor.HttpContext.Session.GetObjectFromJson<CustomUserEditModel>("LoggedInUser");
-                //var cu = new CustomUserEditModel();
-                //cu.Update(u);
 
                 model.CustomUser = u;
                 var m = _secretSantaBl.CheckPasswordInput(model);
@@ -220,6 +229,7 @@ namespace SecretSantaApp.Controllers
             }
             catch (Exception ex)
             {
+                ModelState.AddModelError("", ex.Message);
                 _log.LogWarning(ex.Message);
             }
             return PartialView("_JoinGroupEntry", model);

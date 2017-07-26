@@ -14,10 +14,11 @@ namespace SecretSantaApp.ViewModels
       public List<Group> GroupsNotMemberOf { get; set; }
       
       //group info
-      public Group Group { get; set; }
+     // public Group Group { get; set; }
       public int GroupId { get; set; }
+        public string GroupName { get; set; }
       
-      [Required]
+      //[Required]
       [Display(Name ="Enter the Group Password")]
       public string UserInputGroupPassword { get; set; }
       

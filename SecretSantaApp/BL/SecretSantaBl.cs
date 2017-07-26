@@ -116,6 +116,11 @@ namespace SecretSantaApp.BL
                 throw new Exception("Name is Required");
             }
 
+            if (model.GroupName == "abc123")
+            {
+                throw new Exception("You are dumb");
+            }
+
             //code to get the currently logged in user
             var liu = _httpContextAccessor.HttpContext.User;
             var u = CustomUserModelByLoggedInUser(liu);
@@ -338,7 +343,8 @@ namespace SecretSantaApp.BL
 
 
             var result = new JoinGroupEditModel();
-            result.Group = group;
+           // result.Group = group; //This was causing validation errors... why do i even need this?
+            result.GroupName = group.GroupName;
             result.GroupId = groupid;
             result.Verified = false;
 
@@ -365,17 +371,18 @@ namespace SecretSantaApp.BL
 
             if (model.UserInputGroupPassword != password)
             {
-                //throw new Exception("Incorrect password");
-                model.Verified = false;
-                model.ErrorMsg = "Incorrect Password";
-                model.Group = group;
-                model.GroupId = group.GroupId;
-                return model;
+                throw new Exception("Incorrect password");
+                //model.Verified = false;
+                //model.ErrorMsg = "Incorrect Password";
+                //model.Group = group;
+                //model.GroupId = group.GroupId;
+                //return model;
             }
             else
             {
-                model.Group = group;
+                //model.Group = group;
                 model.GroupId = group.GroupId;
+                model.GroupName = group.GroupName;
 
                 JoinGroupAsCustomUser(model.CustomUser, model.GroupId);
                 model.Verified = true;
@@ -794,6 +801,7 @@ namespace SecretSantaApp.BL
 
                 var usersnotmelist = availableGroupMembers.Where(x => x != g).ToList();
 
+                //add -1? that could help nvm no it wont
                 var randopersonint = rnd.Next(usersnotmelist.Count);
 
                 var usertwo = usersnotmelist[randopersonint];
