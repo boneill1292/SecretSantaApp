@@ -15,7 +15,12 @@
 //}
 
 function ClosePopup() {
-    $('#modal-container').modal('hide');
+    console.log("Are we not closed");
+
+    //This causes the modal to not open with the correct data on the first try....
+    //$('#modal-container').modal('hide');
+    //$('#myModal').modal('hide');
+    
 }
 
 function ToggleChat() {
