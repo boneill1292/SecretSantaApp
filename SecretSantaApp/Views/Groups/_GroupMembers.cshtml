@@ -2,8 +2,12 @@
 @model GroupHomeEditModel
 @inject ISecretSantaBl ssbl
 @{
+    
+    var guid = Guid.NewGuid();
+    var containerid = $"divcontainerid-{guid}";
 }
 
+<div id="@containerid">
 @if (Model.GroupMembers.Count > 0)
 {
 
@@ -39,19 +43,27 @@
                 <td>
                     <button class="btn btn-group modal-link BtnGreen"
                             href="@userconditionsurl"
-                            title="Add modal"
                             data-target="#modal-container"
                             data-toggle="modal">
                         New Condition
                     </button>
-
+                    @*<button class="btn btn-group  BtnRed"
+                            id="infobtn"
+                            onclick="LoadDetails()">
+                        
+                        Info
+                    </button>*@
                     <button class="btn btn-group modal-link BtnRed"
                             href="@userdetailsurl"
-                            title="Add modal"
                             data-target="#modal-container"
-                            data-toggle="modal">
+                            data-toggle="#modal">
                         Info
                     </button>
+                    @*<a asp-action="ViewOtherUserDetailsPartial" 
+                       asp-controller="Account" 
+                       asp-route-id="@u.AccountNumberString" 
+                       data-target="#modal-container" 
+                       data-toggle="modal">Info</a>*@
                 </td>
             </tr>
           }
@@ -62,4 +74,27 @@
 else
 {
   <p>No Body Is in this group</p>
+}
+</div>
+@section scripts{
+    <script>
+
+
+        $(document).ready(function() {
+            $("#@containerid").trigger("create");
+        }); //doc ready
+
+
+            
+        $(function() {
+            $(".infobtn").click(function() {
+                console.log("clicked: ");
+                $("#modal").load("About",
+                    function() {
+
+                        $("#modal").modal();
+                    });
+            });
+        });
+    </script>  
 }
