@@ -22,12 +22,11 @@
                 var conditionstr = ssbl.ConditionDisplayByAccountNumbers(gc.UserReceivingConditionAcctNo, gc.UserSelectedForConditionAcctNo);
                 <tr>
                     <td> @conditionstr</td>
-
-                    @if (User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value == gc.InsertedBy)
-                    {
+                    s   
+                    @{
                         //var editruleurl = Url.Action("EditRulePopup", "Groups", new { ruleid = gc.ID });
                         var deleteruleurl = Url.Action("DeleteConditionPopup", "Groups", new { conditionid = gc.ConditionId });
-
+                    }
                     <td>
                         <button class="btn btn-group modal-link BtnRed"
                                 href="@deleteruleurl"
@@ -37,19 +36,18 @@
                             Delete
                         </button>
                     </td>
-                    }
-                    else
-                    {
-                        <td>you cannot edit this rule</td>
-                    }
+
+                 
+                    @*<td>you cannot edit this rule</td>*@
+                   
 
                 </tr>
-            }
+                        }
         </tbody>
     </table>
 
-}
-else
-{
-    <h4>No Conditions Yet</h4>
-}
+                        }
+                        else
+                        {
+                            <h4>No Conditions Yet</h4>
+                        }

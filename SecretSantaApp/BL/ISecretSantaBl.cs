@@ -74,5 +74,15 @@ namespace SecretSantaApp.BL
         //helpers
         CustomUserEditModel GetLoggedInUser();
         string ConditionDisplayByAccountNumbers(string ur, string us);
+
+
+        //acct
+        UserProfileViewModel UserProfileViewModelByAcctNo(ClaimsPrincipal user);
+
+        //CustomUserDetailsEditModel UserDetailsByUserAcctNo(string acctno);
+        CustomUserDetailsEditModel UserDetailsByUserId(int userid);
+
+        CustomUserDetailsDisplayModel UserDetailsByAcctNo(string acctno);
+        CustomUserDetailsEditModel SaveUserDetails(CustomUserDetailsEditModel model);
     }
 }

@@ -206,13 +206,6 @@ namespace SecretSantaApp.Controllers
         {
             if (!ModelState.IsValid)
             {
-                foreach (var modelState in ViewData.ModelState.Values)
-                {
-                    foreach (ModelError error in modelState.Errors)
-                    {
-                        Console.WriteLine("error message: " + error.ErrorMessage + " exception: " + error.Exception);
-                    }
-                }
                 return PartialView("_JoinGroupEntry", model);
             }
             //We need to pass the correct password - if the user does that.Add them to the group, and load the group  homepage.
@@ -223,8 +216,6 @@ namespace SecretSantaApp.Controllers
 
                 model.CustomUser = u;
                 var m = _secretSantaBl.CheckPasswordInput(model);
-                //ModelState.Clear();
-                //m.Verified = true;
                 return PartialView("_JoinGroupEntry", m);
             }
             catch (Exception ex)

@@ -24,9 +24,10 @@
         <tbody>
           @foreach (var u in Model.GroupMembershipModelList)
           {
-            var user = ssbl.UserFullNameByAccountNumberString(u.AccountNumberString);
-            var image = ssbl.UserImageByAccountNumberString(u.AccountNumberString);
-            var userconditionsurl = Url.Action("NewMemberConditionPopup", "Groups", new { membershipid = u.ID, acctno = u.AccountNumberString });
+              var user = ssbl.UserFullNameByAccountNumberString(u.AccountNumberString);
+              var image = ssbl.UserImageByAccountNumberString(u.AccountNumberString);
+              var userconditionsurl = Url.Action("NewMemberConditionPopup", "Groups", new { membershipid = u.ID, acctno = u.AccountNumberString });
+              var userdetailsurl = Url.Action("ViewOtherUserDetailsPartial", "Account", new {acctno = u.AccountNumberString});
             <tr>
               <td>
                 <img src="@image"
@@ -35,15 +36,23 @@
                 <td>@user</td>
                 <td>&nbsp;</td>
               @*<td>@u.Email</td>*@
-              <td>
-                <button class="btn btn-group modal-link BtnGreen"
-                        href="@userconditionsurl"
-                        title="Add modal"
-                        data-target="#modal-container"
-                        data-toggle="modal">
-                  New Condition
-                </button>
-              </td>
+                <td>
+                    <button class="btn btn-group modal-link BtnGreen"
+                            href="@userconditionsurl"
+                            title="Add modal"
+                            data-target="#modal-container"
+                            data-toggle="modal">
+                        New Condition
+                    </button>
+
+                    <button class="btn btn-group modal-link BtnRed"
+                            href="@userdetailsurl"
+                            title="Add modal"
+                            data-target="#modal-container"
+                            data-toggle="modal">
+                        Info
+                    </button>
+                </td>
             </tr>
           }
         </tbody>

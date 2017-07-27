@@ -1,0 +1,40 @@
+﻿
+@model SecretSantaApp.ViewModels.CustomUserDetailsDisplayModel
+@{
+    string test = "hey";
+    var uid = Guid.NewGuid();
+    var containerid = $"divcontainerid-{uid}";
+}
+
+<div id="@containerid">
+
+    
+    <div class="row" style="width:50%">
+        <table class="table table-responsive table-striped">
+            <thead>
+            <tr>
+                <th>Shoe Size</th>
+                <th>Shirt Size</th>
+                <th>Pant Size</th>
+                <th>Sweat Shirt Size</th>
+                <th>Favorite Brands</th>
+                <th>Notes</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>@Model.ShoeSize</td>
+                <td>@Model.ShirtSize</td>
+                <td>@Model.PantsSize</td>
+                <td>@Model.SweatShirtSize</td>
+                <td>@Model.FavoriteBrands</td>
+                <td>@Model.Notes</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
+</div>

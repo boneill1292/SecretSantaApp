@@ -24,6 +24,7 @@ namespace SecretSantaApp.BL
         private readonly IGroupRulesDal _groupRulesDal;
         private readonly IGroupMessagesDal _groupMessagesDal;
         private readonly IMemberConditionsDal _memberConditionsDal;
+        private readonly ICustomUserDetailsDal _customUserDetailsDal;
         private static Random rnd = new Random();
         public SecretSantaBl(IGroupDal groupDal,
                              ICustomUserDal customUserDal,
@@ -31,7 +32,8 @@ namespace SecretSantaApp.BL
                               IGroupMembershipDal groupMembershipDal,
                               IGroupRulesDal groupRulesDal,
                               IGroupMessagesDal groupMessagesDal,
-                              IMemberConditionsDal memberConditionsDal)
+                              IMemberConditionsDal memberConditionsDal,
+                               ICustomUserDetailsDal customUserDetailsDal)
         {
             _groupDal = groupDal;
             _customUserDal = customUserDal;
@@ -40,6 +42,7 @@ namespace SecretSantaApp.BL
             _groupRulesDal = groupRulesDal;
             _groupMessagesDal = groupMessagesDal;
             _memberConditionsDal = memberConditionsDal;
+            _customUserDetailsDal = customUserDetailsDal;
         }
 
         public CustomUserEditModel CustomUserModelByLoggedInUser(ClaimsPrincipal user)
@@ -343,7 +346,7 @@ namespace SecretSantaApp.BL
 
 
             var result = new JoinGroupEditModel();
-           // result.Group = group; //This was causing validation errors... why do i even need this?
+            // result.Group = group; //This was causing validation errors... why do i even need this?
             result.GroupName = group.GroupName;
             result.GroupId = groupid;
             result.Verified = false;
@@ -372,15 +375,9 @@ namespace SecretSantaApp.BL
             if (model.UserInputGroupPassword != password)
             {
                 throw new Exception("Incorrect password");
-                //model.Verified = false;
-                //model.ErrorMsg = "Incorrect Password";
-                //model.Group = group;
-                //model.GroupId = group.GroupId;
-                //return model;
             }
             else
             {
-                //model.Group = group;
                 model.GroupId = group.GroupId;
                 model.GroupName = group.GroupName;
 
@@ -463,16 +460,6 @@ namespace SecretSantaApp.BL
             var group = _groupDal.GetGroupById(groupid);
             var grouprules = _groupRulesDal.RulesByGroupId(groupid);
             var groupconditions = _memberConditionsDal.MemberConditionsByGroupId(groupid);
-            //var conditionstringlist = new List<string>();
-
-            //foreach (var c in groupconditions)
-            //{
-            //    var ur = _customUserDal.CustomUserByAccountNumber(c.UserReceivingConditionAcctNo);
-            //    var us = _customUserDal.CustomUserByAccountNumber(c.UserSelectedForConditionAcctNo);
-
-            //    var condition = ur.FullName + " Cannot Have: " + us.FullName;
-            //    conditionstringlist.Add(condition);
-            //}
 
 
             var result = new GroupRulesDisplayModel();
@@ -598,18 +585,20 @@ namespace SecretSantaApp.BL
 
             var result = new MemberConditionsEditModel();
             result.Update(condition);
-           // result.Update(deleted);
+            // result.Update(deleted);
             return result;
         }
 
         public MemberConditionsEditModel DeleteMemberCondition(MemberConditionsEditModel model)
         {
-            var condition = _memberConditionsDal.MemberConditionByConditionId(model.ConditionId);
+            //var condition = _memberConditionsDal.MemberConditionByConditionId(model.ConditionId);
+            var condition = new MemberConditions();
+            condition.Update(model);
+
             var deleted = _memberConditionsDal.Delete(condition);
 
             var result = new MemberConditionsEditModel();
-            //result.Update(condition);
-             result.Update(deleted);
+            result.Update(deleted);
             return result;
         }
 
@@ -659,71 +648,10 @@ namespace SecretSantaApp.BL
         public DrawNamesDisplayModel DrawNames(DrawNamesDisplayModel model)
         {
 
-            //Get the logged in users ID
-            //var loggedinuser = GetLoggedInUser();
-            //var userid = loggedinuser.AccountNumberString;
+
 
 
             var drawnnamelist = new List<DrawNamesEditModel>();
-            ////Load all the members in a group
-            //var groupmembers = _groupMembershipDal.AllGroupMembersByGroupId(model.Group.GroupId);
-
-            ////Get a list of all members acct no's
-            //var allGroupMembersAcctNoList = groupmembers.Select(x => x.AccountNumberString).ToList();
-
-            ////if this works cant copy the list 
-            //var tempAllGroupMembersList = groupmembers.Select(x => x.AccountNumberString).ToList();
-
-            ////var randopersonint = rnd.Next(groupmemberacctnolist.Count);
-            ////var randoperson = groupmemberacctnolist[randopersonint];
-
-            //foreach (var g in allGroupMembersAcctNoList)
-            //{
-            //    //GOTO a BL method to generate a random person. 
-            //    var d = new DrawNamesEditModel();
-
-
-            //    //var anyconditions = _memberConditionsDal.MemberConditionsByGroupIdByAcctNo(model.Group.GroupId, g);
-            //    //var conditionsList = new List<string>();
-
-            //    //if (anyconditions.Any())
-            //    //{
-            //    //    foreach (var c in anyconditions)
-            //    //    {
-            //    //        var u = c.UserSelectedForConditionAcctNo;
-            //    //        conditionsList.Add(u);
-            //    //    }
-            //    //}
-
-            //   // tempAllGroupMembersList.RemoveRange(conditionsList);
-
-            //    //**Check this out
-            //    //var resultlist = tempAllGroupMembersList.Except(conditionsList).ToList();
-
-            //    var userone = g;
-
-            //    var usersnotmelist = tempAllGroupMembersList.Where(x => x != g).ToList();
-
-            //    var randopersonint = rnd.Next(usersnotmelist.Count);
-
-            //    var usertwo = tempAllGroupMembersList[randopersonint];
-
-            //    // cant remove from a list so need to make it an empty string?
-            //    //allGroupMembersAcctNoList[randopersonint] = string.Empty;
-
-            //    tempAllGroupMembersList.RemoveAt(randopersonint);
-
-            //    d.UserOne = userone;
-            //    d.UserTwo = usertwo;
-            //    drawnnamelist.Add(d);
-
-            //}
-
-
-
-            //Load all of the conditions in the group
-
-            //Cross reference all the members with all the conditions
 
 
             drawnnamelist = GetRandomUsersForDrawingNames(model.Group.GroupId);
@@ -777,7 +705,7 @@ namespace SecretSantaApp.BL
             {
                 //GOTO a BL method to generate a random person. 
                 var d = new DrawNamesEditModel();
-               
+
 
 
                 //var anyconditions = _memberConditionsDal.MemberConditionsByGroupIdByAcctNo(model.Group.GroupId, g);
@@ -821,7 +749,7 @@ namespace SecretSantaApp.BL
             {
                 if (x.UserOne == x.UserTwo)
                 {
-                    redraw = true;   
+                    redraw = true;
                 }
             }
 
@@ -829,9 +757,80 @@ namespace SecretSantaApp.BL
             {
                 GetRandomUsersForDrawingNames(groupid);
             }
-            
+
 
             return drawnnamelist;
+        }
+
+
+
+
+
+        //Account Stuff
+        public UserProfileViewModel UserProfileViewModelByAcctNo(ClaimsPrincipal user)
+        {
+            //var user = _httpContextAccessor.HttpContext.User;
+            var result = new UserProfileViewModel();
+            result.Name = user.Identity.Name;
+            result.EmailAddress = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            result.ProfileImage = user.Claims.FirstOrDefault(c => c.Type == "picture")?.Value;
+            result.UserAcctNo = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+
+            var u = _customUserDal.CustomUserByAccountNumber(result.UserAcctNo);
+            result.UserId = u.UserId;
+
+            return result;
+
+        }
+
+
+        public CustomUserDetailsEditModel UserDetailsByUserId(int userid)
+        {
+            var result = new CustomUserDetailsEditModel();
+            //var details = _customUserDetailsDal.UserDetailsByCustomUserAcctNo(acctno);
+
+            var details = _customUserDetailsDal.UserDetailsByUserId(userid);
+            if (details != null)
+            {
+                result.Update(details);
+                return result;
+            }
+            else
+            {
+                return new CustomUserDetailsEditModel();
+            }
+        }
+
+        public CustomUserDetailsDisplayModel UserDetailsByAcctNo(string acctno)
+        {
+            var result = new CustomUserDetailsDisplayModel();
+            //var details = _customUserDetailsDal.UserDetailsByCustomUserAcctNo(acctno);
+
+            var user = _customUserDal.CustomUserByAccountNumber(acctno);
+
+            var details = _customUserDetailsDal.UserDetailsByUserId(user.UserId);
+            if (details != null)
+            {
+                result.Update(details);
+                return result;
+            }
+            else
+            {
+                return new CustomUserDetailsDisplayModel();
+            }
+        }
+
+
+        public CustomUserDetailsEditModel SaveUserDetails(CustomUserDetailsEditModel model)
+        {
+
+            var result = new CustomUserDetailsEditModel();
+            var details = new CustomUserDetails();
+            details.Update(model);
+            var saved = _customUserDetailsDal.Save(details);
+            //result.Update(saved);
+            result.Update(saved);
+            return result;
         }
 
     }

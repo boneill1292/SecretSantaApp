@@ -191,6 +191,32 @@ namespace SecretSantaApp.Migrations
                     b.ToTable("CustomUsers");
                 });
 
+            modelBuilder.Entity("SecretSantaApp.Models.CustomUserDetails", b =>
+                {
+                    b.Property<int>("DetailsId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("FavoriteBrands");
+
+                    b.Property<string>("Notes");
+
+                    b.Property<string>("PantsSize");
+
+                    b.Property<string>("ShirtSize");
+
+                    b.Property<int>("ShoeSize");
+
+                    b.Property<string>("SweatShirtSize");
+
+                    b.Property<string>("UserAcctNo");
+
+                    b.Property<int>("UserId");
+
+                    b.HasKey("DetailsId");
+
+                    b.ToTable("CustomUserDetails");
+                });
+
             modelBuilder.Entity("SecretSantaApp.Models.Group", b =>
                 {
                     b.Property<int>("GroupId")
