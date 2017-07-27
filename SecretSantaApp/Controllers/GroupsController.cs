@@ -37,19 +37,9 @@ namespace SecretSantaApp.Controllers
         // [Route("benapp/test")]
         public ActionResult Index()
         {
-            //var user = await _userManager.GetUserAsync(HttpContext.User);
-            //var LoggedInUser => User.Identity;
 
-            //gets the id... dunno what to do with it
-            //var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            //var model = _secretSantaBl.DefaultTestDataViewModel();
-            //var test = HttpContext.Session.GetObjectFromJson<TestDataViewModel>("Test");
-            //var user = HttpContext.Session.GetObjectFromJson<CustomUser>("LoggedInUser");
 
             var usermodel = _secretSantaBl.CustomUserModelByLoggedInUser(User);
-            //HttpContext.Session.SetObjectAsJson("LoggedInUser", usermodel);
-            //var usergroupsvm = _secretSantaBl.MyGroupsViewModelByUserId(usermodel);
-
             var model = _secretSantaBl.DefaultGroupAdminModel();
             return View("Index", model);
         }

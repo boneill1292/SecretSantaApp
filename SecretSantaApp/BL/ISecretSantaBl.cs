@@ -80,9 +80,11 @@ namespace SecretSantaApp.BL
         UserProfileViewModel UserProfileViewModelByAcctNo(ClaimsPrincipal user);
 
         //CustomUserDetailsEditModel UserDetailsByUserAcctNo(string acctno);
-        CustomUserDetailsEditModel UserDetailsByUserId(int userid);
+        CustomUserDetailsEditModel UserDetailsEditModelByUserId(int userid);
 
-        CustomUserDetailsDisplayModel UserDetailsByAcctNo(string acctno);
+        CustomUserDetailsEditModel UserDetailsEditModelByAcctNo(string acctno);
+
+        CustomUserDetailsDisplayModel UserDetailsDisplayModelByAcctNo(string acctno);
         CustomUserDetailsEditModel SaveUserDetails(CustomUserDetailsEditModel model);
     }
 }

@@ -784,7 +784,7 @@ namespace SecretSantaApp.BL
         }
 
 
-        public CustomUserDetailsEditModel UserDetailsByUserId(int userid)
+        public CustomUserDetailsEditModel UserDetailsEditModelByUserId(int userid)
         {
             var result = new CustomUserDetailsEditModel();
             //var details = _customUserDetailsDal.UserDetailsByCustomUserAcctNo(acctno);
@@ -801,7 +801,27 @@ namespace SecretSantaApp.BL
             }
         }
 
-        public CustomUserDetailsDisplayModel UserDetailsByAcctNo(string acctno)
+
+        public CustomUserDetailsEditModel UserDetailsEditModelByAcctNo(string acctno)
+        {
+            var result = new CustomUserDetailsEditModel();
+            //var details = _customUserDetailsDal.UserDetailsByCustomUserAcctNo(acctno);
+
+            var user = _customUserDal.CustomUserByAccountNumber(acctno);
+
+            var details = _customUserDetailsDal.UserDetailsByUserId(user.UserId);
+            if (details != null)
+            {
+                result.Update(details);
+                return result;
+            }
+            else
+            {
+                return new CustomUserDetailsEditModel();
+            }
+        }
+
+        public CustomUserDetailsDisplayModel UserDetailsDisplayModelByAcctNo(string acctno)
         {
             var result = new CustomUserDetailsDisplayModel();
             //var details = _customUserDetailsDal.UserDetailsByCustomUserAcctNo(acctno);

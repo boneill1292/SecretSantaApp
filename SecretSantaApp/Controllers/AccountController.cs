@@ -42,13 +42,6 @@ namespace SecretSantaApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel vm, string returnUrl = null)
         {
-            //Explore this?
-            //if (User.Identity.IsAuthenticated)
-            //{
-            //  var authenticateInfo = await HttpContext.Authentication.GetAuthenticateInfoAsync("Auth0");
-            //  string accessToken = authenticateInfo.Properties.Items[".Token.access_token"];
-            //  string idToken = authenticateInfo.Properties.Items[".Token.id_token"];
-            //}
             if (ModelState.IsValid)
             {
                 try
@@ -98,6 +91,106 @@ namespace SecretSantaApp.Controllers
 
 
 
+   
+
+
+
+        [HttpGet]
+        public IActionResult CheckUser()
+        {
+            var usermodel = _secretSantaBl.CustomUserModelByLoggedInUser(User);
+            //Sends the user to see if it is already in our database, or if should be added
+            var model = _secretSantaBl.CheckUserByCustomUserAccountNumber(usermodel);
+            return RedirectToAction(nameof(GroupsController.Index), "Groups");
+        }
+
+
+
+
+        [Authorize(Roles = "admin")]
+        public IActionResult Admin()
+        {
+            return View();
+        }
+
+
+
+
+        [Authorize]
+        [HttpGet]
+        public ActionResult Profile()
+        {
+            string msg;
+            try
+            {
+                var model = _secretSantaBl.UserProfileViewModelByAcctNo(User);
+                return View("Profile", model);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+                msg = "An Error Has Occured";
+            }
+            return PartialView("_ErrorMessage", new StringModel(msg));
+        }
+
+
+        [HttpGet]
+        public ActionResult UserDetailsPartial(int userid)
+        {
+            string msg;
+            try
+            {
+                var model = _secretSantaBl.UserDetailsEditModelByUserId(userid);
+                return PartialView("_UserDetails", model);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+                msg = "An Error Has Occured";
+            }
+            return PartialView("_ErrorMessage", new StringModel(msg));
+        }
+
+        [HttpGet]
+        public ActionResult ViewOtherUserDetailsPartial(string acctno)
+        {
+            string msg;
+            try
+            {
+
+                var model = _secretSantaBl.UserDetailsDisplayModelByAcctNo(acctno);
+                return PartialView("_DisplayUserDetails", model);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+                msg = "Error has occured";
+            }
+            return PartialView("_ErrorMessage", new StringModel(msg));
+        }
+
+        [HttpPost]
+        public ActionResult SaveUserDetails(CustomUserDetailsEditModel model)
+        {
+            try
+            {
+                var m = _secretSantaBl.SaveUserDetails(model);
+                m.Saved = true;
+                return PartialView("_UserDetails", m);
+                //return PartialView("_JoinGroupEntry", m);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+                //_log.LogWarning(ex.Message);
+            }
+            return PartialView("_UserDetails", model);
+        }
+
+
+
+
         [HttpGet]
         public IActionResult LoginExternal(string connection, string returnUrl = "/")
         {
@@ -120,36 +213,10 @@ namespace SecretSantaApp.Controllers
         public IActionResult RedirectToLocal(string returnUrl)
         {
             //var url = Url.Action("CheckUser", "Account");
-
             return RedirectToAction(nameof(AccountController.CheckUser), "Account");
 
         }
-
-
-
-        [HttpGet]
-        public IActionResult CheckUser()
-        {
-            var usermodel = _secretSantaBl.CustomUserModelByLoggedInUser(User);
-
-            //Sends the user to see if it is already in our database, or if should be added
-            var model = _secretSantaBl.CheckUserByCustomUserAccountNumber(usermodel);
-
-
-
-            return RedirectToAction(nameof(GroupsController.Index), "Groups");
-        }
-
-
-
-
-        [Authorize(Roles = "admin")]
-        public IActionResult Admin()
-        {
-            return View();
-        }
-
-
+        
 
         [Authorize]
         public async Task Logout()
@@ -164,64 +231,8 @@ namespace SecretSantaApp.Controllers
             await HttpContext.Authentication.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         }
 
-        [Authorize]
-        [HttpGet]
-        public ActionResult Profile()
-        {
-            var model = _secretSantaBl.UserProfileViewModelByAcctNo(User);
-            return View("Profile", model);
-        }
-
-
-        [HttpGet]
-        public ActionResult UserDetailsPartial(int userid)
-        {
-            try
-            {
-
-                var model = _secretSantaBl.UserDetailsByUserId(userid);
-                return PartialView("_UserDetails", model);
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError("", ex.Message);
-            }
-            return RedirectToAction("Profile");
-        }
-
-        [HttpGet]
-        public ActionResult ViewOtherUserDetailsPartial(string acctno)
-        {
-            try
-            {
-
-                var model = _secretSantaBl.UserDetailsByAcctNo(acctno);
-                return PartialView("_DisplayUserDetails", model);
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError("", ex.Message);
-            }
-            return RedirectToAction("Profile");
-        }
-
-        [HttpPost]
-        public ActionResult SaveUserDetails(CustomUserDetailsEditModel model)
-        {
-            try
-            {
-                var m = _secretSantaBl.SaveUserDetails(model);
-                 m.Saved = true;
-                return PartialView("_UserDetails", m);
-                //return PartialView("_JoinGroupEntry", m);
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError("", ex.Message);
-                //_log.LogWarning(ex.Message);
-            }
-            return PartialView("_UserDetails", model);
-        }
+        
+        
     }
 }
 

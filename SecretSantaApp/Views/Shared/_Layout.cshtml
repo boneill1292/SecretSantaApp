@@ -58,6 +58,7 @@
 
 <div class="container body-content">
     <!-- Modal -->
+    @*http://ericsaupe.com/tag/bootstrap-3-modal-ajax/*@
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -75,6 +76,7 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+    
     @*add the model code here so we can call it anywhere*@
     @*<div id="modal-container" class="modal" tabindex="-1" role="dialog" style="border: 5px solid black;">
           <a href="#" title="Close" class="close">X</a>
@@ -121,14 +123,14 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
     <script src="~/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/modal.js"></script>>
+    <script src="~/js/modal.js"></script>
   </environment>
 <environment names="Staging,Production">
   <script src="~/lib/jquery/dist/jquery.js"></script>
   <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
   <script src="~/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.js"></script>
   <script src="~/js/site.js" asp-append-version="true"></script>
-  <script src="~/js/modal.js"></script>>
+  <script src="~/js/modal.js"></script>
 </environment>
 
   

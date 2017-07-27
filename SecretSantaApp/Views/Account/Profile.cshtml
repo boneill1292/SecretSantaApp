@@ -36,20 +36,20 @@
     <script>
         $(document).ready(function() {
 
-            LoadDetails();
-            @*$.get('@userdetailsurl',
+            //LoadDetails();
+            $.get('@userdetailsurl',
                 function(data) {
-                    $("#userdetails").append(data);
-                });*@
+                    $("#userdetails").html(data);
+                });
 
         }); //doc ready
 
 
         //load the rules partial on the right
-        function LoadDetails() {
-            ClosePopup();
+        @*function LoadDetails() {
+            //ClosePopup();
             window.LayoutLoadPartial('userdetails', '@userdetailsurl', { 'label': 'Loading Details...' });
-        }
+        }*@
 
 
 
