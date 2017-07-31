@@ -21,69 +21,70 @@
 }
 else //its not a new group. its the go to group home method
 {
-    <div id="existinggroupdiv">
-        <div class="col-md-8" style="outline:1px green solid">
-            @Html.Partial("_GroupMembers", Model)
-        </div>
+    <div class="container">
+        <div id="existinggroupdiv">
+            <div class="col-md-7" style="outline:1px green solid">
+                @Html.Partial("_GroupMembers", Model)
+            </div>
 
 
 
-        @*The Div That Holds The Rules*@
-        <div id="rulesdiv" class="col-md-4" style="outline: 1px red solid">
-        </div>
+            @*The Div That Holds The Rules*@
+            <div id="rulesdiv" class="col-md-5" style="outline: 1px red solid">
+            </div>
 
-        <div class="clearfix"></div>
-        <br />
+            <div class="clearfix"></div>
+            <br />
 
-        <div class="santaloadspinner"></div>
-        <div id="displayresultsdiv" style="outline: 3px yellowgreen solid;">hi</div>
+            <div class="santaloadspinner"></div>
+            <div id="displayresultsdiv" style="outline: 3px yellowgreen solid;">hi</div>
 
-        <div class="clearfix"></div>
-        <br />
+            <div class="clearfix"></div>
+            <br />
 
-        @*The Div That Holds The Chat*@
-        <button type="button" onclick="ToggleChat()" id="btnDrawNames" class="btn BtnGreen " data-dismiss="modal">Toggle Chat</button>
-        <div id="chatdiv" class="col-md-12" style="outline: 1px green solid; ">
-        </div>
+            @*The Div That Holds The Chat*@
+            @*<button type="button" onclick="ToggleChat()" id="btnDrawNames" class="btn BtnGreen " data-dismiss="modal">Toggle Chat</button>*@
+            <div id="chatdiv" class="col-md-12" style="outline: 1px green solid; ">
+            </div>
 
-        <div class="clearfix"></div>
+            <div class="clearfix"></div>
 
-        @*@if (Model.GroupAdminBool)
-            {*@
-        <div class="col-md-12" style="padding-top:2%">
-            <div style="text-align: center;">
-                <div class="">
-                    <button class="btn btn-group modal-link BtnRed"
-                            href="@newruleurl"
-                            data-target="#modal-container"
-                            data-toggle="modal">
-                        Create Rule
-                    </button>
-                    <button class="btn btn-group modal-link BtnGreen"
-                            href="@getdrawnamesurl"
-                            data-target="#modal-container"
-                            data-toggle="modal">
-                        Draw Names
-                    </button>
-                    @*<button type="button" id="btnDrawNames" class="btn BtnGreen " data-dismiss="modal">Draw Names</button>*@
+            @*@if (Model.GroupAdminBool)
+                {*@
+            <div class="col-md-12" style="padding-top:2%">
+                <div style="text-align: center;">
+                    <div class="">
+                        <button class="btn btn-group modal-link BtnRed"
+                                href="@newruleurl"
+                                data-target="#modal-container"
+                                data-toggle="modal">
+                            Create Rule
+                        </button>
+                        <button class="btn btn-group modal-link BtnGreen"
+                                href="@getdrawnamesurl"
+                                data-target="#modal-container"
+                                data-toggle="modal">
+                            Draw Names
+                        </button>
+                    </div>
                 </div>
             </div>
+            @*}*@
+
+
+            <div style="padding-top: 5%">
+                @if (Model.GroupAdminBool)
+                {
+                    <p>You are the group admin, feel free to do things.</p>
+                }
+                else
+                {
+                    <p>You are not the group admin </p>
+                }
+            </div>
+
         </div>
-        @*}*@
-
-
-        <div style="padding-top: 5%">
-            @if (Model.GroupAdminBool)
-            {
-                <p>You are the group admin, feel free to do things.</p>
-            }
-            else
-            {
-                <p>You are not the group admin </p>
-            }
-        </div>
-
-    </div>
+    </div> @*container*@
 }
 
 

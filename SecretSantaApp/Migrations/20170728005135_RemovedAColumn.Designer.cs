@@ -8,9 +8,10 @@ using SecretSantaApp.Models;
 namespace SecretSantaApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170728005135_RemovedAColumn")]
+    partial class RemovedAColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -261,8 +262,6 @@ namespace SecretSantaApp.Migrations
                     b.Property<int>("GroupId");
 
                     b.Property<string>("InsertedBy");
-
-                    b.Property<DateTime>("InsertedDtm");
 
                     b.Property<string>("Message");
 

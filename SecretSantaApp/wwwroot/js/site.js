@@ -26,7 +26,9 @@ function ClosePopup() {
 }
 
 function ToggleChat() {
-    $('#chatdiv').toggle();
+    //$('#chatdiv').toggle();
+    $('#newmessageinput').toggle();
+    
 }
 
 //function LoadDetails() {

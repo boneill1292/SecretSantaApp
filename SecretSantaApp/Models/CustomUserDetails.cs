@@ -26,6 +26,7 @@ namespace SecretSantaApp.Models
         public string FavoriteBrands { get; set; }
 
         public string Notes { get; set; }
+        
 
 
         public virtual void Update(CustomUserDetails c)

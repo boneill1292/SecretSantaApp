@@ -3,116 +3,86 @@
 @model GroupChatDisplayModel
 @inject ISecretSantaBl ssbl
 @{
-  var uid = Guid.NewGuid();
-  var containerid = $"divcontainerid-{uid}";
-  var newmessagepopup = Url.Action("NewMessagePartial", "Groups", new { groupid = Model.GroupId });
+    var uid = Guid.NewGuid();
+    var containerid = $"divcontainerid-{uid}";
+    var newmessageurl = Url.Action("NewMessagePartial", "Groups", new { groupid = Model.GroupId });
 }
 
 <div id="@containerid">
 
 
-  <div class="col-md-12" style="text-align: center;">
-    <h4> lets chat in group: @Model.GroupName</h4>
-  </div>
 
-  <div class="row">
-    <div class="col-md-8" style="outline: 2px orange solid">
-      @if (Model.MessagesList.Count > 0)
-      {
-        <table class="table table-responsive table-striped">
-          <thead>
-          <tr>
-            <th>&nbsp;</th>
-            
-          </tr>
-          </thead>
-          <tbody>
-          @foreach (var r in Model.MessagesList)
-          {
-            var user = ssbl.UserFullNameByAccountNumberString(r.InsertedBy);
-            <tr>
-              <td>@user said:  @r.Message</td>
-
-             @if (User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value == r.InsertedBy)
-              {
-               @*var editruleurl = Url.Action("EditRulePopup", "Groups", new {ruleid = r.ID});
-                var deleteruleurl = Url.Action("DeleteRulePopup", "Groups", new {ruleid = r.ID});
-
-                <td>
-                  <button class="btn btn-group modal-link BtnGreen"
-                          href="@editruleurl"
-                          title="Add modal"
-                          data-target="#modal-container"
-                          data-toggle="modal">
-                    Edit
-                  </button>
-          
-
-                  <button class="btn btn-group modal-link BtnRed"
-                          href="@deleteruleurl"
-                          title="Add modal"
-                          data-target="#modal-container"
-                          data-toggle="modal">
-                    Delete
-                  </button>
-                </td>*@
-              }
-              else
-              {
-                @*<td>you cannot edit this rule</td>*@
-              }
-
-            </tr>
-          }
-          </tbody>
-        </table>
-      }
-      else
-      {
-        <h5>No Messages. Talk some smack!</h5>
-      }
-    </div>
-    
-    <div id="newmessageinput" class="col-md-4" style="outline:2px purple solid">
-      <h5>New Message input?</h5>
+    <div class="col-md-12" style="text-align: center;">
+        <h4> lets chat in group: @Model.GroupName</h4>
     </div>
 
-    @*<div class="row">
-      <div class="col-md-12" style="padding-top:2%">
-        <div style="text-align: center;">
-          <div class="">
-            <button type="button" onclick="LoadNewMessage()" id="btnDrawNames" class="btn BtnGreen " data-dismiss="modal">New Message</button>
+    <button type="button" onclick="ToggleChat()" id="btnDrawNames" class="btn BtnGreen " data-dismiss="modal">New Message</button>
+   
+        <div id="newmessageinput" class="col-md-12" style="outline: 2px purple solid; display: none;">
 
-            <button class="btn btn-group modal-link BtnRed"
-                  href="#"
-                  title="Add modal" data-target="#modal-container" data-toggle="modal">
-            New Message Popup
-          </button>
-          </div>
+            <h5>New Message</h5>
+   
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12" style="outline: 2px orange solid">
+            @if (Model.MessagesList.Count > 0)
+            {
+                <div id="divgroupchat">
+                    <table class="table table-responsive table-striped" style="max-height:60px!important;">
+                        <thead>
+                            <tr>
+                                <th>&nbsp;</th>
+                                <th>&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var r in Model.MessagesList.OrderByDescending(x => x.InsertedDtm))
+                            {
+                                var user = ssbl.UserFullNameByAccountNumberString(r.InsertedBy);
+                                <tr>
+                                    <td> <span style="font-size:.9em">@r.InsertedDtm.ToString("g")</span> @user said:  @r.Message </td>
+                                    <td>&nbsp;</td>
+
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <h5>No Messages. Talk some smack!</h5>
+            }
         </div>
-      </div>
-    </div>*@
-    
-  </div>
+
+    </div> @*row*@
 
 
-  <script>
-    $(document).ready(function() {
+    <script>
+        $(document).ready(function() {
 
-      LoadNewMessage();
-    
+            LoadNewMessage();
 
-    }); //doc ready
 
-    
-    function LoadNewMessage() {
-      console.log("boom load");
+        }); //doc ready
 
-      $.get('@newmessagepopup',
+
+        function LoadNewMessage() {
+            console.log("boom load");
+
+            window.LayoutLoadPartial('newmessageinput', '@newmessageurl', { 'label': 'Loading New Message...' });
+
+            @*$.get('@newmessagepopup',
         function(data) {
           $("#newmessageinput").append(data);
-        });
-    }
-  </script>
+        });*@
+        }
+    </script>
 
 </div>
+
+<style>
+
+</style>

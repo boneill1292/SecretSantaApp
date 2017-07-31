@@ -11,43 +11,43 @@
 
     <table class="table table-responsive table-striped">
         <thead>
-            <tr>
-                <th>Condition</th>
-                <th></th>
-            </tr>
+        <tr>
+            <th>Condition</th>
+            <th></th>
+        </tr>
         </thead>
         <tbody>
-            @foreach (var gc in Model.GroupConditions)
-            {
-                var conditionstr = ssbl.ConditionDisplayByAccountNumbers(gc.UserReceivingConditionAcctNo, gc.UserSelectedForConditionAcctNo);
-                <tr>
-                    <td> @conditionstr</td>
-                    s   
-                    @{
-                        //var editruleurl = Url.Action("EditRulePopup", "Groups", new { ruleid = gc.ID });
-                        var deleteruleurl = Url.Action("DeleteConditionPopup", "Groups", new { conditionid = gc.ConditionId });
-                    }
-                    <td>
-                        <button class="btn btn-group modal-link BtnRed"
-                                href="@deleteruleurl"
-                                title="Add modal"
-                                data-target="#modal-container"
-                                data-toggle="modal">
-                            Delete
-                        </button>
-                    </td>
+        @foreach (var gc in Model.GroupConditions)
+        {
+            var conditionstr = ssbl.ConditionDisplayByAccountNumbers(gc.UserReceivingConditionAcctNo, gc.UserSelectedForConditionAcctNo);
+            <tr>
+                <td> @conditionstr</td>
 
-                 
-                    @*<td>you cannot edit this rule</td>*@
-                   
+                @{
+                    //var editruleurl = Url.Action("EditRulePopup", "Groups", new { ruleid = gc.ID });
+                    var deleteruleurl = Url.Action("DeleteConditionPopup", "Groups", new {conditionid = gc.ConditionId});
+                }
+                <td>
+                    <button class="btn btn-group modal-link BtnRed"
+                            href="@deleteruleurl"
+                            title="Add modal"
+                            data-target="#modal-container"
+                            data-toggle="modal">
+                        Delete
+                    </button>
+                </td>
 
-                </tr>
-                        }
+
+                @*<td>you cannot edit this rule</td>*@
+
+
+            </tr>
+        }
         </tbody>
     </table>
 
-                        }
-                        else
-                        {
-                            <h4>No Conditions Yet</h4>
-                        }
+}
+else
+{
+    <h4>No Conditions Yet</h4>
+}

@@ -508,6 +508,7 @@ namespace SecretSantaApp.BL
             var u = CustomUserModelByLoggedInUser(liu);
 
             m.InsertedBy = u.AccountNumberString;
+            m.InsertedDtm = DateTime.Now;
 
             var saved = _groupMessagesDal.Save(m);
 
