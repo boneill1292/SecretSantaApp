@@ -45,13 +45,10 @@
         }); //doc ready
 
 
-        //load the rules partial on the right
-        @*function LoadDetails() {
-            //ClosePopup();
-            window.LayoutLoadPartial('userdetails', '@userdetailsurl', { 'label': 'Loading Details...' });
-        }*@
 
-
+        function ReloadUserDetails() {
+            window.LayoutLoadPartial('userdetails', '@userdetailsurl', { 'label': 'Reloading...' });
+        }
 
         function ClosePopup()
         {

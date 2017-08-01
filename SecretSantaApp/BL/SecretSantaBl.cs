@@ -829,16 +829,16 @@ namespace SecretSantaApp.BL
 
             var user = _customUserDal.CustomUserByAccountNumber(acctno);
 
+            result.UserFullName = user.FullName;
+
             var details = _customUserDetailsDal.UserDetailsByUserId(user.UserId);
             if (details != null)
             {
                 result.Update(details);
-                return result;
             }
-            else
-            {
-                return new CustomUserDetailsDisplayModel();
-            }
+
+            return result;
+
         }
 
 

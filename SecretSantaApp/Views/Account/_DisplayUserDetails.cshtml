@@ -9,31 +9,58 @@
 <div id="@containerid">
 
     
-    <div class="row" style="width:50%">
-        <table class="table table-responsive table-striped">
-            <thead>
-            <tr>
-                <th>Shoe Size</th>
-                <th>Shirt Size</th>
-                <th>Pant Size</th>
-                <th>Sweat Shirt Size</th>
-                <th>Favorite Brands</th>
-                <th>Notes</th>
+    @if (Model.DetailsId >= 1)
+    {
+        <div style="">
+            <table class="table table-responsive table-striped">
+                <tbody>
+                <tr>
+                    <th>Shoe Size</th>
+                    <td>@Model.ShoeSize</td>
+                    <th>&nbsp;</th>
+                </tr>
 
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>@Model.ShoeSize</td>
-                <td>@Model.ShirtSize</td>
-                <td>@Model.PantsSize</td>
-                <td>@Model.SweatShirtSize</td>
-                <td>@Model.FavoriteBrands</td>
-                <td>@Model.Notes</td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+                <tr>
+                    <th>Shirt Size</th>
+                    <td>@Model.ShirtSize</td>
+                    <th>&nbsp;</th>
+                </tr>
+                <tr>
+                    <th>Pant Size</th>
+                    <td>@Model.PantsSize</td>
+                    <th>&nbsp;</th>
+                </tr>
+
+                <tr>
+                    <th>Sweat Shirt Size</th>
+                    <td>@Model.SweatShirtSize</td>
+                    <th>&nbsp;</th>
+                </tr>
+
+                <tr>
+                    <th>Favorite Brands</th>
+                    <td>@Model.FavoriteBrands</td>
+                    <th>&nbsp;</th>
+                </tr>
+
+                <tr>
+                    <th>Notes</th>
+                    <td>@Model.Notes</td>
+                    <th>&nbsp;</th>
+                </tr>
+
+                </tbody>
+
+            </table>
+        </div>
+    }
+    else
+    {
+        <div>
+            <h4>@Model.UserFullName Has Not Entered Any Information</h4>
+        </div>
+    }
+
 
 
 

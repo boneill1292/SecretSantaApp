@@ -22,8 +22,30 @@
 else //its not a new group. its the go to group home method
 {
     <div class="container">
+        @*@if (Model.GroupAdminBool)
+            {*@
+        <div class="col-md-12" style="padding-top:2%">
+            <div style="text-align: center;">
+                <div class="">
+                    <button class="btn btn-group modal-link BtnRed"
+                            href="@newruleurl"
+                            data-target="#myModal"
+                            data-toggle="modal">
+                        Create Rule
+                    </button>
+
+                    <button class="btn btn-group modal-link BtnGreen"
+                            href="@getdrawnamesurl"
+                            data-target="#myModal"
+                            data-toggle="modal">
+                        Draw Names
+                    </button>
+                </div>
+            </div>
+        </div>
+        @*}*@
         <div id="existinggroupdiv">
-            <div class="col-md-7" style="outline:1px green solid">
+            <div class="col-md-7" style="outline: 1px green solid">
                 @Html.Partial("_GroupMembers", Model)
             </div>
 
@@ -44,32 +66,12 @@ else //its not a new group. its the go to group home method
 
             @*The Div That Holds The Chat*@
             @*<button type="button" onclick="ToggleChat()" id="btnDrawNames" class="btn BtnGreen " data-dismiss="modal">Toggle Chat</button>*@
-            <div id="chatdiv" class="col-md-12" style="outline: 1px green solid; ">
+            <div id="chatdiv" class="col-md-12" style="outline: 1px green solid;">
             </div>
 
             <div class="clearfix"></div>
 
-            @*@if (Model.GroupAdminBool)
-                {*@
-            <div class="col-md-12" style="padding-top:2%">
-                <div style="text-align: center;">
-                    <div class="">
-                        <button class="btn btn-group modal-link BtnRed"
-                                href="@newruleurl"
-                                data-target="#modal-container"
-                                data-toggle="modal">
-                            Create Rule
-                        </button>
-                        <button class="btn btn-group modal-link BtnGreen"
-                                href="@getdrawnamesurl"
-                                data-target="#modal-container"
-                                data-toggle="modal">
-                            Draw Names
-                        </button>
-                    </div>
-                </div>
-            </div>
-            @*}*@
+
 
 
             <div style="padding-top: 5%">
@@ -135,6 +137,18 @@ else //its not a new group. its the go to group home method
         function LoadChat() {
             //ClosePopup();
             window.LayoutLoadPartial('chatdiv', '@chaturl', { 'label': 'Loading Chat...' });
+        }
+
+        
+        function ClosePopup() {
+            //$('.modal').modal('hide');
+            $('#myModal').modal('hide');
+            console.log("Close Popup");
+
+            //This causes the modal to not open with the correct data on the first try....
+            //$('#modal-container').modal('hide');
+   
+
         }
 
     </script>

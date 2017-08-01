@@ -247,7 +247,7 @@ namespace SecretSantaApp.Controllers
                 //var m = _secretSantaBl.SaveGroupRules(model);
                 var m = _secretSantaBl.DeleteGroupRule(model);
                 m.Saved = true;
-                return PartialView("_NewRulePopup", m);
+                return PartialView("_DeleteRulePopup", m);
                 //return PartialView("_JoinGroupEntry", m);
             }
             catch (Exception ex)
