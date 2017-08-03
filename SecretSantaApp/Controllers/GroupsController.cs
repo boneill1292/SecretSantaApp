@@ -326,21 +326,44 @@ namespace SecretSantaApp.Controllers
         [HttpGet]
         public ActionResult NewMemberConditionPopup(int membershipid, string acctno)
         {
-            var model = _secretSantaBl.MemberConditionsEditModelByMembershipId(membershipid, acctno);
-            model.NewCondition = true;
-            return PartialView("_MemberConditions", model);
+            string msg = "";
+            try
+            {
+                var model = _secretSantaBl.MemberConditionsEditModelByMembershipId(membershipid, acctno);
+                model.NewCondition = true;
+                return PartialView("_MemberConditions", model);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+                _log.LogWarning(ex.Message);
+            }
+            return PartialView("_ErrorMessage", new StringModel(msg));
+
         }
 
 
         [HttpPost]
         public ActionResult SaveNewMemberCondition(MemberConditionsEditModel model)
         {
-            model.ConditionId = 0;
-            var m = _secretSantaBl.SaveNewMemberCondition(model);
-            m.Saved = true;
 
+            try
+            {
+                model.ConditionId = 0;
+                var m = _secretSantaBl.SaveNewMemberCondition(model);
+                m.Saved = true;
+
+                return PartialView("_MemberConditions", model);
+            }
+            catch (Exception ex)
+            {
+                //_log.Log(ex.Message + "");
+                ModelState.AddModelError("", ex.Message);
+            }
             return PartialView("_MemberConditions", model);
         }
+
+
 
 
         [HttpGet]
@@ -371,10 +394,21 @@ namespace SecretSantaApp.Controllers
         [HttpPost]
         public ActionResult SubmitDrawNames(DrawNamesDisplayModel model)
         {
-            var m = _secretSantaBl.DrawNames(model);
-            m.Saved = true;
-            return PartialView("_DrawNames", m);
+            try
+            {
+                var m = _secretSantaBl.DrawNames(model);
+                m.Saved = true;
+                return PartialView("_DrawNames", m);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+                _log.LogWarning(ex.Message);
+            }
+            return PartialView("_DrawNames", model);
         }
+
+
         ////Will not use
         //[HttpGet]
         //public ActionResult JoinGroup(int id)

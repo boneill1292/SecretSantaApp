@@ -525,6 +525,11 @@ namespace SecretSantaApp.BL
             var members = _groupMembershipDal.GroupMembershipModelByGroupMembershipId(membershipid);
             var group = _groupDal.GetGroupById(members.GroupId);
 
+
+            //Need to look to see if there are any other conditions, and remove them from the result list.
+            //var existingconditions = _memberConditionsDal.MemberConditionsByGroupId(group.GroupId);
+            //var exists = existingconditions.Any(x => x.UserSelectedForConditionAcctNo == acctno);
+
             var name = UserFullNameByAccountNumberString(members.AccountNumberString);
             var othergroupmembers = _groupMembershipDal.AllGroupMembersByGroupId(group.GroupId);
             othergroupmembers = othergroupmembers.Where(x => x.AccountNumberString != members.AccountNumberString).ToList();
@@ -547,7 +552,7 @@ namespace SecretSantaApp.BL
 
         public MemberConditionsEditModel SaveNewMemberCondition(MemberConditionsEditModel model)
         {
-            if (model.UserSelectedForConditionMembershipNo == null)
+            if (model.UserSelectedForConditionMembershipNo <= 0)
             {
                 throw new Exception("Must select a person");
             }
@@ -648,9 +653,7 @@ namespace SecretSantaApp.BL
 
         public DrawNamesDisplayModel DrawNames(DrawNamesDisplayModel model)
         {
-
-
-
+            
 
             var drawnnamelist = new List<DrawNamesEditModel>();
 
