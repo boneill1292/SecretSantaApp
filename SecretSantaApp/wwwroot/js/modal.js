@@ -38,10 +38,10 @@ $(function () {
     //clear modal cache, so that new content can be loaded
     $('#myModal').on('hidden.bs.modal', function () {
         $(this).removeData('bs.modal');
-
+       
         //Doesnt work :(
-        //$("#myModal .modal-content .ControlBox").html('<div><h4>Loading... </h4> </div> <div class="santaloadspinner"> </div>');
-
+        $("#myModal .modal-content .ControlBox").html('<div><h4>Loading... </h4> </div> <div class="santaloadspinner"> </div>');
+        
     });
 
     $('#myModal').on('shown.bs.modal', function () {

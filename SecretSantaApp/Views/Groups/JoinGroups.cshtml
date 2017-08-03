@@ -1,35 +1,73 @@
 ﻿@model JoinGroupEditModel
 
 @{
-  //var joingrouppopupurl = Url.Action("PromptUserForPassword", "Groups");
+//var joingrouppopupurl = Url.Action("PromptUserForPassword", "Groups");
 }
 <h3>These are the available groups you can join</h3>
 <div class="row">
     <table class="table table-responsive table-striped">
         <thead>
-        <tr>
-            <th>Group Name</th>
-            <th>Password</th>
-            <td>&nbsp;</td>
-        </tr>
+            <tr>
+                <th>Group Name</th>
+                <th>Password</th>
+                <td>&nbsp;</td>
+            </tr>
         </thead>
         <tbody>
-        @foreach (var g in Model.GroupsNotMemberOf)
-        {
-            var url = Url.Action("PromptUserForPassword", "Groups", new { id = g.GroupId });
-            <tr>
-                <td>@g.GroupName</td>
-                <td>@g.GroupPassWord</td>
-                <td>
-                    <button class="btn btn-group modal-link BtnGreen" href="@url" title="Add modal" data-target="#modal-container" data-toggle="modal">Join Group</button>
-                    @*<span> <img src="~/images/smChristmasElf.png" alt="Reindeer" class="img-circle" style="display:inline!important"></span>*@
-                </td>
-            </tr>
-        }
+            @foreach (var g in Model.GroupsNotMemberOf)
+            {
+                var url = Url.Action("PromptUserForPassword", "Groups", new { id = g.GroupId });
+                <tr>
+                    <td>@g.GroupName</td>
+                    <td>@g.GroupPassWord</td>
+                    <td>
+                        @*<button class="btn btn-group modal-link BtnGreen"
+                                    href="@url"
+                                    title="Add modal"
+                                    data-target="#myModal"
+                                    data-toggle="modal">
+                                Join Group
+                            </button>*@
+                        <button class="btn btn-group  BtnGreen"
+                                onclick="LoadPopup('@url')">
+                            TEST Join Group
+                        </button>
+                    </td>
+                </tr>
+            }
         </tbody>
     </table>
 </div>
 
-@*@section scripts{
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
-}*@
+@section scripts{
+    <script>
+        $(document).ready(function () {
+
+        });
+
+        function LoadPopup(url) {
+
+            console.log("url: " + url);
+            $.ajax({
+                url: url,
+                dataType: 'html',
+                success: function (data) {
+                    $('#alertModalBody').html(data);
+                    $('#alertModal').modal();
+                }
+
+
+            }); // close ajax
+        }// close function
+
+
+        //function grid(abc) {
+        //    var tab = "<table class='table'>";
+        //    // ... More string appends
+
+        //    $('alertModalBody').html(tab);
+        //    $("#alertModal").modal('show');
+        //}
+    </script>
+
+}

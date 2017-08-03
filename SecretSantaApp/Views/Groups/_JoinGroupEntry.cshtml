@@ -1,106 +1,113 @@
 ﻿@model JoinGroupEditModel
 @{
-  var uid = Guid.NewGuid();
-  var containerid = $"divcontainerid-{uid}";
- // var ajaxurl = Url.Action("CheckPasswordInput", "Groups");
+    var uid = Guid.NewGuid();
+    var containerid = $"divcontainerid-{uid}";
+    // var ajaxurl = Url.Action("CheckPasswordInput", "Groups");
 }
 
 <div id="@containerid">
 
 
-  @if (Model.Verified)
-  {
-    var url = Url.Action("GroupHome", "Groups", new {id = Model.GroupId});
+    @if (Model.Verified)
+    {
+        var url = Url.Action("GroupHome", "Groups", new { id = Model.GroupId });
 
-    <h3>You are in the group : @Model.GroupName - @Model.GroupId - </h3>
-    <br />
-    <br />
+        <h3>You are in the group : @Model.GroupName - @Model.GroupId - </h3>
+        <br />
+        <br />
 
-    <script>
+        <script>
       $(function () {
         console.log("you in!");
         window.location.href = '@url';
       });
-    </script>
-  }
-  else
-  {
-    <div id="resultcontainer" style="padding: 5%">
-      <div class="">
-          <div class="modal-title" style="color: black">
-              <h3>Join Group: @Model.GroupName</h3>
-          </div>
-          <div asp-validation-summary="All" class="text-danger"></div>
-          <form asp-action="SubmitJoinGroup" method="POST"
-                data-ajax="true"
-                data-ajax-method="POST"
-                data-ajax-mode="replacewith"
-                data-ajax-update="#@containerid">
-              
-              <div class="form-group">
-                  <label asp-for="UserInputGroupPassword" class="col-md-12 control-label"></label>
-                  <input asp-for="UserInputGroupPassword" class="form-control" required="" placeholder="Group Password" oninvalid="this.setCustomValidity('Please Enter the Password')"/>
-                  <span asp-validation-for="UserInputGroupPassword" class="text-danger"></span>
+        </script>
+    }
+    else
+    {
+        <div id="resultcontainer" style="padding: 5%">
+            <div class="">
+                <div class="modal-title" style="color: black">
+                    <h3>Join Group: @Model.GroupName</h3>
+                </div>
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <form asp-action="SubmitJoinGroup" method="POST"
+                      data-ajax="true"
+                      data-ajax-method="POST"
+                      data-ajax-mode="replacewith"
+                      data-ajax-update="#@containerid">
 
-                  @if (Model.ErrorMsg != null)
-                  {
-                      <span class="text-danger"> @Model.ErrorMsg</span>
-                  }
+                    <div class="form-group">
+                        <label asp-for="UserInputGroupPassword" class="col-md-12 control-label"></label>
+                        <input asp-for="UserInputGroupPassword" class="form-control" required="" placeholder="Group Password" oninvalid="this.setCustomValidity('Please Enter the Password')" />
+                        <span asp-validation-for="UserInputGroupPassword" class="text-danger"></span>
 
-              </div>
-              <div class="">
-                  <span> <img src="~/images/smChristmasElf.png" alt="Reindeer" class="img-circle" style="display: inline !important"></span>
-                  <button type="submit" id="btnSave" class="btn BtnGreen">Submit</button>
-                  <button type="button" class="btn BtnRed " data-dismiss="modal">Cancel</button>
-                  <span> <img src="~/images/smChristmasElf.png" alt="Reindeer" class="img-circle" style="display: inline !important"></span>
-              </div>
-              @Html.HiddenFor(x => x.GroupId)
-              @Html.HiddenFor(x => x.CustomUser)
-              @Html.HiddenFor(x=> x.GroupName)
-              @*@Html.HiddenFor(x=> x.Group.GroupName)*@
-          </form>
-      </div>
-    </div>
-    
+                        @if (Model.ErrorMsg != null)
+                        {
+                            <span class="text-danger"> @Model.ErrorMsg</span>
+                        }
 
-    
-    
+                    </div>
+                    <div class="">
+                        <span> <img src="~/images/smChristmasElf.png" alt="Reindeer" class="img-circle" style="display: inline !important"></span>
+                        <button type="submit"
+                                id="btnSave"
+                                class="btn BtnGreen">
+                            Submit
+                        </button>
+                        <button type="button"
+                                class="btn BtnRed "
+                                data-dismiss="modal">
+                            Cancel
+                        </button>
+                        <span> <img src="~/images/smChristmasElf.png" alt="Reindeer" class="img-circle" style="display: inline !important"></span>
+                    </div>
+                    @Html.HiddenFor(x => x.GroupId)
+                    @Html.HiddenFor(x => x.CustomUser)
+                    @Html.HiddenFor(x => x.GroupName)
+                    @*@Html.HiddenFor(x=> x.Group.GroupName)*@
+                </form>
+            </div>
+        </div>
 
- 
-    <script>
-      $(function () {
 
 
-        
-        $('#btnSave').click(function () {
-          console.log("save");
- 
-          // $('#modal-container').modal('hide');
-          //https://codemagik.wordpress.com/2015/04/07/render-mvc-partial-view-inside-bootstrap-modal-dialog/
-        });
-      }); //end function
-    </script>
-  }
+
+
+
+        <script>
+            $(function () {
+                $('#btnSave').click(function () {
+                    console.log("save");
+                    // $('#modal-container').modal('hide');
+                    //https://codemagik.wordpress.com/2015/04/07/render-mvc-partial-view-inside-bootstrap-modal-dialog/
+                });
+            }); //end function
+
+
+
+
+        </script>
+    }
 </div>
 
 <style>
-  .spinner {
-    display: inline-block;
-    opacity: 0;
-    max-width: 0;
+    .spinner {
+        display: inline-block;
+        opacity: 0;
+        max-width: 0;
+        -webkit-transition: opacity 0.25s, max-width 0.45s;
+        -moz-transition: opacity 0.25s, max-width 0.45s;
+        -o-transition: opacity 0.25s, max-width 0.45s;
+        transition: opacity 0.25s, max-width 0.45s; /* Duration fixed since we animate additional hidden width */
+    }
 
-    -webkit-transition: opacity 0.25s, max-width 0.45s; 
-    -moz-transition: opacity 0.25s, max-width 0.45s;
-    -o-transition: opacity 0.25s, max-width 0.45s;
-    transition: opacity 0.25s, max-width 0.45s; /* Duration fixed since we animate additional hidden width */
-  }
+    .has-spinner.active {
+        cursor: progress;
+    }
 
-  .has-spinner.active {
-    cursor:progress;
-  }
-
-  .has-spinner.active .spinner {
-    opacity: 1;
-    max-width: 50px; /* More than it will ever come, notice that this affects on animation duration */
-  }
+        .has-spinner.active .spinner {
+            opacity: 1;
+            max-width: 50px; /* More than it will ever come, notice that this affects on animation duration */
+        }
 </style>
