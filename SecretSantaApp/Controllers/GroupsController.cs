@@ -365,6 +365,17 @@ namespace SecretSantaApp.Controllers
         public ActionResult SaveNewMemberCondition(MemberConditionsEditModel model)
         {
 
+            //if (!ModelState.IsValid)
+            //{
+            //    foreach (var modelState in ViewData.ModelState.Values)
+            //    {
+            //        foreach (ModelError error in modelState.Errors)
+            //        {
+            //            Console.WriteLine("error message: " + error.ErrorMessage + " exception: " + error.Exception);
+            //        }
+            //    }
+            //    return PartialView("_MemberConditions", model);
+            //}
             try
             {
                 model.ConditionId = 0;
@@ -373,10 +384,14 @@ namespace SecretSantaApp.Controllers
 
                 return PartialView("_MemberConditions", model);
             }
+            catch (AppException ax)
+            {
+                ModelState.AddModelError("", ax.AppMessage);
+            }
             catch (Exception ex)
             {
-                //_log.Log(ex.Message + "");
                 ModelState.AddModelError("", ex.Message);
+                _log.LogWarning(ex.Message);
             }
             return PartialView("_MemberConditions", model);
         }

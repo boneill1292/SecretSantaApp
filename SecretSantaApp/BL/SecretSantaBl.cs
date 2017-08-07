@@ -554,9 +554,9 @@ namespace SecretSantaApp.BL
 
         public MemberConditionsEditModel SaveNewMemberCondition(MemberConditionsEditModel model)
         {
-            if (model.UserSelectedForConditionMembershipNo <= 0)
+            if (model.UserSelectedForConditionMembershipNo == -999)
             {
-                throw new Exception("Must select a person");
+                throw new AppException("Please Select A Person");
             }
 
             var user = GetLoggedInUser();
@@ -665,8 +665,15 @@ namespace SecretSantaApp.BL
 
             var drawnnamelist = new List<DrawNamesEditModel>();
 
+            try
+            {
+                drawnnamelist = GetRandomUsersForDrawingNames(model.Group.GroupId);
+            }
+            catch (Exception ex)
+            {
+                throw new AppException("Error drawing names: try again");
+            }
 
-            drawnnamelist = GetRandomUsersForDrawingNames(model.Group.GroupId);
 
             model.DrawNamesList = new List<DrawNamesEditModel>();
             model.DrawNamesList = drawnnamelist;

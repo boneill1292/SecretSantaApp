@@ -14,7 +14,7 @@
         <p>you created the rule, we need to refresh the </p>
 
         <script>
-         
+
             ClosePopup();
             LoadRules();
             //$('#modal-container').modal('hide');
@@ -34,7 +34,7 @@
 
                 </div>
                 <div class="row col-xs-12 center-block RoundCornerBox" style="background-color: white; ">
-                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <form asp-action="SaveNewMemberCondition" method="POST"
                           data-ajax="true"
                           data-ajax-method="POST"
@@ -54,14 +54,11 @@
                                 <div class="form-group" style="display:none;">
                                     <label class="control-label col-sm-3" for="UserSelectedForConditionAcctNo"><em>*</em></label>
                                     <div class="col-sm-8 col-xs-12">
-                                        @*<input type="text" asp-for="UserSelectedForConditionAcctNo" placeholder="Person" required="" oninvalid="this.setCustomValidity('Please Enter the Password')" class="form-control" />*@
                                         <input type="text"
                                                placeholder="Person"
-                                               required=""
-                                               oninvalid="this.setCustomValidity('Please Enter the Password')"
                                                class="form-control"
                                                id="UserSelectedForConditionMembershipNo"
-                                               name="UserSelectedForConditionMembershipNo" value="">
+                                               name="UserSelectedForConditionMembershipNo" value="1">
                                     </div>
                                 </div>
                             </div>
@@ -76,11 +73,16 @@
                         @Html.HiddenFor(x => x.NewCondition)
                         @Html.HiddenFor(x => x.GroupId)
                         @*@Html.HiddenFor(x => x.InsertedBy)*@
-
-                        @if (Model.ConditionId >= 1)
+                        @Html.HiddenFor(model => model.ConditionId)
+          
+                        @*@if (Model.ConditionId >= 1)
                         {
                             @Html.HiddenFor(x => x.ConditionId)
-                        }
+          
+                        }*@
+
+                        @Html.HiddenFor(x => x.UserSelectedForConditionAcctNo)
+                        @Html.HiddenFor(x => x.UserSelectedForConditionMembershipNo)
                     </form>
                 </div>
             </div>
@@ -90,13 +92,17 @@
 
 
         <script>
+            //Going to hardcode  -999 *This is wrong, but it'll do for now.'
+            $('#UserSelectedForConditionMembershipNo').val(-999);
+
             $("#changepersondropdown").change(function () {
                 var selectedid = $("#changepersondropdown").val();
                 console.log("id: " + selectedid);
                 $('#UserSelectedForConditionMembershipNo').val(selectedid);
                 // var end = this.value;
                 //var firstDropVal = $('#pick').val();
-            });    </script>
+            });
+        </script>
     }
 
 
