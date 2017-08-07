@@ -30,7 +30,7 @@
                     var deleteruleurl = Url.Action("DeleteRulePopup", "Groups", new {ruleid = r.ID});
 
                     <td>
-                        <button class="btn btn-group modal-link BtnGreen"
+                        @*<button class="btn btn-group modal-link BtnGreen"
                                 href="@editruleurl"
                                 title="Add modal"
                                 data-target="#myModal"
@@ -43,6 +43,16 @@
                                 data-target="#myModal"
                                 data-toggle="modal">
                             Delete
+                        </button>*@
+                        <button class="btn btn-group  BtnGreen"
+                                onclick="LoadPopup('@editruleurl')">
+                            Edit
+                        </button>
+                        
+                        
+                        <button class="btn btn-group  BtnRed"
+                                onclick="LoadPopup('@deleteruleurl')">
+                           Delete
                         </button>
                     </td>
                 }

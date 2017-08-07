@@ -527,8 +527,9 @@ namespace SecretSantaApp.BL
 
 
             //Need to look to see if there are any other conditions, and remove them from the result list.
-            //var existingconditions = _memberConditionsDal.MemberConditionsByGroupId(group.GroupId);
-            //var exists = existingconditions.Any(x => x.UserSelectedForConditionAcctNo == acctno);
+            //** 8/7 - this should be moved to the dropdown - since thats where we generate those people
+
+
 
             var name = UserFullNameByAccountNumberString(members.AccountNumberString);
             var othergroupmembers = _groupMembershipDal.AllGroupMembersByGroupId(group.GroupId);
@@ -612,11 +613,27 @@ namespace SecretSantaApp.BL
         public SelectList OtherUsersDropDown(string acctnostr, int groupid)
         {
             // var result = new GroupConditionsOtherUsersModel();
+            //var existingconditions = _memberConditionsDal.MemberConditionsByGroupId(group.GroupId);
+            //var exists = existingconditions.Any(x => x.UserSelectedForConditionAcctNo == acctno);
+            var existingconditions = _memberConditionsDal.MemberConditionsByGroupIdByAcctNo(groupid, acctnostr);
+            var usersWithConditions = new List<string>();
+
+            if (existingconditions.Any())
+            {
+                usersWithConditions.AddRange(existingconditions.Select(u => u.UserSelectedForConditionAcctNo));
+            }
+
+
             var allgroupmembers = _groupMembershipDal.AllGroupMembersByGroupId(groupid);
             var othergroupmembers = allgroupmembers.Where(x => x.AccountNumberString != acctnostr).ToList();
+
+            var resultGroupMemberList = othergroupmembers.Where(x => !usersWithConditions.Contains(x.AccountNumberString)).ToList();
+            //var resultGroupMemberList =
+            //    othergroupmembers.RemoveAll(x => usersWithConditions.Contains(x.AccountNumberString));
+
             var rsltlist = new List<GroupConditionsOtherUsersModel>();
 
-            foreach (var o in othergroupmembers)
+            foreach (var o in resultGroupMemberList)
             {
                 var name = UserFullNameByAccountNumberString(o.AccountNumberString);
                 var m = new GroupConditionsOtherUsersModel();
@@ -628,12 +645,6 @@ namespace SecretSantaApp.BL
 
             var result = new SelectList(rsltlist, nameof(GroupConditionsOtherUsersModel.MembershipId),
            nameof(GroupConditionsOtherUsersModel.FullName));
-
-
-            // var result = new SelectList(othergroupmembers, nameof(GroupMembership.ID),
-            //nameof(GroupMembership.AccountNumberString));
-
-            //allgroupmembers = allgroupmembers.Where(x => x.AccountNumberString != members.AccountNumberString).ToList();
 
 
             return result;
@@ -653,7 +664,7 @@ namespace SecretSantaApp.BL
 
         public DrawNamesDisplayModel DrawNames(DrawNamesDisplayModel model)
         {
-            
+
 
             var drawnnamelist = new List<DrawNamesEditModel>();
 

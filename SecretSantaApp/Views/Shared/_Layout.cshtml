@@ -56,43 +56,64 @@
         </div>
     </nav>
 
-<div class="container body-content">
-    
-    <div class="modal fade" id="alertModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content modal-xl">
-                <div class="modal-header" style="text-align: center">
-                    <h1>Something something Dark Side</h1>
+    <div class="container body-content">
+        
+        <div class="modal" id="alertModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content modal-xl">
+                    <div class="modal-header" style="text-align: center; display:none;">
+                    </div>
+                    <div id="modalloading" style="display:none; margin: 0 auto !important; text-align:center;">
+                        <h4>Loading...</h4>
+                        <div class="santaloadspinner" style="margin:auto!important"></div>
+                    </div>
+
+                    <div class="modal-scroll" id="alertModalBody"></div>
+                    <div class="modal-footer" style="display:none;"></div>
                 </div>
-                <div class="modal-body modal-scroll" id="alertModalBody"></div>
-                <div class="modal-footer"></div>
             </div>
         </div>
-    </div>
-    <!-- Modal -->
-    @*http://ericsaupe.com/tag/bootstrap-3-modal-ajax/*@
 
-    @*<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">*@
-    <div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1>Hellooooo</h1>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+        @*<div class="modal" id="alertModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content modal-xl">
+                    <div class="modal-header" style="text-align: center">
+                        <h1>Something something Dark Side</h1>
+                    </div>
+                    <div id="modalloading" style="display:none; margin: 0 auto !important; text-align:center;">
+                        <h4>Loading...</h4>
+                        <div class="santaloadspinner" style="margin:auto!important"></div>
+                    </div>
+
+                    <div class="modal-scroll" id="alertModalBody"></div>
+                    <div class="modal-footer"></div>
                 </div>
-                <div class="modal-body">
-                    <div class="santaloadspinner"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-    @*add the model code here so we can call it anywhere*@
-    @*<div id="modal-container" class="modal" tabindex="-1" role="dialog" style="border: 5px solid black;">
+            </div>
+        </div>*@
+        <!-- Modal -->
+        @*http://ericsaupe.com/tag/bootstrap-3-modal-ajax/*@
+
+        @*<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">*@
+        <div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1>IF YOU SEE THIS - CHANGE TO NEW MODAL</h1>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="santaloadspinner"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        @*add the model code here so we can call it anywhere*@
+        @*<div id="modal-container" class="modal" tabindex="-1" role="dialog" style="border: 5px solid black;">
                 <a href="#" title="Close" class="close">X</a>
                 <div class="modal-content" style="max-width: 800px !important; margin: 10px auto !important;">
                     <div class="modal-body">
@@ -102,7 +123,7 @@
 
 
 
-    @*<div id="modal-container" class="modal fade hidden-print" tabindex="-1" role="dialog">
+        @*<div id="modal-container" class="modal fade hidden-print" tabindex="-1" role="dialog">
                 <div class="modal-dialog">
                     <div class="modal-content">
 
@@ -110,7 +131,7 @@
                 </div>
             </div>*@
 
-    @*<div class="modal fade bs-modal-dialog" id="modalDialog" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+        @*<div class="modal fade bs-modal-dialog" id="modalDialog" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-sm">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -125,12 +146,12 @@
 
 
 
-    @RenderBody()
-    <hr/>
-    <footer>
-        <p>&copy; 2017 - SecretSantaApp</p>
-    </footer>
-</div>
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; 2017 - SecretSantaApp</p>
+        </footer>
+    </div>
 
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>

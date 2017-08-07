@@ -30,7 +30,7 @@
                             </button>*@
                         <button class="btn btn-group  BtnGreen"
                                 onclick="LoadPopup('@url')">
-                            TEST Join Group
+                            Join Group
                         </button>
                     </td>
                 </tr>
@@ -45,20 +45,20 @@
 
         });
 
-        function LoadPopup(url) {
+        //function LoadPopup(url) {
 
-            console.log("url: " + url);
-            $.ajax({
-                url: url,
-                dataType: 'html',
-                success: function (data) {
-                    $('#alertModalBody').html(data);
-                    $('#alertModal').modal();
-                }
+        //    console.log("url: " + url);
+        //    $.ajax({
+        //        url: url,
+        //        dataType: 'html',
+        //        success: function (data) {
+        //            $('#alertModalBody').html(data);
+        //            $('#alertModal').modal();
+        //        }
 
 
-            }); // close ajax
-        }// close function
+        //    }); // close ajax
+        //}// close function
 
 
         //function grid(abc) {

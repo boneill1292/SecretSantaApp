@@ -28,11 +28,15 @@
                     var deleteruleurl = Url.Action("DeleteConditionPopup", "Groups", new {conditionid = gc.ConditionId});
                 }
                 <td>
-                    <button class="btn btn-group modal-link BtnRed"
+                    @*<button class="btn btn-group modal-link BtnRed"
                             href="@deleteruleurl"
                             title="Add modal"
                             data-target="#myModal"
                             data-toggle="modal">
+                        Delete
+                    </button>*@
+                    <button class="btn btn-group  BtnRed"
+                            onclick="LoadPopup('@deleteruleurl')">
                         Delete
                     </button>
                 </td>
