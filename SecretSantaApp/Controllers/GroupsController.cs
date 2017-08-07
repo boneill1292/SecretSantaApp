@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Logging;
 using SecretSantaApp.BL;
+using SecretSantaApp.Exceptions;
 using SecretSantaApp.Models;
 using SecretSantaApp.ViewModels;
 using SecretSantaApp.Views.Groups;
@@ -165,10 +166,24 @@ namespace SecretSantaApp.Controllers
         [HttpGet]
         public ActionResult AvailableGroupsToJoin()
         {
-            var usermodel = _secretSantaBl.CustomUserModelByLoggedInUser(User);
-            var model = _secretSantaBl.JoinGroupEditModelByAccountNumberString(usermodel.AccountNumberString);
+            string msg;
+            try
+            {
+                var usermodel = _secretSantaBl.CustomUserModelByLoggedInUser(User);
+                var model = _secretSantaBl.JoinGroupEditModelByAccountNumberString(usermodel.AccountNumberString);
 
-            return View("JoinGroups", model);
+                return View("JoinGroups", model);
+            }
+            catch (AppException ax)
+            {
+                msg = ax.Message;
+            }
+            catch (Exception ex)
+            {
+
+                msg = "An Error Has Occured";
+            }
+            return PartialView("_ErrorMessage", new StringModel(msg));
         }
 
 
@@ -203,10 +218,13 @@ namespace SecretSantaApp.Controllers
             {
                 var liu = _httpContextAccessor.HttpContext.User;
                 var u = _secretSantaBl.CustomUserModelByLoggedInUser(liu);
-
                 model.CustomUser = u;
                 var m = _secretSantaBl.CheckPasswordInput(model);
                 return PartialView("_JoinGroupEntry", m);
+            }
+            catch (AppException ax)
+            {
+                ModelState.AddModelError("", ax.AppMessage);
             }
             catch (Exception ex)
             {
@@ -385,20 +403,37 @@ namespace SecretSantaApp.Controllers
         [HttpGet]
         public ActionResult GetDrawNamesPartial(int groupid)
         {
-            var model = _secretSantaBl.DrawNamesDisplayModelByGroupId(groupid);
-            return PartialView("_DrawNames", model);
-
+            string msg = "";
+            try
+            {
+                var model = _secretSantaBl.DrawNamesDisplayModelByGroupId(groupid);
+                return PartialView("_DrawNames", model);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+                _log.LogWarning(ex.Message);
+            }
+            return PartialView("_ErrorMessage", new StringModel(msg));
         }
 
 
         [HttpPost]
         public ActionResult SubmitDrawNames(DrawNamesDisplayModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return PartialView("_DrawNames", model);
+            }
             try
             {
                 var m = _secretSantaBl.DrawNames(model);
                 m.Saved = true;
                 return PartialView("_DrawNames", m);
+            }
+            catch (AppException ax)
+            {
+                ModelState.AddModelError("", ax.AppMessage);
             }
             catch (Exception ex)
             {

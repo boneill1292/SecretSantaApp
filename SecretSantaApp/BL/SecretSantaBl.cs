@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SecretSantaApp.DAL;
+using SecretSantaApp.Exceptions;
 using SecretSantaApp.Models;
 using SecretSantaApp.ViewModels;
 using SecretSantaApp.Views.Groups;
@@ -367,14 +368,14 @@ namespace SecretSantaApp.BL
 
             if (model.UserInputGroupPassword == null)
             {
-                throw new Exception("Password is required");
+                throw new AppException("Password is required");
             }
 
             var password = group.GroupPassWord;
 
             if (model.UserInputGroupPassword != password)
             {
-                throw new Exception("Incorrect password");
+                throw new AppException("Incorrect password");
             }
             else
             {
@@ -612,7 +613,7 @@ namespace SecretSantaApp.BL
 
         public SelectList OtherUsersDropDown(string acctnostr, int groupid)
         {
-    
+
             var existingconditions = _memberConditionsDal.MemberConditionsByGroupIdByAcctNo(groupid, acctnostr);
             var usersWithConditions = new List<string>();
 
@@ -626,7 +627,7 @@ namespace SecretSantaApp.BL
             var othergroupmembers = allgroupmembers.Where(x => x.AccountNumberString != acctnostr).ToList();
 
             var resultGroupMemberList = othergroupmembers.Where(x => !usersWithConditions.Contains(x.AccountNumberString)).ToList();
-           
+
 
             var rsltlist = new List<GroupConditionsOtherUsersModel>();
 
@@ -661,7 +662,6 @@ namespace SecretSantaApp.BL
 
         public DrawNamesDisplayModel DrawNames(DrawNamesDisplayModel model)
         {
-
 
             var drawnnamelist = new List<DrawNamesEditModel>();
 
@@ -767,6 +767,7 @@ namespace SecretSantaApp.BL
 
             if (redraw)
             {
+                throw new AppException("Error: Drawing names is impossible in the current context:");
                 GetRandomUsersForDrawingNames(groupid);
             }
 
