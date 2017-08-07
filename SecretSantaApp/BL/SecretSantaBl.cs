@@ -554,7 +554,7 @@ namespace SecretSantaApp.BL
 
         public MemberConditionsEditModel SaveNewMemberCondition(MemberConditionsEditModel model)
         {
-            if (model.UserSelectedForConditionMembershipNo == -999)
+            if (model.UserSelectedForConditionMembershipNo == 0)
             {
                 throw new AppException("Please Select A Person");
             }
@@ -564,6 +564,10 @@ namespace SecretSantaApp.BL
             var membermodel =
               _groupMembershipDal.GroupMembershipModelByGroupMembershipId(model.UserSelectedForConditionMembershipNo);
 
+            if (membermodel == null)
+            {
+                throw new AppException("Please Select A Valid Person");
+            }
 
             //var selectedperson = _customUserDal.CustomUserByAccountNumber(membermodel.AccountNumberString);
 

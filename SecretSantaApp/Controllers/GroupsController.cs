@@ -364,18 +364,6 @@ namespace SecretSantaApp.Controllers
         [HttpPost]
         public ActionResult SaveNewMemberCondition(MemberConditionsEditModel model)
         {
-
-            //if (!ModelState.IsValid)
-            //{
-            //    foreach (var modelState in ViewData.ModelState.Values)
-            //    {
-            //        foreach (ModelError error in modelState.Errors)
-            //        {
-            //            Console.WriteLine("error message: " + error.ErrorMessage + " exception: " + error.Exception);
-            //        }
-            //    }
-            //    return PartialView("_MemberConditions", model);
-            //}
             try
             {
                 model.ConditionId = 0;
