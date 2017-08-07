@@ -612,9 +612,7 @@ namespace SecretSantaApp.BL
 
         public SelectList OtherUsersDropDown(string acctnostr, int groupid)
         {
-            // var result = new GroupConditionsOtherUsersModel();
-            //var existingconditions = _memberConditionsDal.MemberConditionsByGroupId(group.GroupId);
-            //var exists = existingconditions.Any(x => x.UserSelectedForConditionAcctNo == acctno);
+    
             var existingconditions = _memberConditionsDal.MemberConditionsByGroupIdByAcctNo(groupid, acctnostr);
             var usersWithConditions = new List<string>();
 
@@ -628,8 +626,7 @@ namespace SecretSantaApp.BL
             var othergroupmembers = allgroupmembers.Where(x => x.AccountNumberString != acctnostr).ToList();
 
             var resultGroupMemberList = othergroupmembers.Where(x => !usersWithConditions.Contains(x.AccountNumberString)).ToList();
-            //var resultGroupMemberList =
-            //    othergroupmembers.RemoveAll(x => usersWithConditions.Contains(x.AccountNumberString));
+           
 
             var rsltlist = new List<GroupConditionsOtherUsersModel>();
 

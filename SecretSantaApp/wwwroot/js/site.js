@@ -17,9 +17,8 @@
 function ClosePopup() {
     //$('.modal').modal('hide');
     //$('#myModal').modal('hide');
-    $('#alertModal').hide();
-    $('#alertModal').model('hide');
-    console.log("Are we not closed");
+    // $('#alertModal').hide();
+    $('#alertModal').modal('hide');
 
     //This causes the modal to not open with the correct data on the first try....
     //$('#modal-container').modal('hide');

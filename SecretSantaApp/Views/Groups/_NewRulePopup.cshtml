@@ -1,72 +1,69 @@
 ﻿@model GroupRulesEditModel
 @{
-  var uid = Guid.NewGuid();
-  var containerid = $"divcontainerid-{uid}";
+    var uid = Guid.NewGuid();
+    var containerid = $"divcontainerid-{uid}";
 }
 
 <div id="@containerid">
-  @if (Model.Saved)
-  {
+    @if (Model.Saved)
+    {
 
-    <p>Rule Created. </p>
+        <p>Saved. </p>
 
-      <script>
-        // $('#myModal').modal('hide');
-          ClosePopup();
-          LoadRules();
-          //$('#modal-container').modal('hide');
-      </script>
-  }
-  else
-  {
+        <script>
+            ClosePopup();
+            LoadRules();
+        </script>
+    }
+    else
+    {
+        <div class="container col-lg-12 ControlBox" style="background-color: white">
+            <div class="">
+                <div class="" style="display:inline!important">
+                    <span> <img src="~/images/smRedSantaList.png" alt="Reindeer" class="img-responsive" style="display:inline!important"></span>
 
-    <div class="container col-lg-12 ControlBox" style="background-color: white">
-      <div class="">
-        <div class="" style="display:inline!important">
-          <span> <img src="~/images/smRedSantaList.png" alt="Reindeer" class="img-responsive" style="display:inline!important"></span>
-          
-          @if (Model.ID >= 1)
-          {
-            <h3 class="text-center" style="color: green; display:inline!important">Edit Rule: @Model.Rule</h3>
-          }
-          else
-          {
-            <h3 class="text-center" style="color: green; display:inline!important">New @Model.GroupName Rule!</h3>
-          }
-          
-          
-          <span> <img src="~/images/smRedSantaList.png" alt="Reindeer" class="img-responsive" style="display:inline!important"></span>
-        </div>
-        <div class="row col-xs-12 center-block RoundCornerBox" style="background-color: lightgray; padding-bottom:2%;">
+                    @if (Model.ID >= 1)
+                    {
+                        <h3 class="text-center" style="color: green; display:inline!important">Edit Rule: @Model.Rule</h3>
+                    }
+                    else
+                    {
+                        <h3 class="text-center" style="color: green; display:inline!important">New @Model.GroupName Rule!</h3>
+                    }
 
-          <form asp-action="SaveGroupRule" method="POST"
-                data-ajax="true"
-                data-ajax-method="POST"
-                data-ajax-mode="replace"
-                data-ajax-update="#@containerid">
 
-            <div class="form-group">
-              <label class="control-label col-sm-3" asp-label-for="Rule" for="rule">Rule<em>*</em></label>
-              <div class="col-sm-8 col-xs-12">
-                <input type="text" asp-for="Rule" placeholder="Rule" required="" oninvalid="this.setCustomValidity('Please Enter A Rule')" class="form-control" />
-              </div>
+                    <span> <img src="~/images/smRedSantaList.png" alt="Reindeer" class="img-responsive" style="display:inline!important"></span>
+                </div>
+                <div class="row col-xs-12 center-block RoundCornerBox" style="background-color: lightgray; padding-bottom:2%;">
+
+                    <form asp-action="SaveGroupRule" method="POST"
+                          data-ajax="true"
+                          data-ajax-method="POST"
+                          data-ajax-mode="replace"
+                          data-ajax-update="#@containerid">
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" asp-label-for="Rule" for="rule">Rule<em>*</em></label>
+                            <div class="col-sm-8 col-xs-12">
+                                <input type="text" asp-for="Rule" placeholder="Rule" required="" oninvalid="this.setCustomValidity('Please Enter A Rule')" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-8">
+                                <input type="submit" name="signin" id="signin" value="Submit" class="btn btn-default btn-lg BtnGreen" />
+                            </div>
+                        </div>
+                        @Html.HiddenFor(x => x.ID)
+                        @Html.HiddenFor(x => x.GroupId)
+                        @Html.HiddenFor(x => x.InsertedBy)
+                    </form>
+                </div>
             </div>
 
-            <div class="form-group">
-              <div class="col-sm-offset-2 col-sm-8">
-                <input type="submit" name="signin" id="signin" value="Submit" class="btn btn-default btn-lg BtnGreen" />
-              </div>
-            </div>
-            @Html.HiddenFor(x=> x.ID)
-            @Html.HiddenFor(x=> x.GroupId)
-            @Html.HiddenFor(x=> x.InsertedBy)
-          </form>
         </div>
-      </div>
-
-    </div>
   <!-- /.container -->
-  }
+    }
 
 
 </div>
