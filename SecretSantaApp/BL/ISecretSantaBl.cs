@@ -86,5 +86,8 @@ namespace SecretSantaApp.BL
 
         CustomUserDetailsDisplayModel UserDetailsDisplayModelByAcctNo(string acctno);
         CustomUserDetailsEditModel SaveUserDetails(CustomUserDetailsEditModel model);
+
+
+        List<SelectListItem> CommonSizesDropdown();
     }
 }

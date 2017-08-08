@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SecretSantaApp.DAL;
+using SecretSantaApp.Enumerations;
 using SecretSantaApp.Exceptions;
 using SecretSantaApp.Models;
 using SecretSantaApp.ViewModels;
@@ -877,5 +878,34 @@ namespace SecretSantaApp.BL
             return result;
         }
 
+
+        public List<SelectListItem> CommonSizesDropdown()
+        {
+            var deptList = new List<SelectListItem>();
+            deptList.Add(new SelectListItem
+            {
+                Text = "Please Select a Size",
+                Value = ""
+            });
+            foreach (var eVal in Enum.GetValues(typeof(CommonSizes)))
+            {
+                deptList.Add(new SelectListItem
+                {
+                    Text = Enum.GetName(typeof(CommonSizes), eVal).ToUpper(),
+                    Value = eVal.ToString().ToUpper()
+                });
+            }
+            return deptList;
+            //var commonSizes = Enum.GetValues(typeof(CommonSizes)).Cast<CommonSizes>().ToList();
+
+            //var rsltlist = new List<GroupConditionsOtherUsersModel>();
+
+
+            //var result = new SelectList(commonSizes, nameof(CommonSizes..MembershipId),
+            //    nameof(GroupConditionsOtherUsersModel.FullName));
+
+
+            //return result;
+        }
     }
 }

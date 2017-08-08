@@ -16,7 +16,7 @@ namespace SecretSantaApp.Models
 
         public int UserId { get; set; }
 
-        public int ShoeSize { get; set; }
+        public decimal ShoeSize { get; set; }
         public string ShirtSize { get; set; }
 
         public string PantsSize { get; set; }
@@ -26,7 +26,7 @@ namespace SecretSantaApp.Models
         public string FavoriteBrands { get; set; }
 
         public string Notes { get; set; }
-        
+
 
 
         public virtual void Update(CustomUserDetails c)
