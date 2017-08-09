@@ -7,23 +7,23 @@
     <table class="table table-responsive table-striped">
       <thead>
       <tr>
-        <th>Group ID</th>
+        @*<th>Group ID</th>*@
         <th>Group Name</th>
-        <th>Active</th>
+        @*<th>Active</th>*@
         <th>PassWord</th>
-        <th>InsertedBy</th>
-        <th>&nbsp;</th>
+        @*<th>InsertedBy</th>*@
+        @*<th>&nbsp;</th>*@
       </tr>
       </thead>
       <tbody>
       @foreach (var g in Model.MyGroups)
       {
         <tr>
-          <td>@g.GroupId</td>
+          @*<td>@g.GroupId</td>*@
           <td>@g.GroupName</td>
-          <td>@g.Active</td>
+          @*<td>@g.Active</td>*@
           <td>@g.GroupPassWord</td>
-          <td>@g.InsertedBy</td>
+          @*<td>@g.InsertedBy</td>*@
           <td>
             <form >
               <input asp-controller="Groups" asp-action="GroupHome" asp-route-id="@g.GroupId" method="GET" type="submit" class="btn btn-group BtnGreen" value="Group Home" />

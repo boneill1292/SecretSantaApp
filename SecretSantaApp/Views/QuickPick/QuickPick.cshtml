@@ -1,3 +1,175 @@
-﻿<h5>SUP!</h5>
+﻿@using SecretSantaApp.Views.Groups
+@model SecretSantaApp.Views.QuickPick.QuickPickModel
+@{
 
-<h3>This will be a place to play a quick pick game</h3>
+}
+<div class="container">
+
+    <div class="clearfix"></div>
+    <div class="col-md-12" style="text-align: center; color: black; padding-top: 2%; padding-bottom:2%;">
+        <div>
+            <h3>Quick Pick Game </h3>
+            <h5>Click Start If Everyone Is In The Room</h5>
+
+            <a class="btn BtnGreen"
+               id="startquickpickBtn"
+               onclick="StartQuickPick()">Start</a>
+        </div>
+
+
+    </div>
+    <div class="clearfix"></div>
+
+
+    @****************Names****************@
+    <div class="col-md-12" style="margin: 0 auto !important; text-align:center;">
+        <div id="namesdivid" style="outline: 1px red solid; display: none; text-align: center; margin: 0 auto;">
+
+
+
+
+        </div>
+        <button type="button"
+                id="btnSubmitNames"
+                style="display: none;"
+                onclick="SubmitNamesInput()"
+                class="btn BtnGreen">
+
+            Submit
+        </button>
+    </div>
+
+</div>
+
+
+@****************Game Control****************@
+<div>
+    <div class="col-md-12">
+        <div id="divGameControl" style="display:none;">
+            <h4>How It Works:</h4>
+            <p>
+                Pass the device around the room, and select 'Draw' to pick your person. If you cannot have that person,
+                click 'Draw' again to generate a new one.
+                Once you have a sufficient pick. Click 'Clear' to remove them from the list
+            </p>
+
+            <button type="button"
+                    id="btnDraw"
+                    class="btn BtnGreen">
+                Draw
+            </button>
+            <button type="button"
+                    class="btn BtnRed ">
+                Clear
+            </button>
+        </div>
+    </div>
+</div>
+
+
+@****************Modal****************@
+<div class="modal" id="quickpickModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content modal-xl">
+            <div class="modal-header" style="text-align: center; display:none;">
+            </div>
+            <div id="modalloading" style="display:none; margin: 0 auto !important; text-align:center;">
+                <h4>Loading...</h4>
+                <div class="santaloadspinner" style="margin:auto!important"></div>
+            </div>
+
+            <div class="modal-scroll" id="quickpickModalBody">
+                <form>
+                    <p id="quantitywarning" class="text-danger" style="display:none;"> Please Enter A Number Greater Than 1</p>
+                    <h5>How Many People Are Playing?</h5>
+
+                    <input id="amountOfPeopleInput" type="number" class="form-control" />
+
+                    <button type="button"
+                            id="submitNumberBtn"
+                            onclick="SubmitNumberOfPeople()"
+                            class="btn BtnGreen">
+                        Submit
+                    </button>
+                </form>
+            </div>
+            <div class="modal-footer" style="display:none;"></div>
+        </div>
+    </div>
+</div>
+
+
+
+@section scripts{
+    <script>
+        $("document").ready(function () {
+
+
+        }); // Doc Ready
+
+        function StartQuickPick() {
+            console.log("yipee");
+            //$('#quickpickModalBody').html('<h1> hey </h1>');
+            $('#quickpickModal').modal();
+        }
+
+
+        function SubmitNumberOfPeople() {
+            var quantity = $('#amountOfPeopleInput').val();
+
+            if (quantity >= 2) {
+                $('#namesdivid').html('');
+                $('#namesdivid').show();
+                console.log("you submitted: " + quantity);
+                $('#startquickpickBtn').text('Start Over');
+                ClearModal();
+                GenerateNamesInput(quantity);
+                $('#btnSubmitNames').show();
+
+            } else {
+                $('#quantitywarning').show();
+            }
+
+        }
+
+
+
+        function GenerateNamesInput(quantity) {
+
+            var namesdiv = document.getElementById("namesdivid");
+
+            for (var i = 0; i < quantity; i++) {
+
+                var input = document.createElement("input");
+                input.className = 'form-control generatedInput';
+                input.placeholder = 'Name: ';
+
+                namesdiv.prepend(input);
+            }
+        }
+
+        //Need to get all the names stored
+        function SubmitNamesInput() {
+            var inputs = document.getElementsByClassName('generatedInput');
+
+            for (var i = 0; i < inputs.length; i++)
+            console.log("inputs: " + inputs);
+        }
+
+
+        function ClearModal() {
+            $('#amountOfPeopleInput').val('');
+            $('#quantitywarning').hide();
+            $('#quickpickModal').modal('hide');
+        }
+
+    </script>
+}
+
+<style>
+    .generatedInput {
+        outline: 2px green solid;
+        margin: 0 auto !important;
+        text-align: center;
+    }
+</style>

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SecretSantaApp.BL;
+using SecretSantaApp.Views.QuickPick;
 
 namespace SecretSantaApp.Controllers
 {
@@ -28,7 +29,13 @@ namespace SecretSantaApp.Controllers
 
     public ActionResult Index()
     {
-      return View("QuickPick");
+        var model = new QuickPickModel();
+      return View("QuickPick",model);
     }
+
+      //public ActionResult StartGamePartial()
+      //{
+      //    return PartialView("_EnterAmountOfPeople")
+      //}
   }
 }

@@ -23,8 +23,8 @@ namespace SecretSantaApp.Controllers
     }
 
     [HttpGet]
-    // [Route("benapp/test")]
-    public IActionResult Index()
+    // [Route("home/index")]
+    public ActionResult Index()
     {
       //HttpContext.Session.SetString("Test", "Ben Rules!");  
       //var model = _secretSantaBl.DefaultTestDataViewModel();

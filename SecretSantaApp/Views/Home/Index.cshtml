@@ -4,13 +4,15 @@
 }
 
 <div class="row">
-  <h1>Welcome to the Secret Santa Game. Please Login to create a new game.</h1>
-  <ul>
-    <li>Create custom groups</li>
-    <li>Text Message Notifications</li>
-    <li>Email Notifications</li>
-    <li>User Wish Lists</li>
-    <li>Create custom groups</li>
-    <li>Create rules (spouses)</li>
-  </ul>
+    <h1>Welcome to the Secret Santa App</h1>
+   
+    
+    @if (!User.Identity.IsAuthenticated)
+    {
+        <h2>Login To Play</h2>
+        <a class="btn BtnGreen"  
+           asp-controller="Account" 
+           asp-action="LoginExternal">Login</a>
+    }
+    
 </div>

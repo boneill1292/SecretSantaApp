@@ -43,10 +43,10 @@
                         <input asp-for="UserInputGroupPassword" class="form-control" required="" placeholder="Group Password" oninvalid="this.setCustomValidity('Please Enter the Password')" />
                         <span asp-validation-for="UserInputGroupPassword" class="text-danger"></span>
 
-                        @if (Model.ErrorMsg != null)
+                        @*@if (Model.ErrorMsg != null)
                         {
                             <span class="text-danger"> @Model.ErrorMsg</span>
-                        }
+                        }*@
 
                     </div>
                     <div class="">
