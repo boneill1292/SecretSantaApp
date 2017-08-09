@@ -6,7 +6,7 @@
 <div class="container">
 
     <div class="clearfix"></div>
-    <div class="col-md-12" style="text-align: center; color: black; padding-top: 2%; padding-bottom:2%;">
+    <div class="col-md-12" style="text-align: center; color: black; padding-top: 2%; padding-bottom:2%; outline:2px black solid">
         <div>
             <h3>Quick Pick Game </h3>
             <h5>Click Start If Everyone Is In The Room</h5>
@@ -15,17 +15,13 @@
                id="startquickpickBtn"
                onclick="StartQuickPick()">Start</a>
         </div>
-
-
     </div>
     <div class="clearfix"></div>
 
 
     @****************Names****************@
-    <div class="col-md-12" style="margin: 0 auto !important; text-align:center;">
+    <div class="col-md-12" style="text-align:center;">
         <div id="namesdivid" style="outline: 1px red solid; display: none; text-align: center; margin: 0 auto;">
-
-
 
 
         </div>
@@ -37,6 +33,27 @@
 
             Submit
         </button>
+
+        <div id="divsubmittednames" style="outline: 1px blue solid; display:none; ">
+            <select class="form-control"
+                    style="margin:auto!important"
+                    id="submittednamesdropdown">
+                <option value="">Who Are You?</option>
+
+            </select>
+
+            <button type="button"
+                    id=""
+                    style=""
+                    onclick="DrawNames()"
+                    class="btn BtnGreen">
+                Draw
+            </button>
+        </div>
+
+        <div id="resultsdiv" style="outline: 1px green solid; display:none">
+
+        </div>
     </div>
 
 </div>
@@ -126,6 +143,10 @@
                 GenerateNamesInput(quantity);
                 $('#btnSubmitNames').show();
 
+                $('#divsubmittednames').hide();
+                $('#submittednamesdropdown').empty();
+                $('#submittednamesdropdown').append('<option value= 0 > Who Are You </option>');
+
             } else {
                 $('#quantitywarning').show();
             }
@@ -148,13 +169,37 @@
             }
         }
 
-        //Need to get all the names stored
+        //Load all the names into a dropdown
         function SubmitNamesInput() {
+
             var inputs = document.getElementsByClassName('generatedInput');
 
-            for (var i = 0; i < inputs.length; i++)
-            console.log("inputs: " + inputs);
+            for (var i = 0; i < inputs.length; i++) {
+                console.log("inputs: " + inputs[i].value);
+
+                $('#submittednamesdropdown').append('<option value=' + i + '>' + inputs[i].value + '</option>');
+            }
+
+            $('#btnSubmitNames').hide();
+            $('#namesdivid').hide();
+            $('#divsubmittednames').show();
         }
+
+
+
+        function DrawNames() {
+            $('#resultsdiv').html('<h3> Your results are: Ben </h3>');
+            $('#resultsdiv').show();
+
+        }
+
+        $("#submittednamesdropdown").change(function () {
+
+            //var val = $('#psubmittednamesdropdownick').val();
+            var val = $(this).text();
+            console.log("changed: " + val);
+        });
+
 
 
         function ClearModal() {
