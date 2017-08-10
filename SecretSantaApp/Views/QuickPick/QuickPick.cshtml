@@ -20,23 +20,26 @@
 
 
     @****************Names****************@
-    <div class="col-md-12" style="text-align:center;">
-        <div id="namesdivid" style="outline: 1px red solid; display: none; text-align: center; margin: 0 auto;">
+    <div class="col-md-12" style="text-align: center;">
+        <form id="formSubmitNames">
+            <div id="namesdivid" style="outline: 1px red solid; display: none; text-align: center; margin: 0 auto;">
 
 
-        </div>
-        <button type="button"
-                id="btnSubmitNames"
-                style="display: none;"
-                onclick="SubmitNamesInput()"
-                class="btn BtnGreen">
+            </div>
+            <button type="button"
+                    id="btnSubmitNames"
+                    style="display: none;"
+                    onclick="SubmitNamesInput()"
+                    class="btn BtnGreen">
 
-            Submit
-        </button>
+                Submit
+            </button>
 
-        <div id="divsubmittednames" style="outline: 1px blue solid; display:none; ">
+            <input type="submit" style="display: none" />
+        </form>
+        <div id="divsubmittednames" style="outline: 1px blue solid; display: none;">
             <select class="form-control"
-                    style="margin:auto!important"
+                    style="margin: auto !important"
                     id="submittednamesdropdown">
                 <option value="">Who Are You?</option>
 
@@ -49,10 +52,20 @@
                     class="btn BtnGreen">
                 Draw
             </button>
+
+            <button type="button"
+                    id=""
+                    style=""
+                    onclick="AcceptName()"
+                    class="btn BtnRed">
+                Accept
+            </button>
         </div>
 
-        <div id="resultsdiv" style="outline: 1px green solid; display:none">
-
+        <div id="resultsdiv" style="outline: 1px green solid; display: none">
+            <h3>
+                You have drawn: <span id="receivedmsg"></span> !
+            </h3>
         </div>
     </div>
 
@@ -121,14 +134,28 @@
     <script>
         $("document").ready(function () {
 
+            //$('#formSubmitNames').submit(function (e) {
+            //    e.preventDefault();
+            //    SubmitNamesInput();
+            //});
+
 
         }); // Doc Ready
+
+        //Variables
+        var allpeople = new Array();
+        var peoplenotme = new Array();
+        var availablepeople = new Array();
+        var acceptedperson = "";
 
         function StartQuickPick() {
             console.log("yipee");
             //$('#quickpickModalBody').html('<h1> hey </h1>');
             $('#quickpickModal').modal();
+            ClearArrays();
+
         }
+
 
 
         function SubmitNumberOfPeople() {
@@ -176,9 +203,19 @@
 
             for (var i = 0; i < inputs.length; i++) {
                 console.log("inputs: " + inputs[i].value);
-
                 $('#submittednamesdropdown').append('<option value=' + i + '>' + inputs[i].value + '</option>');
             }
+
+
+            //Load the array of all the people *could probably do a different method of getting everyone, but this is quick
+            var allpeopleingame = document.getElementById('submittednamesdropdown');
+
+            for (var i = 1; i < allpeopleingame.length; i++) {
+                //  console.log("loaded from dropdown: " + allpeopleingame[i].text);
+                allpeople.push(allpeopleingame[i].text);
+            }
+
+            availablepeople = allpeople.slice();
 
             $('#btnSubmitNames').hide();
             $('#namesdivid').hide();
@@ -188,24 +225,119 @@
 
 
         function DrawNames() {
-            $('#resultsdiv').html('<h3> Your results are: Ben </h3>');
+            var person = $('#submittednamesdropdown').find(":selected").text();
+            console.log("person: " + person);
+            //$('#resultsdiv').html('<h3> Your results are: Ben </h3>'); //receivedmsg
             $('#resultsdiv').show();
+
+
+            //// var availableppl = GetAvailablePeople(person);
+
+            //for (var i = 1; i < peoplenotme.length; i++) {
+            //    console.log("Available Person: ");
+            //}
+
+
+            //Theory is we need to set a list of available people that are not me.
+            //once we click accept on a person we will remove the selected person from the available people
+            //thats why we don't set it in the function
+            var pplnotme = GetAvailablePeopleNotMe(person);
+
+
+            var randoperson = peoplenotme[Math.floor(Math.random() * peoplenotme.length)];
+
+            console.log("Your rando person is: " + randoperson);
+
+            $('#receivedmsg').html(randoperson);
 
         }
 
-        $("#submittednamesdropdown").change(function () {
 
-            //var val = $('#psubmittednamesdropdownick').val();
-            var val = $(this).text();
-            console.log("changed: " + val);
+        function GetAvailablePeople(person) {
+            //var availablepeople = allpeople.slice();
+
+            ////get the index of the person selected in the dropdown
+            //var selectedpersonindex = allpeople.indexOf(person);
+            //console.log("***trying to get available people: **** " + selectedpersonindex);
+
+            // availablepeople = allpeople.splice(selectedpersonindex, 1);
+
+
+            //return availablepeople;
+        }
+
+        function AcceptName(person) {
+            var acceptedperson = $('#receivedmsg').text();
+
+
+            console.log("wipe out");
+        }
+
+
+        $("#submittednamesdropdown").change(function () {
+            var person = $(this).find("option:selected").text();
+
+            // console.log("hi: " + person);
+            GetPeopleNotMe(person);
         });
 
+
+
+        function GetPeopleNotMe(person) {
+            // debugger;
+            var selectedpersonindex = allpeople.indexOf(person);
+
+            //Gets a copy of the global all people
+            var allpeoplecopy = allpeople.slice();
+
+            //cuts the selected person out from the all people copy array, and creates a new array with just the user selected
+            var temppplarray = allpeoplecopy.splice(selectedpersonindex, 1);
+
+            //just doing this to avoid confusion
+            var allpeoplenotme = allpeoplecopy.slice();
+
+            //Setting the value to call later;
+            peoplenotme = allpeoplenotme.slice();
+            return allpeoplenotme;
+        }
+
+
+        function GetAvailablePeopleNotMe(person) {
+            var selectedpersonindex = allpeople.indexOf(person);
+
+            //Gets a copy of the global all people
+            var availablepeopletemp = availablepeople.slice();
+
+            //cuts the selected person out from the all people copy array, and creates a new array with just the user selected
+            var temppplarray = availablepeople.splice(selectedpersonindex, 1);
+
+            //just doing this to avoid confusion
+            var availablepeoplenotme = availablepeopletemp.slice();
+
+            //Setting the value to call later;
+            //peoplenotme = availablepeoplenotme.slice();
+            return availablepeoplenotme;
+
+        }
 
 
         function ClearModal() {
             $('#amountOfPeopleInput').val('');
             $('#quantitywarning').hide();
             $('#quickpickModal').modal('hide');
+        }
+
+        function DisplayAllUsers() {
+            var me = $('#submittednamesdropdown').find("option:selected").text();
+            console.log("Me: " + me);
+            console.log("All People: " + allpeople);
+            console.log("People Not Me: " + peoplenotme);
+            console.log("Available People:" + availablepeople);
+        }
+
+        function ClearArrays() {
+            allpeople = [];
+            peoplenotme = [];
         }
 
     </script>
