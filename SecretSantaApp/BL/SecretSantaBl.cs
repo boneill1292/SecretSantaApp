@@ -672,7 +672,7 @@ namespace SecretSantaApp.BL
 
             try
             {
-                drawnnamelist = GetRandomUsersForDrawingNames(model.Group.GroupId);
+                drawnnamelist = AssignRandomUsersForGroup(model.Group.GroupId);
             }
             catch (Exception ex)
             {
@@ -789,6 +789,67 @@ namespace SecretSantaApp.BL
 
 
 
+        public List<DrawNamesEditModel> AssignRandomUsersForGroup(int groupid)
+        {
+            //var group = _groupDal.GetGroupById(groupid);
+            var groupmembers = _groupMembershipDal.AllGroupMembersByGroupId(groupid);
+
+
+            var result = new List<DrawNamesEditModel>();
+
+            if (groupmembers == null)
+            {
+                throw new AppException($"Error loading group by ID: {groupid}");
+            }
+
+            var membersingroup = groupmembers.Select(x => x.AccountNumberString).ToList();
+            var totalavailablemembers = membersingroup;
+
+
+            foreach (var g in membersingroup)
+            {
+                var tempavailablemembers = totalavailablemembers;
+                var tempmemberswithconditions = new List<string>();
+                var dnem = new DrawNamesEditModel();
+                dnem.GroupId = groupid;
+                dnem.UserOne = g;
+
+                //check for conditions
+                var conditions = _memberConditionsDal.MemberConditionsByGroupIdByAcctNo(groupid, g);
+
+                //If the user has any predefined conditions
+                if (conditions.Any())
+                {
+                    //foreach of those conditions add them to a list of users that person x cannot have
+                    foreach (var c in conditions)
+                    {
+                        var conditionalperson = c.UserSelectedForConditionAcctNo;
+                        tempmemberswithconditions.Add(conditionalperson);
+                    }
+
+
+                    //remove the conditional users from the list of available people
+                    tempavailablemembers = tempavailablemembers.Except(tempmemberswithconditions).ToList();
+
+                    //remove the person we are selecting for from the list
+                    tempavailablemembers = tempavailablemembers.Where(x => !x.Contains(g)).ToList();
+
+                    //now get a random person from the list of people left.
+                    foreach (var t in tempavailablemembers)
+                    {
+                        //Throw the random logic in here. The list of people not in condition, and not the user in question.
+                    }
+                }
+
+                result.Add(dnem);
+
+            }
+
+
+
+
+            return result;
+        }
 
 
         //Account Stuff
