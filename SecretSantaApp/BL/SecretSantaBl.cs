@@ -669,15 +669,29 @@ namespace SecretSantaApp.BL
         {
 
             var drawnnamelist = new List<DrawNamesEditModel>();
+            var maxretries = 10;
+            var retries = 0;
 
-            try
+            while (true)
             {
-                drawnnamelist = AssignRandomUsersForGroup(model.Group.GroupId);
+                try
+                {
+                    drawnnamelist = AssignRandomUsersForGroup(model.Group.GroupId);
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    if (retries < maxretries)
+                    {
+                        retries++;
+                    }
+                    else
+                    {
+                        throw new AppException("Error drawing names: try again");
+                    }
+                }
             }
-            catch (Exception ex)
-            {
-                throw new AppException("Error drawing names: try again");
-            }
+
 
 
             model.DrawNamesList = new List<DrawNamesEditModel>();
@@ -789,7 +803,7 @@ namespace SecretSantaApp.BL
 
 
 
-        public List<DrawNamesEditModel> AssignRandomUsersForGroup(int groupid)
+        private List<DrawNamesEditModel> AssignRandomUsersForGroup(int groupid)
         {
             //var group = _groupDal.GetGroupById(groupid);
             var groupmembers = _groupMembershipDal.AllGroupMembersByGroupId(groupid);
@@ -826,20 +840,23 @@ namespace SecretSantaApp.BL
                         var conditionalperson = c.UserSelectedForConditionAcctNo;
                         tempmemberswithconditions.Add(conditionalperson);
                     }
-
-
-                    //remove the conditional users from the list of available people
-                    tempavailablemembers = tempavailablemembers.Except(tempmemberswithconditions).ToList();
-
-                    //remove the person we are selecting for from the list
-                    tempavailablemembers = tempavailablemembers.Where(x => !x.Contains(g)).ToList();
-
-                    //now get a random person from the list of people left.
-                    foreach (var t in tempavailablemembers)
-                    {
-                        //Throw the random logic in here. The list of people not in condition, and not the user in question.
-                    }
                 }
+
+                //remove the conditional users from the list of available people
+                tempavailablemembers = tempavailablemembers.Except(tempmemberswithconditions).ToList();
+
+                //remove the person we are selecting for from the list
+                tempavailablemembers = tempavailablemembers.Where(x => !x.Contains(g)).ToList();
+
+                //now get a random person from the list of people left.
+                var r = new Random();
+
+                var rando = tempavailablemembers.ElementAt(r.Next(0, tempavailablemembers.Count()));
+
+                dnem.UserTwo = rando;
+
+                //remove the user who we just assigned to user two from the global list of available people
+                totalavailablemembers = totalavailablemembers.Where(x => !x.Contains(rando)).ToList();
 
                 result.Add(dnem);
 
