@@ -679,6 +679,7 @@ namespace SecretSantaApp.BL
                     drawnnamelist = AssignRandomUsersForGroup(model.Group.GroupId);
                     break;
                 }
+
                 catch (Exception ex)
                 {
                     if (retries < maxretries)
@@ -687,7 +688,7 @@ namespace SecretSantaApp.BL
                     }
                     else
                     {
-                        throw new AppException("Error drawing names: try again");
+                        throw new AppException("Please alter your conditions to make the group solvable");
                     }
                 }
             }
