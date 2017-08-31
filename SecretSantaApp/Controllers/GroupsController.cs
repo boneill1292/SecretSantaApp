@@ -447,16 +447,6 @@ namespace SecretSantaApp.Controllers
         }
 
 
-        ////Will not use
-        //[HttpGet]
-        //public ActionResult JoinGroup(int id)
-        //{
-        //  var user = HttpContext.Session.GetObjectFromJson<CustomUser>("LoggedInUser");
-        //  var usereditmodel = new CustomUserEditModel();
-        //  usereditmodel.Update(user);
-        //  _secretSantaBl.JoinGroupAsCustomUser(usereditmodel, id);
-        //  var usergroupsvm = _secretSantaBl.MyGroupsViewModelByUserId(usereditmodel);
-        //  return View("MyGroups", usergroupsvm);
-        //}
+
     }
 }

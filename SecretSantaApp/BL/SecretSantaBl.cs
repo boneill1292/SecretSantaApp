@@ -27,6 +27,7 @@ namespace SecretSantaApp.BL
         private readonly IGroupMessagesDal _groupMessagesDal;
         private readonly IMemberConditionsDal _memberConditionsDal;
         private readonly ICustomUserDetailsDal _customUserDetailsDal;
+        private readonly IGroupPairingsDal _groupPairingsDal;
         private static Random rnd = new Random();
         public SecretSantaBl(IGroupDal groupDal,
                              ICustomUserDal customUserDal,
@@ -35,6 +36,7 @@ namespace SecretSantaApp.BL
                               IGroupRulesDal groupRulesDal,
                               IGroupMessagesDal groupMessagesDal,
                               IMemberConditionsDal memberConditionsDal,
+                              IGroupPairingsDal groupPairingDal,
                                ICustomUserDetailsDal customUserDetailsDal)
         {
             _groupDal = groupDal;
@@ -45,6 +47,7 @@ namespace SecretSantaApp.BL
             _groupMessagesDal = groupMessagesDal;
             _memberConditionsDal = memberConditionsDal;
             _customUserDetailsDal = customUserDetailsDal;
+            _groupPairingsDal = groupPairingDal;
         }
 
         public CustomUserEditModel CustomUserModelByLoggedInUser(ClaimsPrincipal user)
@@ -680,7 +683,7 @@ namespace SecretSantaApp.BL
                     break;
                 }
 
-                catch (Exception ex)
+                catch (Exception)
                 {
                     if (retries < maxretries)
                     {
@@ -723,84 +726,84 @@ namespace SecretSantaApp.BL
         }
 
 
-        public List<DrawNamesEditModel> GetRandomUsersForDrawingNames(int groupid)
-        {
-            var drawnnamelist = new List<DrawNamesEditModel>();
-            bool redraw = false;
+        //public List<DrawNamesEditModel> GetRandomUsersForDrawingNames(int groupid)
+        //{
+        //    var drawnnamelist = new List<DrawNamesEditModel>();
+        //    bool redraw = false;
 
-            //Load all the members in a group
-            var groupmembers = _groupMembershipDal.AllGroupMembersByGroupId(groupid);
+        //    //Load all the members in a group
+        //    var groupmembers = _groupMembershipDal.AllGroupMembersByGroupId(groupid);
 
-            //Get a list of all members acct no's
-            var allGroupMembersAcctNoList = groupmembers.Select(x => x.AccountNumberString).ToList();
+        //    //Get a list of all members acct no's
+        //    var allGroupMembersAcctNoList = groupmembers.Select(x => x.AccountNumberString).ToList();
 
-            //if this works cant copy the list 
-            var availableGroupMembers = groupmembers.Select(x => x.AccountNumberString).ToList();
+        //    //if this works cant copy the list 
+        //    var availableGroupMembers = groupmembers.Select(x => x.AccountNumberString).ToList();
 
-            //var randopersonint = rnd.Next(groupmemberacctnolist.Count);
-            //var randoperson = groupmemberacctnolist[randopersonint];
+        //    //var randopersonint = rnd.Next(groupmemberacctnolist.Count);
+        //    //var randoperson = groupmemberacctnolist[randopersonint];
 
-            foreach (var g in allGroupMembersAcctNoList)
-            {
-                //GOTO a BL method to generate a random person. 
-                var d = new DrawNamesEditModel();
-
-
-
-                //var anyconditions = _memberConditionsDal.MemberConditionsByGroupIdByAcctNo(model.Group.GroupId, g);
-                //var conditionsList = new List<string>();
-
-                //if (anyconditions.Any())
-                //{
-                //    foreach (var c in anyconditions)
-                //    {
-                //        var u = c.UserSelectedForConditionAcctNo;
-                //        conditionsList.Add(u);
-                //    }
-                //}
-
-                // tempAllGroupMembersList.RemoveRange(conditionsList);
-
-                //**Check this out
-                //var resultlist = tempAllGroupMembersList.Except(conditionsList).ToList();
-
-                var userone = g;
-
-                var usersnotmelist = availableGroupMembers.Where(x => x != g).ToList();
-
-                //add -1? that could help nvm no it wont
-                var randopersonint = rnd.Next(usersnotmelist.Count);
-
-                var usertwo = usersnotmelist[randopersonint];
-
-                // cant remove from a list so need to make it an empty string?
-                //allGroupMembersAcctNoList[randopersonint] = string.Empty;
-
-                availableGroupMembers.RemoveAt(randopersonint);
-
-                d.UserOne = userone;
-                d.UserTwo = usertwo;
-                drawnnamelist.Add(d);
-
-            }
-
-            foreach (var x in drawnnamelist)
-            {
-                if (x.UserOne == x.UserTwo)
-                {
-                    redraw = true;
-                }
-            }
-
-            if (redraw)
-            {
-                throw new AppException("Error: Drawing names is impossible in the current context:");
-                GetRandomUsersForDrawingNames(groupid);
-            }
+        //    foreach (var g in allGroupMembersAcctNoList)
+        //    {
+        //        //GOTO a BL method to generate a random person. 
+        //        var d = new DrawNamesEditModel();
 
 
-            return drawnnamelist;
-        }
+
+        //        //var anyconditions = _memberConditionsDal.MemberConditionsByGroupIdByAcctNo(model.Group.GroupId, g);
+        //        //var conditionsList = new List<string>();
+
+        //        //if (anyconditions.Any())
+        //        //{
+        //        //    foreach (var c in anyconditions)
+        //        //    {
+        //        //        var u = c.UserSelectedForConditionAcctNo;
+        //        //        conditionsList.Add(u);
+        //        //    }
+        //        //}
+
+        //        // tempAllGroupMembersList.RemoveRange(conditionsList);
+
+        //        //**Check this out
+        //        //var resultlist = tempAllGroupMembersList.Except(conditionsList).ToList();
+
+        //        var userone = g;
+
+        //        var usersnotmelist = availableGroupMembers.Where(x => x != g).ToList();
+
+        //        //add -1? that could help nvm no it wont
+        //        var randopersonint = rnd.Next(usersnotmelist.Count);
+
+        //        var usertwo = usersnotmelist[randopersonint];
+
+        //        // cant remove from a list so need to make it an empty string?
+        //        //allGroupMembersAcctNoList[randopersonint] = string.Empty;
+
+        //        availableGroupMembers.RemoveAt(randopersonint);
+
+        //        d.PersonOne = userone;
+        //        d.PersonTwo = usertwo;
+        //        drawnnamelist.Add(d);
+
+        //    }
+
+        //    foreach (var x in drawnnamelist)
+        //    {
+        //        if (x.PersonOne == x.PersonTwo)
+        //        {
+        //            redraw = true;
+        //        }
+        //    }
+
+        //    if (redraw)
+        //    {
+        //        throw new AppException("Error: Drawing names is impossible in the current context:");
+        //        GetRandomUsersForDrawingNames(groupid);
+        //    }
+
+
+        //    return drawnnamelist;
+        //}
 
 
 
@@ -817,6 +820,10 @@ namespace SecretSantaApp.BL
                 throw new AppException($"Error loading group by ID: {groupid}");
             }
 
+            //The members have been loaded, clear out existing pairings so we can assign new ones.
+            ClearGroupPairingsByGroupId(groupid);
+
+
             var membersingroup = groupmembers.Select(x => x.AccountNumberString).ToList();
             var totalavailablemembers = membersingroup;
 
@@ -827,7 +834,7 @@ namespace SecretSantaApp.BL
                 var tempmemberswithconditions = new List<string>();
                 var dnem = new DrawNamesEditModel();
                 dnem.GroupId = groupid;
-                dnem.UserOne = g;
+                dnem.PersonOne = g;
 
                 //check for conditions
                 var conditions = _memberConditionsDal.MemberConditionsByGroupIdByAcctNo(groupid, g);
@@ -854,19 +861,36 @@ namespace SecretSantaApp.BL
 
                 var rando = tempavailablemembers.ElementAt(r.Next(0, tempavailablemembers.Count()));
 
-                dnem.UserTwo = rando;
+                dnem.PersonTwo = rando;
 
                 //remove the user who we just assigned to user two from the global list of available people
                 totalavailablemembers = totalavailablemembers.Where(x => !x.Contains(rando)).ToList();
 
                 result.Add(dnem);
 
+
+                //all the logic has been assigned, now save the record.
+                _groupPairingsDal.Save(dnem);
             }
 
 
 
 
             return result;
+        }
+
+        private void ClearGroupPairingsByGroupId(int groupid)
+        {
+            var grouppairings = _groupPairingsDal.GroupPairingsByGroupId(groupid);
+
+            if (grouppairings.Count >= 1)
+            {
+                foreach (var g in grouppairings)
+                {
+                    _groupPairingsDal.Delete(g);
+                }
+            }
+
         }
 
 
@@ -975,13 +999,6 @@ namespace SecretSantaApp.BL
                 });
             }
             return deptList;
-            //var commonSizes = Enum.GetValues(typeof(CommonSizes)).Cast<CommonSizes>().ToList();
-
-            //var rsltlist = new List<GroupConditionsOtherUsersModel>();
-
-
-            //var result = new SelectList(commonSizes, nameof(CommonSizes..MembershipId),
-            //    nameof(GroupConditionsOtherUsersModel.FullName));
 
 
             //return result;

@@ -24,8 +24,8 @@
                     <tbody>
                         @foreach (var u in Model.DrawNamesList)
                 {
-                    var userone = ssbl.UserFullNameByAccountNumberString(u.UserOne);
-                    var usertwo = ssbl.UserFullNameByAccountNumberString(u.UserTwo);
+                    var userone = ssbl.UserFullNameByAccountNumberString(u.PersonOne);
+                    var usertwo = ssbl.UserFullNameByAccountNumberString(u.PersonTwo);
                             <tr>
                                 <td>
                                     @userone
@@ -54,7 +54,7 @@
                   data-ajax-update="#@containerid">
 
                 <div class="form-group">
-                    <label class="control-label col-sm-3" asp-label-for="Rule" for="rule">Rule<em>*</em></label>
+                    @*<label class="control-label col-sm-3" asp-label-for="Rule" for="rule">Rule<em>*</em></label>*@
                     <div class="col-sm-8 col-xs-12">
                         @*<input type="text" asp-for="Rule" placeholder="Rule" required="" oninvalid="this.setCustomValidity('Please Enter A Rule')" class="form-control" />*@
                     </div>
