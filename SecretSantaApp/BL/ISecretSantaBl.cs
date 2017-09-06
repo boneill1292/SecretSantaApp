@@ -71,6 +71,8 @@ namespace SecretSantaApp.BL
 
         DrawNamesDisplayModel DrawNames(DrawNamesDisplayModel model);
 
+        GroupPairingDisplayModel GroupPairingDisplayModelByLoggedInUserByGroupId(int groupid);
+
         //helpers
         CustomUserEditModel GetLoggedInUser();
         string ConditionDisplayByAccountNumbers(string ur, string us);

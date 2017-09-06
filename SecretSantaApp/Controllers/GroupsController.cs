@@ -71,10 +71,20 @@ namespace SecretSantaApp.Controllers
         [HttpGet]
         public ActionResult GroupHome(int id)
         {
-            var model = _secretSantaBl.GroupHomeEditModelByGroupId(id);
-            model.InviteUsersCollection = _secretSantaBl.InviteUsersCollectionModelByAmountToGet(4);
+            string msg = "";
+            try
+            {
+                var model = _secretSantaBl.GroupHomeEditModelByGroupId(id);
+                model.InviteUsersCollection = _secretSantaBl.InviteUsersCollectionModelByAmountToGet(4);
 
-            return View("GroupHome", model);
+                return View("GroupHome", model);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+                _log.LogError(" - ", ex.Message);
+            }
+            return View("_ErrorMessage", new StringModel(msg));
         }
 
 
@@ -446,6 +456,26 @@ namespace SecretSantaApp.Controllers
             return PartialView("_DrawNames", model);
         }
 
+
+
+
+        [HttpGet]
+        public ActionResult DisplayGroupPairedMember(int groupid)
+        {
+            string msg = "";
+            try
+            {
+                var model = _secretSantaBl.GroupPairingDisplayModelByLoggedInUserByGroupId(groupid);
+               return PartialView("_GroupPairedMember", model);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+                _log.LogWarning(ex.Message);
+            }
+            return PartialView("_ErrorMessage", new StringModel(msg));
+
+        }
 
 
     }

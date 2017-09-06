@@ -23,5 +23,8 @@ namespace SecretSantaApp.ViewModels
         public CustomUser GroupAdmin { get; set; }
 
         public List<MemberConditions> GroupConditions { get; set; }
+
+        public bool PairingsAssigned { get; set; }
+
     }
 }

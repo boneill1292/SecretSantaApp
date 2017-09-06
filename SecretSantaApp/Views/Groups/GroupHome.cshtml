@@ -5,6 +5,7 @@
     var grouprulesurl = Url.Action("GetGroupRulesPartial", "Groups", new { groupid = Model.GroupId });
     var chaturl = Url.Action("GetChatPartial", "Groups", new { groupid = Model.GroupId });
     var getdrawnamesurl = Url.Action("GetDrawNamesPartial", "Groups", new { groupid = Model.GroupId });
+    var grouppairedmemberurl = Url.Action("DisplayGroupPairedMember", "Groups", new { groupid = Model.GroupId });
 }
 
 <div style="text-align:center">
@@ -25,6 +26,22 @@ else //its not a new group. its the go to group home method
 
         <div class="col-md-12" style="padding-top:2%">
             <div style="text-align: center;">
+                <div>
+                    @if (Model.PairingsAssigned)
+                    {
+                        <h4>Your Group Has Drawn Names</h4>
+                    }
+                    else
+                    {
+                        <h4>Your Group Has Not Drawn Names</h4>
+                    }
+                </div>
+                <div id="pairedmember">
+
+                </div>
+
+
+
                 <div class="">
 
                     <button class="btn btn-group BtnRed"
@@ -57,14 +74,10 @@ else //its not a new group. its the go to group home method
             <div class="clearfix"></div>
             <br />
 
-            @*<div class="santaloadspinner"></div>
-                <div id="displayresultsdiv" style="outline: 3px yellowgreen solid;">hi</div>*@
-
             <div class="clearfix"></div>
             <br />
 
             @*The Div That Holds The Chat*@
-            @*<button type="button" onclick="ToggleChat()" id="btnDrawNames" class="btn BtnGreen " data-dismiss="modal">Toggle Chat</button>*@
             <div id="chatdiv" class="col-md-12" style="outline:1px green solid">
             </div>
 
@@ -97,7 +110,7 @@ else //its not a new group. its the go to group home method
 
             LoadRules();
             LoadChat();
-
+            LoadPairedMember();
 
             var isnew = '@Model.NewGroup';
             console.log(isnew);
@@ -138,6 +151,9 @@ else //its not a new group. its the go to group home method
             window.LayoutLoadPartial('chatdiv', '@chaturl', { 'label': 'Loading Chat...' });
         }
 
+        function LoadPairedMember() {
+            window.LayoutLoadPartial('pairedmember', '@grouppairedmemberurl');
+        }
 
 
     </script>

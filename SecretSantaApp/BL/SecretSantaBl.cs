@@ -241,6 +241,19 @@ namespace SecretSantaApp.BL
             }
 
             //get the group conditions
+
+            //check to see if the pairings have been assigned:
+            var pairings = _groupPairingsDal.GroupPairingsByGroupId(groupid);
+
+            if (pairings.Count >= 1)
+            {
+                result.PairingsAssigned = true;
+            }
+            else
+            {
+                result.PairingsAssigned = false;
+            }
+
             //var conditions = _memberConditionsDal.MemberConditionsByGroupId(groupid;
 
 
@@ -672,7 +685,7 @@ namespace SecretSantaApp.BL
         {
 
             var drawnnamelist = new List<DrawNamesEditModel>();
-            var maxretries = 10;
+            var maxretries = 100;
             var retries = 0;
 
             while (true)
@@ -683,8 +696,11 @@ namespace SecretSantaApp.BL
                     break;
                 }
 
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Console.WriteLine(" - " + ex.Message);
+
+
                     if (retries < maxretries)
                     {
                         retries++;
@@ -891,6 +907,14 @@ namespace SecretSantaApp.BL
                 }
             }
 
+        }
+
+
+        public GroupPairingDisplayModel GroupPairingDisplayModelByLoggedInUserByGroupId(int groupid)
+        {
+            var result = new GroupPairingDisplayModel();
+            result.PairedMemberString = "batman";
+            return result;
         }
 
 

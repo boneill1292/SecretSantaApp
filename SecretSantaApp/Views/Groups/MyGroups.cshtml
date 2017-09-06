@@ -26,7 +26,12 @@
           @*<td>@g.InsertedBy</td>*@
           <td>
             <form >
-              <input asp-controller="Groups" asp-action="GroupHome" asp-route-id="@g.GroupId" method="GET" type="submit" class="btn btn-group BtnGreen" value="Group Home" />
+                <input asp-controller="Groups" 
+                       asp-action="GroupHome" 
+                       asp-route-id="@g.GroupId" 
+                       method="GET" type="submit"
+                       class="btn btn-group BtnGreen" 
+                       value="Group Home" />
             </form>
           </td>
         </tr>
