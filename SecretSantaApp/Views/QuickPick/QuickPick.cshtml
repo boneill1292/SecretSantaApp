@@ -11,6 +11,11 @@
             <h3>Quick Pick Game </h3>
             <h5>Click Start If Everyone Is In The Room</h5>
 
+            <div id="directonsdiv" style="display: none;">
+                <p>Click 'Draw' to draw a random person.</p>
+                <p>Click 'Accept' to accept your person.</p>
+            </div>
+
             <a class="btn BtnGreen"
                id="startquickpickBtn"
                onclick="StartQuickPick()">Start</a>
@@ -53,6 +58,20 @@
                 Draw
             </button>
 
+            @*<button type="button"
+                        id=""
+                        style=""
+                        onclick="AcceptName()"
+                        class="btn BtnRed">
+                    Accept
+                </button>*@
+        </div>
+
+        <div id="resultsdiv" style="outline: 1px green solid; display: none">
+            <h3>
+                You have drawn: <span id="receivedmsg"></span> !
+            </h3>
+
             <button type="button"
                     id=""
                     style=""
@@ -60,12 +79,6 @@
                     class="btn BtnRed">
                 Accept
             </button>
-        </div>
-
-        <div id="resultsdiv" style="outline: 1px green solid; display: none">
-            <h3>
-                You have drawn: <span id="receivedmsg"></span> !
-            </h3>
         </div>
     </div>
 
@@ -162,6 +175,7 @@
             var quantity = $('#amountOfPeopleInput').val();
 
             if (quantity >= 2) {
+
                 $('#namesdivid').html('');
                 $('#namesdivid').show();
                 console.log("you submitted: " + quantity);
@@ -199,6 +213,7 @@
         //Load all the names into a dropdown
         function SubmitNamesInput() {
 
+            $('#directonsdiv').show();
             var inputs = document.getElementsByClassName('generatedInput');
 
             for (var i = 0; i < inputs.length; i++) {
@@ -230,12 +245,6 @@
             //$('#resultsdiv').html('<h3> Your results are: Ben </h3>'); //receivedmsg
             $('#resultsdiv').show();
 
-
-            //// var availableppl = GetAvailablePeople(person);
-
-            //for (var i = 1; i < peoplenotme.length; i++) {
-            //    console.log("Available Person: ");
-            //}
 
 
             //Theory is we need to set a list of available people that are not me.
@@ -269,8 +278,31 @@
         function AcceptName(person) {
             var acceptedperson = $('#receivedmsg').text();
 
+            //We need to remove the user who is drawing names from the drop down list
 
-            console.log("wipe out");
+            //remove the person that the user selected 'accept' on from the available people list
+
+            var allppl = allpeople.slice();
+
+
+            console.log(allppl);
+
+            RemoveSelectedUserFromAllPeople(acceptedperson);
+
+            console.log("wipe out: " + acceptedperson);
+        }
+
+
+        function RemoveSelectedUserFromAllPeople(person) {
+            var selecteduser = allpeople.indexOf(person);
+
+            console.log("removing: " + selecteduser);
+
+            var splicedallpeople = allpeople.splice(selecteduser, 1);
+
+            console.log("Spliced all people: " + splicedallpeople);
+
+            console.log("all people yo: " + allpeople);
         }
 
 
@@ -280,6 +312,7 @@
             // console.log("hi: " + person);
             GetPeopleNotMe(person);
         });
+
 
 
 
@@ -319,6 +352,8 @@
             return availablepeoplenotme;
 
         }
+
+
 
 
         function ClearModal() {

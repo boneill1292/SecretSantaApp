@@ -913,7 +913,27 @@ namespace SecretSantaApp.BL
         public GroupPairingDisplayModel GroupPairingDisplayModelByLoggedInUserByGroupId(int groupid)
         {
             var result = new GroupPairingDisplayModel();
-            result.PairedMemberString = "batman";
+
+            var pairs = _groupPairingsDal.GroupPairingsByGroupId(groupid);
+
+            var me = GetLoggedInUser();
+
+            var mypair = pairs.FirstOrDefault(x => x.PersonOne == me.AccountNumberString);
+
+            if (mypair != null)
+            {
+                var pairacctno = mypair.PersonTwo;
+                var person = _customUserDal.CustomUserByAccountNumber(pairacctno);
+
+                result.PairedMemberString = person.FullName;
+
+            }
+            else
+            {
+                result.PairedMemberString = "The group has not drawn yet";
+            }
+
+
             return result;
         }
 

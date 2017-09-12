@@ -9,8 +9,8 @@
         <thead>
             <tr>
                 <th>Group Name</th>
-                <th>Password</th>
-                <td>&nbsp;</td>
+                @*<th>Password</th>*@
+                @*<td>&nbsp;</td>*@
             </tr>
         </thead>
         <tbody>
@@ -19,8 +19,9 @@
                 var url = Url.Action("PromptUserForPassword", "Groups", new { id = g.GroupId });
                 <tr>
                     <td>@g.GroupName</td>
-                    <td>@g.GroupPassWord</td>
+                    @*<td>@g.GroupPassWord</td>*@
                     <td>
+                     
                         @*<button class="btn btn-group modal-link BtnGreen"
                                     href="@url"
                                     title="Add modal"

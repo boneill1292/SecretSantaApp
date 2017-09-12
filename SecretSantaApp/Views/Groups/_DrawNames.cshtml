@@ -23,9 +23,9 @@
                     </thead>
                     <tbody>
                         @foreach (var u in Model.DrawNamesList)
-                {
-                    var userone = ssbl.UserFullNameByAccountNumberString(u.PersonOne);
-                    var usertwo = ssbl.UserFullNameByAccountNumberString(u.PersonTwo);
+                        {
+                            var userone = ssbl.UserFullNameByAccountNumberString(u.PersonOne);
+                            var usertwo = ssbl.UserFullNameByAccountNumberString(u.PersonTwo);
                             <tr>
                                 <td>
                                     @userone
@@ -39,6 +39,14 @@
                 </table>
             </div>
         </div>
+
+        <script>
+            $("document").ready(function () {
+
+                window.LoadPairedMember();
+
+            }); // Doc Ready
+        </script>
     }
     else
     {

@@ -29,17 +29,20 @@ else //its not a new group. its the go to group home method
                 <div>
                     @if (Model.PairingsAssigned)
                     {
-                        <h4>Your Group Has Drawn Names</h4>
+
+                        <div id="pairedmember">
+                        </div>
+
                     }
                     else
                     {
-                        <h4>Your Group Has Not Drawn Names</h4>
+                        <h4>This Group Has Not Drawn Names Yet</h4>
                     }
-                </div>
-                <div id="pairedmember">
 
                 </div>
+                
 
+               
 
 
                 <div class="">
@@ -154,6 +157,8 @@ else //its not a new group. its the go to group home method
         function LoadPairedMember() {
             window.LayoutLoadPartial('pairedmember', '@grouppairedmemberurl');
         }
+
+
 
 
     </script>
