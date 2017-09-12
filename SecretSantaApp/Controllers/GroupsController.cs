@@ -1,33 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Logging;
 using SecretSantaApp.BL;
 using SecretSantaApp.Exceptions;
 using SecretSantaApp.Models;
 using SecretSantaApp.ViewModels;
 using SecretSantaApp.Views.Groups;
-using Serilog;
 
 namespace SecretSantaApp.Controllers
 {
     [Authorize]
     public class GroupsController : Controller
     {
-        private readonly ISecretSantaBl _secretSantaBl;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILogger<GroupsController> _log;
+        private readonly ISecretSantaBl _secretSantaBl;
 
 
-        public GroupsController(ISecretSantaBl secretSantaBl, IHttpContextAccessor httpContextAccessor, ILogger<GroupsController> log)
+        public GroupsController(ISecretSantaBl secretSantaBl, IHttpContextAccessor httpContextAccessor,
+            ILogger<GroupsController> log)
         {
             _secretSantaBl = secretSantaBl;
             _httpContextAccessor = httpContextAccessor;
@@ -38,15 +31,13 @@ namespace SecretSantaApp.Controllers
         // [Route("benapp/test")]
         public ActionResult Index()
         {
-
-
-            var usermodel = _secretSantaBl.CustomUserModelByLoggedInUser(User);
+          //  var usermodel = _secretSantaBl.CustomUserModelByLoggedInUser(User);
             var model = _secretSantaBl.DefaultGroupAdminModel();
             return View("Index", model);
         }
 
         /// <summary>
-        /// Used to link the user back to the groups they are a member of
+        ///     Used to link the user back to the groups they are a member of
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -62,16 +53,16 @@ namespace SecretSantaApp.Controllers
         }
 
 
-
         /// <summary>
-        /// Going to get used a lot. Used to generate the Group Home
+        ///     Going to get used a lot. Used to generate the Group Home
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
+        //[Route("groups/group/_defaultsearchresult")]
         public ActionResult GroupHome(int id)
         {
-            string msg = "";
+            var msg = "";
             try
             {
                 var model = _secretSantaBl.GroupHomeEditModelByGroupId(id);
@@ -88,9 +79,8 @@ namespace SecretSantaApp.Controllers
         }
 
 
-
         /// <summary>
-        /// Get the NewGroup View. 
+        ///     Get the NewGroup View.
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -102,7 +92,7 @@ namespace SecretSantaApp.Controllers
 
 
         /// <summary>
-        /// Saves the new group that the user submitted.
+        ///     Saves the new group that the user submitted.
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
@@ -111,66 +101,109 @@ namespace SecretSantaApp.Controllers
         public ActionResult SaveNewGroup(GroupEditModel model)
         {
             if (!ModelState.IsValid)
-            {
                 return View("NewGroup", model);
-            }
             try
             {
-                //save the new group
+                //save the new group - get the ID
                 var m = _secretSantaBl.SaveNewGroup(model);
 
                 //get the group homepage data
                 var grouphome = _secretSantaBl.GroupHomeEditModelByGroupId(m.GroupId);
-                grouphome.InviteUsersCollection = _secretSantaBl.InviteUsersCollectionModelByAmountToGet(4);
-
+                //   grouphome.InviteUsersCollection = _secretSantaBl.InviteUsersCollectionModelByAmountToGet(4);
 
                 //var result = _secretSantaBl.DefaultGroupAdminModel();
                 grouphome.NewGroup = true;
-                return View("GroupHome", grouphome);
 
+                return RedirectToAction("GroupHome", new {id = m.GroupId});
+                //return View("GroupHome", grouphome);
+            }
+            catch (AppException ax)
+            {
+                ModelState.AddModelError("", ax.AppMessage);
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError("", ex.Message);
-                _log.LogError(" - ", ex.Message);
+                _log.LogWarning(ex.Message);
             }
             return View("NewGroup", model);
         }
 
 
-        /// <summary>
-        /// This is the extra field used when we want to add more people to invite.
-        /// </summary>
-        /// <param name="count"></param>
-        /// <returns></returns>
         [HttpGet]
-        public ActionResult GetInviteUsersFields(int count)
+        public ActionResult InviteUsersPartialView(int groupid)
         {
-            // var model = _secretSantaBl.InviteUsersCollectionModelByAmountToGet(count);
-            var model = _secretSantaBl.AdditionalInviteUsersViewModel(count);
-            return PartialView("_InviteUsersRow", model);
+            string msg;
+            try
+            {
+                var model = _secretSantaBl.InviteUsersEditModelByGroupId(groupid);
+                return PartialView("_InviteUsers", model);
+            }
+            catch (AppException ax)
+            {
+                msg = ax.Message;
+            }
+            catch (Exception)
+            {
+                msg = "An Error Has Occured";
+            }
+            return PartialView("_ErrorMessage", new StringModel(msg));
         }
 
 
+        [HttpGet]
+        public ActionResult GetInviteUsersFields(int count)
+        {
+            string msg;
+            try
+            {
+                // var model = _secretSantaBl.InviteUsersCollectionModelByAmountToGet(count);
+                var model = _secretSantaBl.AdditionalInviteUsersViewModel(count);
+                return PartialView("_InviteUsersRow", model);
+            }
+            catch (AppException ax)
+            {
+                msg = ax.Message;
+            }
+            catch (Exception)
+            {
+                msg = "An Error Has Occured";
+            }
+            return PartialView("_ErrorMessage", new StringModel(msg));
+        }
+
 
         /// <summary>
-        /// Called from the GroupHome View.
-        /// This is note quite used yet. This will be coming soon.
+        ///     Called from the GroupHome View.
+        ///     This is note quite used yet. This will be coming soon.
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
         public ActionResult SendInvitesTousers(GroupHomeEditModel model)
         {
-            var m = new Group();
-            m.Update(model);
-            return View("Index");
+            string msg;
+            try
+            {
+                var m = new Group();
+                m.Update(model);
+                return View("Index");
+            }
+
+            catch (AppException ax)
+            {
+                msg = ax.Message;
+            }
+            catch (Exception)
+            {
+                msg = "An Error Has Occured";
+            }
+            return PartialView("_ErrorMessage", new StringModel(msg));
         }
 
 
-
         /// <summary>
-        /// Gets the Join Groups page
+        ///     Gets the Join Groups page
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -188,9 +221,8 @@ namespace SecretSantaApp.Controllers
             {
                 msg = ax.Message;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-
                 msg = "An Error Has Occured";
             }
             return PartialView("_ErrorMessage", new StringModel(msg));
@@ -198,7 +230,7 @@ namespace SecretSantaApp.Controllers
 
 
         /// <summary>
-        /// Used to prompt the user for a password to join a group
+        ///     Used to prompt the user for a password to join a group
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -212,7 +244,7 @@ namespace SecretSantaApp.Controllers
 
 
         /// <summary>
-        /// checks to see if the users password was correct
+        ///     checks to see if the users password was correct
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
@@ -220,9 +252,7 @@ namespace SecretSantaApp.Controllers
         public ActionResult SubmitJoinGroup(JoinGroupEditModel model)
         {
             if (!ModelState.IsValid)
-            {
                 return PartialView("_JoinGroupEntry", model);
-            }
             //We need to pass the correct password - if the user does that.Add them to the group, and load the group  homepage.
             try
             {
@@ -286,7 +316,6 @@ namespace SecretSantaApp.Controllers
         }
 
 
-
         [HttpPost]
         public ActionResult SaveGroupRule(GroupRulesEditModel model)
         {
@@ -322,7 +351,6 @@ namespace SecretSantaApp.Controllers
         }
 
 
-
         [HttpGet]
         public ActionResult NewMessagePartial(int groupid)
         {
@@ -354,7 +382,7 @@ namespace SecretSantaApp.Controllers
         [HttpGet]
         public ActionResult NewMemberConditionPopup(int membershipid, string acctno)
         {
-            string msg = "";
+            var msg = "";
             try
             {
                 var model = _secretSantaBl.MemberConditionsEditModelByMembershipId(membershipid, acctno);
@@ -367,7 +395,6 @@ namespace SecretSantaApp.Controllers
                 _log.LogWarning(ex.Message);
             }
             return PartialView("_ErrorMessage", new StringModel(msg));
-
         }
 
 
@@ -395,8 +422,6 @@ namespace SecretSantaApp.Controllers
         }
 
 
-
-
         [HttpGet]
         public ActionResult DeleteConditionPopup(int conditionid)
         {
@@ -416,7 +441,7 @@ namespace SecretSantaApp.Controllers
         [HttpGet]
         public ActionResult GetDrawNamesPartial(int groupid)
         {
-            string msg = "";
+            var msg = "";
             try
             {
                 var model = _secretSantaBl.DrawNamesDisplayModelByGroupId(groupid);
@@ -435,9 +460,7 @@ namespace SecretSantaApp.Controllers
         public ActionResult SubmitDrawNames(DrawNamesDisplayModel model)
         {
             if (!ModelState.IsValid)
-            {
                 return PartialView("_DrawNames", model);
-            }
             try
             {
                 var m = _secretSantaBl.DrawNames(model);
@@ -457,16 +480,14 @@ namespace SecretSantaApp.Controllers
         }
 
 
-
-
         [HttpGet]
         public ActionResult DisplayGroupPairedMember(int groupid)
         {
-            string msg = "";
+            var msg = "";
             try
             {
                 var model = _secretSantaBl.GroupPairingDisplayModelByLoggedInUserByGroupId(groupid);
-               return PartialView("_GroupPairedMember", model);
+                return PartialView("_GroupPairedMember", model);
             }
             catch (Exception ex)
             {
@@ -474,9 +495,6 @@ namespace SecretSantaApp.Controllers
                 _log.LogWarning(ex.Message);
             }
             return PartialView("_ErrorMessage", new StringModel(msg));
-
         }
-
-
     }
 }

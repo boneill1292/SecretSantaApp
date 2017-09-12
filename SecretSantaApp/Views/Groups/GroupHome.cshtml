@@ -6,6 +6,7 @@
     var chaturl = Url.Action("GetChatPartial", "Groups", new { groupid = Model.GroupId });
     var getdrawnamesurl = Url.Action("GetDrawNamesPartial", "Groups", new { groupid = Model.GroupId });
     var grouppairedmemberurl = Url.Action("DisplayGroupPairedMember", "Groups", new { groupid = Model.GroupId });
+    var inviteusersurl = Url.Action("InviteUsersPartialView", "Groups", new { groupid = Model.GroupId });
 }
 
 <div style="text-align:center">
@@ -15,13 +16,20 @@
     <h5>Group Admin: @Model.GroupAdmin.FullName</h5>
 </div>
 
+
+<div id="inviteusersdiv"></div>
+
+
 @if (Model.NewGroup)
 {
-    @Html.Partial("_NewGroupInvites", Model)
+
 
 }
+
 else //its not a new group. its the go to group home method
 {
+
+
     <div class="container">
 
         <div class="col-md-12" style="padding-top:2%">
@@ -40,9 +48,9 @@ else //its not a new group. its the go to group home method
                     }
 
                 </div>
-                
 
-               
+
+
 
 
                 <div class="">
@@ -109,48 +117,27 @@ else //its not a new group. its the go to group home method
 
 @section scripts{
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
 
             LoadRules();
             LoadChat();
             LoadPairedMember();
 
-            var isnew = '@Model.NewGroup';
+            @*var isnew = '@Model.NewGroup';
             console.log(isnew);
 
             if (isnew === "True") {
-                console.log("is new: " + isnew);
-                var invitecount = "@Model.InviteUsersCollection.UsersToInvite.Count";
-                var inviteurl = "@Url.Action("GetInviteUsersFields", "Groups", new {count = -1})";
-                var baseurl = inviteurl;
-
-                //Click the add attribute button
-                $(function() {
-                    $("#btnInviteMoreUsers").click(function(e) {
-                        var resulturl = baseurl.replace("-1", invitecount);
-
-                        console.log("urls: " + " - " + resulturl);
-                        console.log("invitecount: " + invitecount);
-
-                        $.get(resulturl,
-                            function(data) {
-                                $("#invitefields").append(data);
-                            });
-                        invitecount++;
-                    }); //end the click
-                }); //function
-            } //If the group is not new
+                LoadInviteUsers();
+            }*@ 
 
         }); //doc ready
 
         function LoadRules() {
-             //ClosePopup();
             window.LayoutLoadPartial('rulesdiv', '@grouprulesurl', { 'label': 'Loading Rules...' });
         }
 
-//Load the chat partial view
+        //Load the chat partial view
         function LoadChat() {
-            //ClosePopup();
             window.LayoutLoadPartial('chatdiv', '@chaturl', { 'label': 'Loading Chat...' });
         }
 
@@ -159,6 +146,9 @@ else //its not a new group. its the go to group home method
         }
 
 
+        function LoadInviteUsers() {
+            window.LayoutLoadPartial('inviteusersdiv', '@inviteusersurl');
+        }
 
 
     </script>

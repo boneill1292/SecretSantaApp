@@ -126,12 +126,13 @@ namespace SecretSantaApp.BL
 
             if (model.GroupName == "abc123")
             {
-                throw new Exception("You are dumb");
+                throw new AppException("You are dumb");
             }
 
             //code to get the currently logged in user
-            var liu = _httpContextAccessor.HttpContext.User;
-            var u = CustomUserModelByLoggedInUser(liu);
+            //var liu = _httpContextAccessor.HttpContext.User;
+            //var u = CustomUserModelByLoggedInUser(liu);
+            var u = GetLoggedInUser();
 
             //Save the new group
             var saved = _groupDal.SaveNewGroup(model);
@@ -321,6 +322,27 @@ namespace SecretSantaApp.BL
         }
 
 
+
+
+
+        public InviteUsersEditModel InviteUsersEditModelByGroupId(int groupid)
+        {
+            var result = new InviteUsersEditModel();
+
+            var group = _groupDal.GetGroupById(groupid);
+
+            if (group == null)
+            {
+                throw new AppException($"Error Loading Group By ID: {groupid}");
+            }
+
+
+            //Assuming that at least 4 people will want to be invited.
+            result.InviteUsersCollection = InviteUsersCollectionModelByAmountToGet(4);
+            
+
+            return result;
+        }
 
         public InviteUsersCollectionModel InviteUsersCollectionModelByAmountToGet(int amount)
         {
