@@ -31,15 +31,12 @@ namespace SecretSantaApp.Controllers
         // [Route("benapp/test")]
         public ActionResult Index()
         {
-          //  var usermodel = _secretSantaBl.CustomUserModelByLoggedInUser(User);
+            //  var usermodel = _secretSantaBl.CustomUserModelByLoggedInUser(User);
             var model = _secretSantaBl.DefaultGroupAdminModel();
             return View("Index", model);
         }
 
-        /// <summary>
-        ///     Used to link the user back to the groups they are a member of
-        /// </summary>
-        /// <returns></returns>
+
         [HttpGet]
         [Authorize]
         // [Route("benapp/test")]
@@ -53,11 +50,7 @@ namespace SecretSantaApp.Controllers
         }
 
 
-        /// <summary>
-        ///     Going to get used a lot. Used to generate the Group Home
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+
         [HttpGet]
         //[Route("groups/group/_defaultsearchresult")]
         public ActionResult GroupHome(int id)
@@ -79,23 +72,29 @@ namespace SecretSantaApp.Controllers
         }
 
 
-        /// <summary>
-        ///     Get the NewGroup View.
-        /// </summary>
-        /// <returns></returns>
+
         [HttpGet]
         public ActionResult NewGroupPage()
         {
-            var model = _secretSantaBl.DefaultGroupEditModel();
-            return View("NewGroup", model);
+            string msg;
+            try
+            {
+                var model = _secretSantaBl.DefaultGroupEditModel();
+                return View("NewGroup", model);
+            }
+            catch (AppException ax)
+            {
+                msg = ax.Message;
+            }
+            catch (Exception)
+            {
+                msg = "An Error Has Occured";
+            }
+            return View("_ErrorMessage", new StringModel(msg));
         }
 
 
-        /// <summary>
-        ///     Saves the new group that the user submitted.
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
+
         [HttpPost]
         //[Route("tickets/{department}/newcategoryonticketview/edit")]
         public ActionResult SaveNewGroup(GroupEditModel model)
@@ -106,16 +105,10 @@ namespace SecretSantaApp.Controllers
             {
                 //save the new group - get the ID
                 var m = _secretSantaBl.SaveNewGroup(model);
-
-                //get the group homepage data
                 var grouphome = _secretSantaBl.GroupHomeEditModelByGroupId(m.GroupId);
-                //   grouphome.InviteUsersCollection = _secretSantaBl.InviteUsersCollectionModelByAmountToGet(4);
-
-                //var result = _secretSantaBl.DefaultGroupAdminModel();
                 grouphome.NewGroup = true;
 
-                return RedirectToAction("GroupHome", new {id = m.GroupId});
-                //return View("GroupHome", grouphome);
+                return RedirectToAction("GroupHome", new { id = m.GroupId });
             }
             catch (AppException ax)
             {
@@ -157,7 +150,6 @@ namespace SecretSantaApp.Controllers
             string msg;
             try
             {
-                // var model = _secretSantaBl.InviteUsersCollectionModelByAmountToGet(count);
                 var model = _secretSantaBl.AdditionalInviteUsersViewModel(count);
                 return PartialView("_InviteUsersRow", model);
             }
@@ -172,13 +164,6 @@ namespace SecretSantaApp.Controllers
             return PartialView("_ErrorMessage", new StringModel(msg));
         }
 
-
-        /// <summary>
-        ///     Called from the GroupHome View.
-        ///     This is note quite used yet. This will be coming soon.
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
         [HttpPost]
         public ActionResult SendInvitesTousers(GroupHomeEditModel model)
         {
@@ -188,8 +173,8 @@ namespace SecretSantaApp.Controllers
                 var m = new Group();
                 m.Update(model);
                 return View("Index");
-            }
 
+            }
             catch (AppException ax)
             {
                 msg = ax.Message;
@@ -202,10 +187,6 @@ namespace SecretSantaApp.Controllers
         }
 
 
-        /// <summary>
-        ///     Gets the Join Groups page
-        /// </summary>
-        /// <returns></returns>
         [HttpGet]
         public ActionResult AvailableGroupsToJoin()
         {
@@ -229,25 +210,31 @@ namespace SecretSantaApp.Controllers
         }
 
 
-        /// <summary>
-        ///     Used to prompt the user for a password to join a group
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+
         [HttpGet]
         [Route("secretsanta/joingroup/{id}")]
         public ActionResult PromptUserForPassword(int id)
         {
-            var model = _secretSantaBl.JoinGroupEditModelByGroupId(id);
-            return PartialView("_JoinGroupEntry", model);
+            string msg;
+            try
+            {
+                var model = _secretSantaBl.JoinGroupEditModelByGroupId(id);
+                return PartialView("_JoinGroupEntry", model);
+            }
+            catch (AppException ax)
+            {
+                msg = ax.Message;
+            }
+            catch (Exception)
+            {
+                msg = "An Error Has Occured";
+            }
+            return PartialView("_ErrorMessage", new StringModel(msg));
         }
 
 
-        /// <summary>
-        ///     checks to see if the users password was correct
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
+
+
         [HttpPost]
         public ActionResult SubmitJoinGroup(JoinGroupEditModel model)
         {
@@ -278,22 +265,66 @@ namespace SecretSantaApp.Controllers
         [HttpGet]
         public ActionResult GetManageRulesPopup(int groupid)
         {
-            var model = _secretSantaBl.NewRuleEditModelByGroupId(groupid);
-            return PartialView("_NewRulePopup", model);
+            string msg;
+            try
+            {
+                var model = _secretSantaBl.NewRuleEditModelByGroupId(groupid);
+                return PartialView("_NewRulePopup", model);
+            }
+            catch (AppException ax)
+            {
+                msg = ax.Message;
+            }
+            catch (Exception)
+            {
+                msg = "An Error Has Occured";
+            }
+            return PartialView("_ErrorMessage", new StringModel(msg));
         }
+
+
 
         [HttpGet]
         public ActionResult EditRulePopup(int ruleid)
         {
-            var model = _secretSantaBl.GroupRuleEditModelByRuleId(ruleid);
-            return PartialView("_NewRulePopup", model);
+            string msg;
+            try
+            {
+                var model = _secretSantaBl.GroupRuleEditModelByRuleId(ruleid);
+                return PartialView("_NewRulePopup", model);
+            }
+            catch (AppException ax)
+            {
+                msg = ax.Message;
+            }
+            catch (Exception)
+            {
+                msg = "An Error Has Occured";
+            }
+            return PartialView("_ErrorMessage", new StringModel(msg));
         }
+
+
 
         [HttpGet]
         public ActionResult DeleteRulePopup(int ruleid)
         {
-            var model = _secretSantaBl.GroupRuleEditModelByRuleId(ruleid);
-            return PartialView("_DeleteRulePopup", model);
+            string msg;
+            try
+            {
+                var model = _secretSantaBl.GroupRuleEditModelByRuleId(ruleid);
+                return PartialView("_DeleteRulePopup", model);
+            }
+            catch (AppException ax)
+            {
+                msg = ax.Message;
+            }
+            catch (Exception)
+            {
+                msg = "An Error Has Occured";
+            }
+            return PartialView("_ErrorMessage", new StringModel(msg));
+
         }
 
         [HttpPost]
@@ -308,11 +339,16 @@ namespace SecretSantaApp.Controllers
                 return PartialView("_DeleteRulePopup", m);
                 //return PartialView("_JoinGroupEntry", m);
             }
+            catch (AppException ax)
+            {
+                ModelState.AddModelError("", ax.AppMessage);
+            }
             catch (Exception ex)
             {
-                _log.LogWarning(ex.Message);
+                ModelState.AddModelError("", ex.Message);
+                _log.LogError("", ex);
             }
-            return PartialView("_NewRulePopup", model);
+            return PartialView("_DeleteRulePopup", model);
         }
 
 
@@ -325,11 +361,15 @@ namespace SecretSantaApp.Controllers
                 var m = _secretSantaBl.SaveGroupRules(model);
                 m.Saved = true;
                 return PartialView("_NewRulePopup", m);
-                //return PartialView("_JoinGroupEntry", m);
+            }
+            catch (AppException ax)
+            {
+                ModelState.AddModelError("", ax.AppMessage);
             }
             catch (Exception ex)
             {
-                _log.LogWarning(ex.Message);
+                ModelState.AddModelError("", ex.Message);
+                //_log.Error(ex);
             }
             return PartialView("_NewRulePopup", model);
         }
@@ -338,24 +378,66 @@ namespace SecretSantaApp.Controllers
         [HttpGet]
         public ActionResult GetGroupRulesPartial(int groupid)
         {
-            var model = _secretSantaBl.GroupRulesDisplayModelByGroupId(groupid);
+            string msg;
+            try
+            {
+                  var model = _secretSantaBl.GroupRulesDisplayModelByGroupId(groupid);
             return PartialView("_GroupRules", model);
+            }
+            catch (AppException ax)
+            {
+                msg = ax.Message;
+            }
+            catch (Exception)
+            {
+                msg = "An Error Has Occured";
+            }
+            return PartialView("_ErrorMessage", new StringModel(msg));
+
         }
 
 
         [HttpGet]
         public ActionResult GetChatPartial(int groupid)
         {
-            var model = _secretSantaBl.GroupChatDisplayModelByGroupId(groupid);
+            string msg;
+            try
+            {
+                  var model = _secretSantaBl.GroupChatDisplayModelByGroupId(groupid);
             return PartialView("_GroupChat", model);
+            }
+            catch (AppException ax)
+            {
+                msg = ax.Message;
+            }
+            catch (Exception)
+            {
+                msg = "An Error Has Occured";
+            }
+            return PartialView("_ErrorMessage", new StringModel(msg));
+
         }
 
 
         [HttpGet]
         public ActionResult NewMessagePartial(int groupid)
         {
-            var model = _secretSantaBl.NewGroupMessageEditModelByGroupId(groupid);
-            return PartialView("_NewMessage", model);
+            string msg;
+            try
+            {
+               var model = _secretSantaBl.NewGroupMessageEditModelByGroupId(groupid);
+            return PartialView("_NewMessage", model);  
+            }
+            catch (AppException ax)
+            {
+                msg = ax.Message;
+            }
+            catch (Exception)
+            {
+                msg = "An Error Has Occured";
+            }
+            return PartialView("_ErrorMessage", new StringModel(msg));
+
         }
 
 
@@ -371,9 +453,13 @@ namespace SecretSantaApp.Controllers
                 return PartialView("_NewMessage", m);
                 //return PartialView("_JoinGroupEntry", m);
             }
+            catch (AppException ax)
+            {
+                ModelState.AddModelError("", ax.AppMessage);
+            }
             catch (Exception ex)
             {
-                _log.LogWarning(ex.Message);
+                ModelState.AddModelError("", ex.Message);
             }
             return PartialView("_NewMessage", model);
         }
@@ -382,17 +468,20 @@ namespace SecretSantaApp.Controllers
         [HttpGet]
         public ActionResult NewMemberConditionPopup(int membershipid, string acctno)
         {
-            var msg = "";
+            string msg ;
             try
             {
                 var model = _secretSantaBl.MemberConditionsEditModelByMembershipId(membershipid, acctno);
                 model.NewCondition = true;
                 return PartialView("_MemberConditions", model);
             }
-            catch (Exception ex)
+            catch (AppException ax)
             {
-                ModelState.AddModelError("", ex.Message);
-                _log.LogWarning(ex.Message);
+                msg = ax.Message;
+            }
+            catch (Exception)
+            {
+                msg = "An Error Has Occured";
             }
             return PartialView("_ErrorMessage", new StringModel(msg));
         }
@@ -425,32 +514,63 @@ namespace SecretSantaApp.Controllers
         [HttpGet]
         public ActionResult DeleteConditionPopup(int conditionid)
         {
-            var model = _secretSantaBl.MemberConditionsEditModelByConditionId(conditionid);
-            return PartialView("_DeleteConditionPopup", model);
+            string msg;
+            try
+            {
+                var model = _secretSantaBl.MemberConditionsEditModelByConditionId(conditionid);
+            return PartialView("_DeleteConditionPopup", model); 
+            }
+            catch (AppException ax)
+            {
+                msg = ax.Message;
+            }
+            catch (Exception)
+            {
+                msg = "An Error Has Occured";
+            }
+            return PartialView("_ErrorMessage", new StringModel(msg));
         }
+
 
         [HttpPost]
         public ActionResult DeleteCondition(MemberConditionsEditModel model)
         {
-            var m = _secretSantaBl.DeleteMemberCondition(model);
-            m.Saved = true;
-            return PartialView("_DeleteConditionPopup", m);
+            try
+            {
+                var m = _secretSantaBl.DeleteMemberCondition(model);
+                m.Saved = true;
+                return PartialView("_DeleteConditionPopup", m);
+            }
+            catch (AppException ax)
+            {
+                ModelState.AddModelError("", ax.AppMessage);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+
+            }
+            return PartialView("_DeleteConditionPopup", model);
+
         }
 
 
         [HttpGet]
         public ActionResult GetDrawNamesPartial(int groupid)
         {
-            var msg = "";
+            string msg ;
             try
             {
                 var model = _secretSantaBl.DrawNamesDisplayModelByGroupId(groupid);
                 return PartialView("_DrawNames", model);
             }
-            catch (Exception ex)
+            catch (AppException ax)
             {
-                ModelState.AddModelError("", ex.Message);
-                _log.LogWarning(ex.Message);
+                msg = ax.Message;
+            }
+            catch (Exception)
+            {
+                msg = "An Error Has Occured";
             }
             return PartialView("_ErrorMessage", new StringModel(msg));
         }
@@ -483,16 +603,19 @@ namespace SecretSantaApp.Controllers
         [HttpGet]
         public ActionResult DisplayGroupPairedMember(int groupid)
         {
-            var msg = "";
+            string msg;
             try
             {
                 var model = _secretSantaBl.GroupPairingDisplayModelByLoggedInUserByGroupId(groupid);
                 return PartialView("_GroupPairedMember", model);
             }
-            catch (Exception ex)
+            catch (AppException ax)
             {
-                ModelState.AddModelError("", ex.Message);
-                _log.LogWarning(ex.Message);
+                msg = ax.Message;
+            }
+            catch (Exception)
+            {
+                msg = "An Error Has Occured";
             }
             return PartialView("_ErrorMessage", new StringModel(msg));
         }
