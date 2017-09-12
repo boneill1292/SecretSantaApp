@@ -165,25 +165,25 @@ namespace SecretSantaApp.Controllers
         }
 
         [HttpPost]
-        public ActionResult SendInvitesTousers(GroupHomeEditModel model)
+        public ActionResult SendInvitesTousers(InviteUsersEditModel model)
         {
-            string msg;
+
             try
             {
-                var m = new Group();
-                m.Update(model);
-                return View("Index");
-
+                var m = _secretSantaBl.SendInviteToUsers(model);
+                m.Saved = true;
+                return PartialView("_InviteUsers", m);
             }
             catch (AppException ax)
             {
-                msg = ax.Message;
+                ModelState.AddModelError("", ax.AppMessage);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                msg = "An Error Has Occured";
+                ModelState.AddModelError("", ex.Message);
+                _log.LogError("", ex);
             }
-            return PartialView("_ErrorMessage", new StringModel(msg));
+            return PartialView("_InviteUsers", model);
         }
 
 
@@ -381,8 +381,8 @@ namespace SecretSantaApp.Controllers
             string msg;
             try
             {
-                  var model = _secretSantaBl.GroupRulesDisplayModelByGroupId(groupid);
-            return PartialView("_GroupRules", model);
+                var model = _secretSantaBl.GroupRulesDisplayModelByGroupId(groupid);
+                return PartialView("_GroupRules", model);
             }
             catch (AppException ax)
             {
@@ -403,8 +403,8 @@ namespace SecretSantaApp.Controllers
             string msg;
             try
             {
-                  var model = _secretSantaBl.GroupChatDisplayModelByGroupId(groupid);
-            return PartialView("_GroupChat", model);
+                var model = _secretSantaBl.GroupChatDisplayModelByGroupId(groupid);
+                return PartialView("_GroupChat", model);
             }
             catch (AppException ax)
             {
@@ -425,8 +425,8 @@ namespace SecretSantaApp.Controllers
             string msg;
             try
             {
-               var model = _secretSantaBl.NewGroupMessageEditModelByGroupId(groupid);
-            return PartialView("_NewMessage", model);  
+                var model = _secretSantaBl.NewGroupMessageEditModelByGroupId(groupid);
+                return PartialView("_NewMessage", model);
             }
             catch (AppException ax)
             {
@@ -468,7 +468,7 @@ namespace SecretSantaApp.Controllers
         [HttpGet]
         public ActionResult NewMemberConditionPopup(int membershipid, string acctno)
         {
-            string msg ;
+            string msg;
             try
             {
                 var model = _secretSantaBl.MemberConditionsEditModelByMembershipId(membershipid, acctno);
@@ -518,7 +518,7 @@ namespace SecretSantaApp.Controllers
             try
             {
                 var model = _secretSantaBl.MemberConditionsEditModelByConditionId(conditionid);
-            return PartialView("_DeleteConditionPopup", model); 
+                return PartialView("_DeleteConditionPopup", model);
             }
             catch (AppException ax)
             {
@@ -558,7 +558,7 @@ namespace SecretSantaApp.Controllers
         [HttpGet]
         public ActionResult GetDrawNamesPartial(int groupid)
         {
-            string msg ;
+            string msg;
             try
             {
                 var model = _secretSantaBl.DrawNamesDisplayModelByGroupId(groupid);

@@ -1,0 +1,10 @@
+﻿// Using Razor templating package
+Email.DefaultRenderer = new RazorRenderer();
+
+var template = "Dear @Model.Name, You are totally @Model.Compliment.";
+
+var email = Email
+.From("bob@hotmail.com")
+.To("somedude@gmail.com")
+.Subject("woo nuget")
+.UsingTemplate(template, new { Name = "Luke", Compliment = "Awesome" });

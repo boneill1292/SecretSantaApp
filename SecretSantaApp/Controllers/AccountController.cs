@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 using Auth0.AuthenticationApi;
 using Auth0.AuthenticationApi.Models;
@@ -18,8 +15,11 @@ using SecretSantaApp.ViewModels;
 namespace SecretSantaApp.Controllers
 {
     /// <summary>
-    /// For the Login, you will need to return a ChallengeResult and specify "Auth0" as the authentication scheme which will be challenged. This will invoke the OIDC middleware you registered in the Configure method.
-    ///After the OIDC middleware has signed the user in, the user will automatically be signed into the cookie middleware as well to authenticate them on subsequent requests.So, for the Logout action you will need to sign the user out of both the OIDC and the cookie middleware:
+    ///     For the Login, you will need to return a ChallengeResult and specify "Auth0" as the authentication scheme which
+    ///     will be challenged. This will invoke the OIDC middleware you registered in the Configure method.
+    ///     After the OIDC middleware has signed the user in, the user will automatically be signed into the cookie middleware
+    ///     as well to authenticate them on subsequent requests.So, for the Logout action you will need to sign the user out of
+    ///     both the OIDC and the cookie middleware:
     /// </summary>
     public class AccountController : Controller
     {
@@ -43,10 +43,9 @@ namespace SecretSantaApp.Controllers
         public async Task<IActionResult> Login(LoginViewModel vm, string returnUrl = null)
         {
             if (ModelState.IsValid)
-            {
                 try
                 {
-                    AuthenticationApiClient client = new AuthenticationApiClient(new Uri($"https://{_auth0Settings.Domain}/"));
+                    var client = new AuthenticationApiClient(new Uri($"https://{_auth0Settings.Domain}/"));
 
                     var result = await client.GetTokenAsync(new ResourceOwnerTokenRequest
                     {
@@ -69,14 +68,13 @@ namespace SecretSantaApp.Controllers
                     // Create claims principal
                     var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new[]
                     {
-            new Claim(ClaimTypes.NameIdentifier, user.UserId),
-            new Claim(ClaimTypes.Name, user.FullName)
-
-          }, CookieAuthenticationDefaults.AuthenticationScheme));
+                        new Claim(ClaimTypes.NameIdentifier, user.UserId),
+                        new Claim(ClaimTypes.Name, user.FullName)
+                    }, CookieAuthenticationDefaults.AuthenticationScheme));
 
                     // Sign user into cookie middleware
                     await HttpContext.Authentication.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                      claimsPrincipal);
+                        claimsPrincipal);
 
                     return RedirectToLocal(returnUrl);
                 }
@@ -84,15 +82,9 @@ namespace SecretSantaApp.Controllers
                 {
                     ModelState.AddModelError("", e.Message);
                 }
-            }
 
             return View("Login", vm);
         }
-
-
-
-   
-
 
 
         [HttpGet]
@@ -102,10 +94,8 @@ namespace SecretSantaApp.Controllers
             //Sends the user to see if it is already in our database, or if should be added
             var model = _secretSantaBl.CheckUserByCustomUserAccountNumber(usermodel);
             //return RedirectToAction(nameof(GroupsController.Index), "Groups");
-            return RedirectToAction(nameof(AccountController.Profile), "Account");
+            return RedirectToAction(nameof(Profile), "Account");
         }
-
-
 
 
         [Authorize(Roles = "admin")]
@@ -113,8 +103,6 @@ namespace SecretSantaApp.Controllers
         {
             return View();
         }
-
-
 
 
         [Authorize]
@@ -159,7 +147,6 @@ namespace SecretSantaApp.Controllers
             string msg;
             try
             {
-
                 var model = _secretSantaBl.UserDetailsDisplayModelByAcctNo(acctno);
                 return PartialView("_DisplayUserDetails", model);
             }
@@ -190,14 +177,12 @@ namespace SecretSantaApp.Controllers
         }
 
 
-
-
         [HttpGet]
         public IActionResult LoginExternal(string connection, string returnUrl = "/")
         {
             //Sends the user to our RedirectToLocal Action
             var url = Url.Action("RedirectToLocal", "Account");
-            var properties = new AuthenticationProperties()
+            var properties = new AuthenticationProperties
             {
                 RedirectUri = url
             };
@@ -214,10 +199,9 @@ namespace SecretSantaApp.Controllers
         public IActionResult RedirectToLocal(string returnUrl)
         {
             //var url = Url.Action("CheckUser", "Account");
-            return RedirectToAction(nameof(AccountController.CheckUser), "Account");
-
+            return RedirectToAction(nameof(CheckUser), "Account");
         }
-        
+
 
         [Authorize]
         public async Task Logout()
@@ -231,14 +215,5 @@ namespace SecretSantaApp.Controllers
             });
             await HttpContext.Authentication.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         }
-
-        
-        
     }
 }
-
-
-
-
-
-

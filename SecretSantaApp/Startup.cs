@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
+using FluentEmail.Core;
+using FluentEmail.Mailgun;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
@@ -70,6 +72,13 @@ namespace SecretSantaApp
 
             // Add functionality to inject IOptions<T>
             services.AddOptions();
+
+            //MailGun
+            var sender = new MailgunSender(
+                "sandbox3c051cffd5d14c0885493d6cfbe1fa8e.mailgun.org", // Mailgun Domain
+                "key-30e16c6964d4f339fab512a5aa3b988d" // Mailgun API Key
+            );
+            Email.DefaultSender = sender;
 
             // Add the Auth0 Settings object so it can be injected
             services.Configure<Auth0Settings>(Configuration.GetSection("Auth0"));

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using FluentEmail.Core;
+using FluentEmail.Razor;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -373,6 +375,34 @@ namespace SecretSantaApp.BL
             return result;
         }
 
+
+
+        public InviteUsersEditModel SendInviteToUsers(InviteUsersEditModel model)
+        {
+            var result = new InviteUsersEditModel();
+
+            // Using Razor templating package
+            Email.DefaultRenderer = new RazorRenderer();
+
+            var template = "Dear @Model.Name, You are totally @Model.Compliment.";
+
+            var email = Email
+                .From("Santa@ElfBuddies.Com")
+                .To("boneill1292@gmail.com")
+                .Subject("woo nuget")
+                .UsingTemplate(template, new { Name = "Luke", Compliment = "Awesome" });
+
+
+            //var email = Email
+            //    .From(fromEmail)
+            //    .To(toEmail)
+            //    .Subject(subject)
+            //    .Body(body);
+
+            var response = email.SendAsync();
+
+            return result;
+        }
 
         public JoinGroupEditModel JoinGroupEditModelByGroupId(int groupid)
         {
