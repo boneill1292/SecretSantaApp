@@ -59,7 +59,7 @@ namespace SecretSantaApp.Controllers
             try
             {
                 var model = _secretSantaBl.GroupHomeEditModelByGroupId(id);
-                model.InviteUsersCollection = _secretSantaBl.InviteUsersCollectionModelByAmountToGet(4);
+                //model.InviteUsersCollection = _secretSantaBl.InviteUsersCollectionModelByAmountToGet(4);
 
                 return View("GroupHome", model);
             }
@@ -170,6 +170,8 @@ namespace SecretSantaApp.Controllers
 
             try
             {
+                var url = Url.Action("GroupHome", "Groups", new {id = model.GroupId} );
+                model.GroupUrl = url;
                 var m = _secretSantaBl.SendInviteToUsers(model);
                 m.Saved = true;
                 return PartialView("_InviteUsers", m);

@@ -19,16 +19,7 @@
                 var url = Url.Action("PromptUserForPassword", "Groups", new { id = g.GroupId });
                 <tr>
                     <td>@g.GroupName</td>
-                    @*<td>@g.GroupPassWord</td>*@
                     <td>
-                     
-                        @*<button class="btn btn-group modal-link BtnGreen"
-                                    href="@url"
-                                    title="Add modal"
-                                    data-target="#myModal"
-                                    data-toggle="modal">
-                                Join Group
-                            </button>*@
                         <button class="btn btn-group  BtnGreen"
                                 onclick="LoadPopup('@url')">
                             Join Group

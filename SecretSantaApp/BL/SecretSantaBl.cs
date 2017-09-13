@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 using FluentEmail.Core;
 using FluentEmail.Razor;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Routing;
 using SecretSantaApp.DAL;
 using SecretSantaApp.Enumerations;
 using SecretSantaApp.Exceptions;
@@ -20,26 +20,27 @@ namespace SecretSantaApp.BL
 {
     public class SecretSantaBl : ISecretSantaBl
     {
+        private static Random rnd = new Random();
+        private readonly ICustomUserDal _customUserDal;
+        private readonly ICustomUserDetailsDal _customUserDetailsDal;
 
         private readonly IGroupDal _groupDal;
-        private readonly ICustomUserDal _customUserDal;
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IGroupMembershipDal _groupMembershipDal;
-        private readonly IGroupRulesDal _groupRulesDal;
         private readonly IGroupMessagesDal _groupMessagesDal;
-        private readonly IMemberConditionsDal _memberConditionsDal;
-        private readonly ICustomUserDetailsDal _customUserDetailsDal;
         private readonly IGroupPairingsDal _groupPairingsDal;
-        private static Random rnd = new Random();
+        private readonly IGroupRulesDal _groupRulesDal;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IMemberConditionsDal _memberConditionsDal;
+
         public SecretSantaBl(IGroupDal groupDal,
-                             ICustomUserDal customUserDal,
-                             IHttpContextAccessor httpContextAccessor,
-                              IGroupMembershipDal groupMembershipDal,
-                              IGroupRulesDal groupRulesDal,
-                              IGroupMessagesDal groupMessagesDal,
-                              IMemberConditionsDal memberConditionsDal,
-                              IGroupPairingsDal groupPairingDal,
-                               ICustomUserDetailsDal customUserDetailsDal)
+            ICustomUserDal customUserDal,
+            IHttpContextAccessor httpContextAccessor,
+            IGroupMembershipDal groupMembershipDal,
+            IGroupRulesDal groupRulesDal,
+            IGroupMessagesDal groupMessagesDal,
+            IMemberConditionsDal memberConditionsDal,
+            IGroupPairingsDal groupPairingDal,
+            ICustomUserDetailsDal customUserDetailsDal)
         {
             _groupDal = groupDal;
             _customUserDal = customUserDal;
@@ -64,25 +65,19 @@ namespace SecretSantaApp.BL
                 existingusereditmodel.NewUser = false;
                 return existingusereditmodel;
             }
-            else
-            {
-                var result = new CustomUserEditModel();
-                var name = user.Identity.Name;
-                var email = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
-                var pic = user.Claims.FirstOrDefault(c => c.Type == "picture")?.Value;
+            var result = new CustomUserEditModel();
+            var name = user.Identity.Name;
+            var email = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
+            var pic = user.Claims.FirstOrDefault(c => c.Type == "picture")?.Value;
 
-                result.AccountNumberString = acctid;
-                result.FullName = name;
-                result.Email = email;
-                result.ProfileImage = pic;
-                result.NewUser = true;
-                result.UserId = 0;
-                return result;
-            }
-
-
+            result.AccountNumberString = acctid;
+            result.FullName = name;
+            result.Email = email;
+            result.ProfileImage = pic;
+            result.NewUser = true;
+            result.UserId = 0;
+            return result;
         }
-
 
 
         public string UserFullNameByAccountNumberString(string acctno)
@@ -122,14 +117,10 @@ namespace SecretSantaApp.BL
         {
             //Check to make sure there are values
             if (model.GroupName == null)
-            {
                 throw new Exception("Name is Required");
-            }
 
             if (model.GroupName == "abc123")
-            {
                 throw new AppException("You are dumb");
-            }
 
             //code to get the currently logged in user
             //var liu = _httpContextAccessor.HttpContext.User;
@@ -170,24 +161,17 @@ namespace SecretSantaApp.BL
                 model.Update(saved);
                 return model;
             }
-            else
-            {
-                return model;
-            }
-
-
+            return model;
         }
 
 
         public void JoinGroupAsCustomUser(CustomUserEditModel user, int groupid)
         {
-
             var gmd = new GroupMembershipEditModel();
             gmd.AccountNumberString = user.AccountNumberString;
             gmd.GroupId = groupid;
 
             _groupMembershipDal.SaveMemberToGroup(gmd);
-
         }
 
 
@@ -197,7 +181,8 @@ namespace SecretSantaApp.BL
             result.MyGroups = new List<Group>();
             var grouplist = new List<Group>();
 
-            var groupsibelongto = _groupMembershipDal.GroupsBelongingToUserAccountNumberString(user.AccountNumberString);
+            var groupsibelongto =
+                _groupMembershipDal.GroupsBelongingToUserAccountNumberString(user.AccountNumberString);
 
             foreach (var g in groupsibelongto)
             {
@@ -228,11 +213,13 @@ namespace SecretSantaApp.BL
 
             result.GroupAdmin = admin;
             //if the user is the person who created the group assign them to admin.
-            result.GroupAdminBool = @group.InsertedBy == loggedinuser.AccountNumberString;
+            result.GroupAdminBool = group.InsertedBy == loggedinuser.AccountNumberString;
 
             result.Update(group);
 
             var groupmembership = _groupMembershipDal.AllGroupMembersByGroupId(groupid);
+
+
 
             foreach (var g in groupmembership)
             {
@@ -243,21 +230,26 @@ namespace SecretSantaApp.BL
                 userlist.Add(cu);
             }
 
-            //get the group conditions
 
-            //check to see if the pairings have been assigned:
-            var pairings = _groupPairingsDal.GroupPairingsByGroupId(groupid);
-
-            if (pairings.Count >= 1)
+            if (groupmembership.Any(x => x.AccountNumberString == loggedinuser.AccountNumberString))
             {
-                result.PairingsAssigned = true;
+                result.IsAuthorized = true;
             }
             else
             {
-                result.PairingsAssigned = false;
+                result.IsAuthorized = false;
             }
 
-            //var conditions = _memberConditionsDal.MemberConditionsByGroupId(groupid;
+
+            //check to see if the pairings have been assigned: (AKA - You have your secret santa)
+            var pairings = _groupPairingsDal.GroupPairingsByGroupId(groupid);
+
+            if (pairings.Count >= 1)
+                result.PairingsAssigned = true;
+            else
+                result.PairingsAssigned = false;
+
+   
 
 
             result.GroupMembers = userlist;
@@ -267,8 +259,6 @@ namespace SecretSantaApp.BL
 
             return result;
         }
-
-
 
 
         public JoinGroupEditModel JoinGroupEditModelByAccountNumberString(string acctno)
@@ -285,14 +275,10 @@ namespace SecretSantaApp.BL
 
 
             foreach (var ag in allactivegroups)
-            {
                 activegroupsidlist.Add(ag.GroupId);
-            }
 
             foreach (var ag in groupsmemberof)
-            {
                 groupsmemberofidlist.Add(ag.GroupId);
-            }
 
 
             var results = activegroupsidlist.Where(m => !groupsmemberofidlist.Contains(m));
@@ -305,7 +291,6 @@ namespace SecretSantaApp.BL
             }
 
             //var matchItem = List1.Intersect(List2).First();
-
 
 
             //foreach (var g in groupsmemberof)
@@ -324,9 +309,6 @@ namespace SecretSantaApp.BL
         }
 
 
-
-
-
         public InviteUsersEditModel InviteUsersEditModelByGroupId(int groupid)
         {
             var result = new InviteUsersEditModel();
@@ -334,35 +316,27 @@ namespace SecretSantaApp.BL
             var group = _groupDal.GetGroupById(groupid);
 
             if (group == null)
-            {
                 throw new AppException($"Error Loading Group By ID: {groupid}");
-            }
 
 
             //Assuming that at least 4 people will want to be invited.
             result.InviteUsersCollection = InviteUsersCollectionModelByAmountToGet(4);
-            
+
 
             return result;
         }
 
         public InviteUsersCollectionModel InviteUsersCollectionModelByAmountToGet(int amount)
         {
-
             var result = new InviteUsersCollectionModel();
             result.UsersToInvite = new List<InviteUsersViewModel>();
 
             if (amount <= 0)
-            {
                 return result;
-            }
-            else
+            for (var a = 0; a < amount; a++)
             {
-                for (var a = 0; a < amount; a++)
-                {
-                    var usertoinvite = new InviteUsersViewModel();
-                    result.UsersToInvite.Add(usertoinvite);
-                }
+                var usertoinvite = new InviteUsersViewModel();
+                result.UsersToInvite.Add(usertoinvite);
             }
             return result;
         }
@@ -376,22 +350,56 @@ namespace SecretSantaApp.BL
         }
 
 
-
         public InviteUsersEditModel SendInviteToUsers(InviteUsersEditModel model)
         {
             var result = new InviteUsersEditModel();
 
+            foreach (var i in model.InviteUsersCollection.UsersToInvite)
+            {
+                Email.DefaultRenderer = new RazorRenderer();
+                //var groupurl = "www.yahoo.com";
+               
+
+                //var messagetemplate = "Dear @Model.Name, Someone Has Invited you to play a Secret Santa Game at this email: @Model.EmailAddress. Join The Group Here: @GroupUrl ";
+
+                //var email = Email
+                //    .From("Santa@ElfBuddies.Com")
+                //    .To("boneill1292@gmail.com")n
+                //    .Subject("woo nuget")
+                //    .UsingTemplate(messagetemplate, new { Name = i.Name, EmailAddress = i.Email, GroupUrl = groupurl });
+
+                //email.Send();
+            }
+
             // Using Razor templating package
-            Email.DefaultRenderer = new RazorRenderer();
+           
 
-            var template = "Dear @Model.Name, You are totally @Model.Compliment.";
+            var templatee = "Dear @Model.Name, You are totally @Model.Compliment.";
 
-            var email = Email
+            // var template = 
+
+            //var templatee = "Dear @Model.Name, @Model.GroupAdmin Has Invited you to play a Secret Santa Game. ";
+
+            var eemail = Email
                 .From("Santa@ElfBuddies.Com")
                 .To("boneill1292@gmail.com")
                 .Subject("woo nuget")
-                .UsingTemplate(template, new { Name = "Luke", Compliment = "Awesome" });
+                .UsingTemplate(templatee, new { Name = "Luke", Compliment = "Awesome" });
 
+
+            var emailmodel = new EmailMessageModel();
+            emailmodel.FirstName = "Ben";
+            emailmodel.LastName = "ONeill";
+            emailmodel.Message = "Sup yo";
+
+            //var emailtwo = Email
+            //    .From("Santa@ElfBuddies.Com")
+            //    .To("boneill1292@gmail.com")
+            //    .Subject("Invite")
+            //    .UsingTemplateFromFile("_EmailTemplate.cshtml", true);
+
+
+            //emailtwo.Send();
 
             //var email = Email
             //    .From(fromEmail)
@@ -399,7 +407,7 @@ namespace SecretSantaApp.BL
             //    .Subject(subject)
             //    .Body(body);
 
-            var response = email.SendAsync();
+            //var response = email.SendAsync();
 
             return result;
         }
@@ -409,10 +417,7 @@ namespace SecretSantaApp.BL
             var group = _groupDal.GetGroupById(groupid);
 
             if (group == null)
-            {
                 throw new Exception("Error loading group");
-            }
-
 
 
             var result = new JoinGroupEditModel();
@@ -422,7 +427,6 @@ namespace SecretSantaApp.BL
             result.Verified = false;
 
             return result;
-
         }
 
 
@@ -431,36 +435,23 @@ namespace SecretSantaApp.BL
             var group = _groupDal.GetGroupById(model.GroupId);
 
             if (group == null)
-            {
                 throw new Exception("Error loading group");
-            }
 
             if (model.UserInputGroupPassword == null)
-            {
                 throw new AppException("Password is required");
-            }
 
             var password = group.GroupPassWord;
 
             if (model.UserInputGroupPassword != password)
-            {
                 throw new AppException("Incorrect password");
-            }
-            else
-            {
-                model.GroupId = group.GroupId;
-                model.GroupName = group.GroupName;
+            model.GroupId = group.GroupId;
+            model.GroupName = group.GroupName;
 
-                JoinGroupAsCustomUser(model.CustomUser, model.GroupId);
-                model.Verified = true;
-                model.ErrorMsg = null;
-                return model;
-            }
-
+            JoinGroupAsCustomUser(model.CustomUser, model.GroupId);
+            model.Verified = true;
+            model.ErrorMsg = null;
+            return model;
         }
-
-
-
 
 
         public GroupRulesEditModel NewRuleEditModelByGroupId(int groupid)
@@ -476,7 +467,6 @@ namespace SecretSantaApp.BL
         }
 
 
-
         public GroupRulesEditModel GroupRuleEditModelByRuleId(int ruleid)
         {
             var rule = _groupRulesDal.GetRuleByRuleId(ruleid);
@@ -486,16 +476,13 @@ namespace SecretSantaApp.BL
             result.GroupName = group.GroupName;
 
             return result;
-
         }
 
 
         public GroupRulesEditModel SaveGroupRules(GroupRulesEditModel model)
         {
             if (model.Rule == null)
-            {
                 throw new Exception("Required");
-            }
 
             var m = new GroupRules();
             m.Update(model);
@@ -561,15 +548,12 @@ namespace SecretSantaApp.BL
 
             result.GroupName = group.GroupName;
             return result;
-
         }
 
         public GroupMessageEditModel SaveGroupMessage(GroupMessageEditModel model)
         {
             if (model.Message == null)
-            {
                 throw new Exception("Required");
-            }
 
             var m = new GroupMessages();
             m.Update(model);
@@ -600,10 +584,10 @@ namespace SecretSantaApp.BL
             //** 8/7 - this should be moved to the dropdown - since thats where we generate those people
 
 
-
             var name = UserFullNameByAccountNumberString(members.AccountNumberString);
             var othergroupmembers = _groupMembershipDal.AllGroupMembersByGroupId(group.GroupId);
-            othergroupmembers = othergroupmembers.Where(x => x.AccountNumberString != members.AccountNumberString).ToList();
+            othergroupmembers = othergroupmembers.Where(x => x.AccountNumberString != members.AccountNumberString)
+                .ToList();
 
 
             var result = new MemberConditionsEditModel();
@@ -624,19 +608,15 @@ namespace SecretSantaApp.BL
         public MemberConditionsEditModel SaveNewMemberCondition(MemberConditionsEditModel model)
         {
             if (model.UserSelectedForConditionMembershipNo == 0)
-            {
                 throw new AppException("Please Select A Person");
-            }
 
             var user = GetLoggedInUser();
 
             var membermodel =
-              _groupMembershipDal.GroupMembershipModelByGroupMembershipId(model.UserSelectedForConditionMembershipNo);
+                _groupMembershipDal.GroupMembershipModelByGroupMembershipId(model.UserSelectedForConditionMembershipNo);
 
             if (membermodel == null)
-            {
                 throw new AppException("Please Select A Valid Person");
-            }
 
             //var selectedperson = _customUserDal.CustomUserByAccountNumber(membermodel.AccountNumberString);
 
@@ -656,7 +636,6 @@ namespace SecretSantaApp.BL
 
             return model;
         }
-
 
 
         public MemberConditionsEditModel MemberConditionsEditModelByConditionId(int conditionid)
@@ -686,20 +665,18 @@ namespace SecretSantaApp.BL
 
         public SelectList OtherUsersDropDown(string acctnostr, int groupid)
         {
-
             var existingconditions = _memberConditionsDal.MemberConditionsByGroupIdByAcctNo(groupid, acctnostr);
             var usersWithConditions = new List<string>();
 
             if (existingconditions.Any())
-            {
                 usersWithConditions.AddRange(existingconditions.Select(u => u.UserSelectedForConditionAcctNo));
-            }
 
 
             var allgroupmembers = _groupMembershipDal.AllGroupMembersByGroupId(groupid);
             var othergroupmembers = allgroupmembers.Where(x => x.AccountNumberString != acctnostr).ToList();
 
-            var resultGroupMemberList = othergroupmembers.Where(x => !usersWithConditions.Contains(x.AccountNumberString)).ToList();
+            var resultGroupMemberList =
+                othergroupmembers.Where(x => !usersWithConditions.Contains(x.AccountNumberString)).ToList();
 
 
             var rsltlist = new List<GroupConditionsOtherUsersModel>();
@@ -715,12 +692,11 @@ namespace SecretSantaApp.BL
             }
 
             var result = new SelectList(rsltlist, nameof(GroupConditionsOtherUsersModel.MembershipId),
-           nameof(GroupConditionsOtherUsersModel.FullName));
+                nameof(GroupConditionsOtherUsersModel.FullName));
 
 
             return result;
         }
-
 
 
         public DrawNamesDisplayModel DrawNamesDisplayModelByGroupId(int groupid)
@@ -735,13 +711,11 @@ namespace SecretSantaApp.BL
 
         public DrawNamesDisplayModel DrawNames(DrawNamesDisplayModel model)
         {
-
             var drawnnamelist = new List<DrawNamesEditModel>();
             var maxretries = 100;
             var retries = 0;
 
             while (true)
-            {
                 try
                 {
                     drawnnamelist = AssignRandomUsersForGroup(model.Group.GroupId);
@@ -754,25 +728,16 @@ namespace SecretSantaApp.BL
 
 
                     if (retries < maxretries)
-                    {
                         retries++;
-                    }
                     else
-                    {
                         throw new AppException("Please alter your conditions to make the group solvable");
-                    }
                 }
-            }
-
 
 
             model.DrawNamesList = new List<DrawNamesEditModel>();
             model.DrawNamesList = drawnnamelist;
             return model;
         }
-
-
-
 
 
         //Helpers
@@ -791,6 +756,131 @@ namespace SecretSantaApp.BL
             var condition = receiving.FullName + " Cannot Have: " + selected.FullName;
             return condition;
             //conditionstringlist.Add(condition);
+        }
+
+
+        public GroupPairingDisplayModel GroupPairingDisplayModelByLoggedInUserByGroupId(int groupid)
+        {
+            var result = new GroupPairingDisplayModel();
+
+            var pairs = _groupPairingsDal.GroupPairingsByGroupId(groupid);
+
+            var me = GetLoggedInUser();
+
+            var mypair = pairs.FirstOrDefault(x => x.PersonOne == me.AccountNumberString);
+
+            if (mypair != null)
+            {
+                var pairacctno = mypair.PersonTwo;
+                var person = _customUserDal.CustomUserByAccountNumber(pairacctno);
+
+                result.PairedMemberString = person.FullName;
+            }
+            else
+            {
+                result.PairedMemberString = "The group has not drawn yet";
+            }
+
+
+            return result;
+        }
+
+
+        //Account Stuff
+        public UserProfileViewModel UserProfileViewModelByAcctNo(ClaimsPrincipal user)
+        {
+            //var user = _httpContextAccessor.HttpContext.User;
+            var result = new UserProfileViewModel();
+            result.Name = user.Identity.Name;
+            result.EmailAddress = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            result.ProfileImage = user.Claims.FirstOrDefault(c => c.Type == "picture")?.Value;
+            result.UserAcctNo = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+
+            var u = _customUserDal.CustomUserByAccountNumber(result.UserAcctNo);
+            result.UserId = u.UserId;
+
+            return result;
+        }
+
+
+        public CustomUserDetailsEditModel UserDetailsEditModelByUserId(int userid)
+        {
+            var result = new CustomUserDetailsEditModel();
+            //var details = _customUserDetailsDal.UserDetailsByCustomUserAcctNo(acctno);
+
+            var details = _customUserDetailsDal.UserDetailsByUserId(userid);
+            if (details != null)
+            {
+                result.Update(details);
+                return result;
+            }
+            return new CustomUserDetailsEditModel();
+        }
+
+
+        public CustomUserDetailsEditModel UserDetailsEditModelByAcctNo(string acctno)
+        {
+            var result = new CustomUserDetailsEditModel();
+            //var details = _customUserDetailsDal.UserDetailsByCustomUserAcctNo(acctno);
+
+            var user = _customUserDal.CustomUserByAccountNumber(acctno);
+
+            var details = _customUserDetailsDal.UserDetailsByUserId(user.UserId);
+            if (details != null)
+            {
+                result.Update(details);
+                return result;
+            }
+            return new CustomUserDetailsEditModel();
+        }
+
+        public CustomUserDetailsDisplayModel UserDetailsDisplayModelByAcctNo(string acctno)
+        {
+            var result = new CustomUserDetailsDisplayModel();
+            //var details = _customUserDetailsDal.UserDetailsByCustomUserAcctNo(acctno);
+
+            var user = _customUserDal.CustomUserByAccountNumber(acctno);
+
+            result.UserFullName = user.FullName;
+
+            var details = _customUserDetailsDal.UserDetailsByUserId(user.UserId);
+            if (details != null)
+                result.Update(details);
+
+            return result;
+        }
+
+
+        public CustomUserDetailsEditModel SaveUserDetails(CustomUserDetailsEditModel model)
+        {
+            var result = new CustomUserDetailsEditModel();
+            var details = new CustomUserDetails();
+            details.Update(model);
+            var saved = _customUserDetailsDal.Save(details);
+            //result.Update(saved);
+            result.Update(saved);
+            return result;
+        }
+
+
+        public List<SelectListItem> CommonSizesDropdown()
+        {
+            var deptList = new List<SelectListItem>();
+            deptList.Add(new SelectListItem
+            {
+                Text = "Please Select a Size",
+                Value = ""
+            });
+            foreach (var eVal in Enum.GetValues(typeof(CommonSizes)))
+                deptList.Add(new SelectListItem
+                {
+                    Text = Enum.GetName(typeof(CommonSizes), eVal).ToUpper(),
+                    Value = eVal.ToString().ToUpper()
+                });
+            return deptList;
+
+
+            //return result;
         }
 
 
@@ -815,7 +905,6 @@ namespace SecretSantaApp.BL
         //    {
         //        //GOTO a BL method to generate a random person. 
         //        var d = new DrawNamesEditModel();
-
 
 
         //        //var anyconditions = _memberConditionsDal.MemberConditionsByGroupIdByAcctNo(model.Group.GroupId, g);
@@ -874,7 +963,6 @@ namespace SecretSantaApp.BL
         //}
 
 
-
         private List<DrawNamesEditModel> AssignRandomUsersForGroup(int groupid)
         {
             //var group = _groupDal.GetGroupById(groupid);
@@ -884,9 +972,7 @@ namespace SecretSantaApp.BL
             var result = new List<DrawNamesEditModel>();
 
             if (groupmembers == null)
-            {
                 throw new AppException($"Error loading group by ID: {groupid}");
-            }
 
             //The members have been loaded, clear out existing pairings so we can assign new ones.
             ClearGroupPairingsByGroupId(groupid);
@@ -909,14 +995,11 @@ namespace SecretSantaApp.BL
 
                 //If the user has any predefined conditions
                 if (conditions.Any())
-                {
-                    //foreach of those conditions add them to a list of users that person x cannot have
                     foreach (var c in conditions)
                     {
                         var conditionalperson = c.UserSelectedForConditionAcctNo;
                         tempmemberswithconditions.Add(conditionalperson);
                     }
-                }
 
                 //remove the conditional users from the list of available people
                 tempavailablemembers = tempavailablemembers.Except(tempmemberswithconditions).ToList();
@@ -942,8 +1025,6 @@ namespace SecretSantaApp.BL
             }
 
 
-
-
             return result;
         }
 
@@ -952,152 +1033,8 @@ namespace SecretSantaApp.BL
             var grouppairings = _groupPairingsDal.GroupPairingsByGroupId(groupid);
 
             if (grouppairings.Count >= 1)
-            {
                 foreach (var g in grouppairings)
-                {
                     _groupPairingsDal.Delete(g);
-                }
-            }
-
-        }
-
-
-        public GroupPairingDisplayModel GroupPairingDisplayModelByLoggedInUserByGroupId(int groupid)
-        {
-            var result = new GroupPairingDisplayModel();
-
-            var pairs = _groupPairingsDal.GroupPairingsByGroupId(groupid);
-
-            var me = GetLoggedInUser();
-
-            var mypair = pairs.FirstOrDefault(x => x.PersonOne == me.AccountNumberString);
-
-            if (mypair != null)
-            {
-                var pairacctno = mypair.PersonTwo;
-                var person = _customUserDal.CustomUserByAccountNumber(pairacctno);
-
-                result.PairedMemberString = person.FullName;
-
-            }
-            else
-            {
-                result.PairedMemberString = "The group has not drawn yet";
-            }
-
-
-            return result;
-        }
-
-
-        //Account Stuff
-        public UserProfileViewModel UserProfileViewModelByAcctNo(ClaimsPrincipal user)
-        {
-            //var user = _httpContextAccessor.HttpContext.User;
-            var result = new UserProfileViewModel();
-            result.Name = user.Identity.Name;
-            result.EmailAddress = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
-            result.ProfileImage = user.Claims.FirstOrDefault(c => c.Type == "picture")?.Value;
-            result.UserAcctNo = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
-
-            var u = _customUserDal.CustomUserByAccountNumber(result.UserAcctNo);
-            result.UserId = u.UserId;
-
-            return result;
-
-        }
-
-
-        public CustomUserDetailsEditModel UserDetailsEditModelByUserId(int userid)
-        {
-            var result = new CustomUserDetailsEditModel();
-            //var details = _customUserDetailsDal.UserDetailsByCustomUserAcctNo(acctno);
-
-            var details = _customUserDetailsDal.UserDetailsByUserId(userid);
-            if (details != null)
-            {
-                result.Update(details);
-                return result;
-            }
-            else
-            {
-                return new CustomUserDetailsEditModel();
-            }
-        }
-
-
-        public CustomUserDetailsEditModel UserDetailsEditModelByAcctNo(string acctno)
-        {
-            var result = new CustomUserDetailsEditModel();
-            //var details = _customUserDetailsDal.UserDetailsByCustomUserAcctNo(acctno);
-
-            var user = _customUserDal.CustomUserByAccountNumber(acctno);
-
-            var details = _customUserDetailsDal.UserDetailsByUserId(user.UserId);
-            if (details != null)
-            {
-                result.Update(details);
-                return result;
-            }
-            else
-            {
-                return new CustomUserDetailsEditModel();
-            }
-        }
-
-        public CustomUserDetailsDisplayModel UserDetailsDisplayModelByAcctNo(string acctno)
-        {
-            var result = new CustomUserDetailsDisplayModel();
-            //var details = _customUserDetailsDal.UserDetailsByCustomUserAcctNo(acctno);
-
-            var user = _customUserDal.CustomUserByAccountNumber(acctno);
-
-            result.UserFullName = user.FullName;
-
-            var details = _customUserDetailsDal.UserDetailsByUserId(user.UserId);
-            if (details != null)
-            {
-                result.Update(details);
-            }
-
-            return result;
-
-        }
-
-
-        public CustomUserDetailsEditModel SaveUserDetails(CustomUserDetailsEditModel model)
-        {
-
-            var result = new CustomUserDetailsEditModel();
-            var details = new CustomUserDetails();
-            details.Update(model);
-            var saved = _customUserDetailsDal.Save(details);
-            //result.Update(saved);
-            result.Update(saved);
-            return result;
-        }
-
-
-        public List<SelectListItem> CommonSizesDropdown()
-        {
-            var deptList = new List<SelectListItem>();
-            deptList.Add(new SelectListItem
-            {
-                Text = "Please Select a Size",
-                Value = ""
-            });
-            foreach (var eVal in Enum.GetValues(typeof(CommonSizes)))
-            {
-                deptList.Add(new SelectListItem
-                {
-                    Text = Enum.GetName(typeof(CommonSizes), eVal).ToUpper(),
-                    Value = eVal.ToString().ToUpper()
-                });
-            }
-            return deptList;
-
-
-            //return result;
         }
     }
 }

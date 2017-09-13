@@ -10,17 +10,17 @@
 
     @if (Model.Verified)
     {
-        var url = Url.Action("GroupHome", "Groups", new { id = Model.GroupId });
+        var url = Url.Action("GroupHome", "Groups", new {id = Model.GroupId});
 
         <h3>You are in the group : @Model.GroupName - @Model.GroupId - </h3>
-        <br />
-        <br />
+        <br/>
+        <br/>
 
         <script>
-      $(function () {
-        console.log("you in!");
-        window.location.href = '@url';
-      });
+            $(function() {
+                console.log("you in!");
+                window.location.href = '@url';
+            });
         </script>
     }
     else
@@ -40,7 +40,7 @@
 
                     <div class="form-group">
                         <label asp-for="UserInputGroupPassword" class="col-md-12 control-label"></label>
-                        <input asp-for="UserInputGroupPassword" class="form-control" required="" placeholder="Group Password" oninvalid="this.setCustomValidity('Please Enter the Password')" />
+                        <input asp-for="UserInputGroupPassword" class="form-control" required="" placeholder="Group Password" oninvalid="this.setCustomValidity('Please Enter the Password')"/>
                         <span asp-validation-for="UserInputGroupPassword" class="text-danger"></span>
 
                         @*@if (Model.ErrorMsg != null)
@@ -50,7 +50,9 @@
 
                     </div>
                     <div class="">
-                        <span> <img src="~/images/smChristmasElf.png" alt="Reindeer" class="img-circle" style="display: inline !important"></span>
+                        <span>
+                            <img src="~/images/smChristmasElf.png" alt="Reindeer" class="img-circle" style="display: inline !important">
+                        </span>
                         <button type="submit"
                                 id="btnSave"
                                 class="btn BtnGreen">
@@ -61,7 +63,9 @@
                                 data-dismiss="modal">
                             Cancel
                         </button>
-                        <span> <img src="~/images/smChristmasElf.png" alt="Reindeer" class="img-circle" style="display: inline !important"></span>
+                        <span>
+                            <img src="~/images/smChristmasElf.png" alt="Reindeer" class="img-circle" style="display: inline !important">
+                        </span>
                     </div>
                     @Html.HiddenFor(x => x.GroupId)
                     @Html.HiddenFor(x => x.CustomUser)
@@ -72,20 +76,14 @@
         </div>
 
 
-
-
-
-
         <script>
-            $(function () {
-                $('#btnSave').click(function () {
+            $(function() {
+                $('#btnSave').click(function() {
                     console.log("save");
                     // $('#modal-container').modal('hide');
                     //https://codemagik.wordpress.com/2015/04/07/render-mvc-partial-view-inside-bootstrap-modal-dialog/
                 });
             }); //end function
-
-
 
 
         </script>
@@ -94,21 +92,19 @@
 
 <style>
     .spinner {
-        display: inline-block;
-        opacity: 0;
-        max-width: 0;
-        -webkit-transition: opacity 0.25s, max-width 0.45s;
         -moz-transition: opacity 0.25s, max-width 0.45s;
         -o-transition: opacity 0.25s, max-width 0.45s;
+        -webkit-transition: opacity 0.25s, max-width 0.45s;
+        display: inline-block;
+        max-width: 0;
+        opacity: 0;
         transition: opacity 0.25s, max-width 0.45s; /* Duration fixed since we animate additional hidden width */
     }
 
-    .has-spinner.active {
-        cursor: progress;
-    }
+    .has-spinner.active { cursor: progress; }
 
-        .has-spinner.active .spinner {
-            opacity: 1;
-            max-width: 50px; /* More than it will ever come, notice that this affects on animation duration */
-        }
+    .has-spinner.active .spinner {
+        max-width: 50px; /* More than it will ever come, notice that this affects on animation duration */
+        opacity: 1;
+    }
 </style>

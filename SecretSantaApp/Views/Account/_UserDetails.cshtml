@@ -1,21 +1,21 @@
 ﻿@using SecretSantaApp.BL
-@model SecretSantaApp.ViewModels.CustomUserDetailsEditModel
+@model CustomUserDetailsEditModel
 @inject ISecretSantaBl ssbl
 @{
-    string test = "hey";
+    var test = "hey";
     var uid = Guid.NewGuid();
     var containerid = $"divcontainerid-{uid}";
     var commonsizesdropdown = ssbl.CommonSizesDropdown();
 }
 
 <div id="@containerid">
-    
+
     @if (Model.Saved)
     {
         //ReloadUserDetails
         <h4>Saved.</h4>
         <script>
-            $(document).ready(function () {
+            $(document).ready(function() {
                 ReloadUserDetails();
             });
         </script>
@@ -25,12 +25,15 @@
         <div class="container col-lg-12 ControlBox" style="background-color: green">
             <div class="">
                 <div class="" style="display: inline !important">
-                    <span> <img src="~/images/smReindeer.png" alt="Reindeer" class="img-responsive" style="display: inline !important"></span>
+                    <span>
+                        <img src="~/images/smReindeer.png" alt="Reindeer" class="img-responsive" style="display: inline !important">
+                    </span>
                     <h3 class="text-center" style="color: white; display: inline !important">Personal Info!</h3>
-                    <span> <img src="~/images/smReindeer.png" alt="Reindeer" class="img-responsive" style="display: inline !important"></span>
+                    <span>
+                        <img src="~/images/smReindeer.png" alt="Reindeer" class="img-responsive" style="display: inline !important">
+                    </span>
                 </div>
                 <div class="row col-xs-12 center-block RoundCornerBox" style="background-color: lightgray; padding-bottom: 2%;">
-
 
 
                     <form asp-action="SaveUserDetails"
@@ -45,16 +48,16 @@
 
                         <div class="form-group">
                             <label class="control-label col-sm-3" style="margin: 0 auto !important" asp-for="ShoeSize">Shoe Size<em>*</em></label>
-                            <div class="col-sm-8 col-xs-12" style="text-align: center !important; margin: 0 auto !important">
-                                <input type="text" asp-for="ShoeSize" placeholder="Shoe Size" class="form-control" />
+                            <div class="col-sm-8 col-xs-12" style="margin: 0 auto !important; text-align: center !important;">
+                                <input type="text" asp-for="ShoeSize" placeholder="Shoe Size" class="form-control"/>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-sm-3" style="margin: 0 auto !important" asp-for="ShirtSize">Top Size<em>*</em></label>
-                            <div class="col-sm-8 col-xs-12" style="text-align: center !important; margin: 0 auto !important">
+                            <div class="col-sm-8 col-xs-12" style="margin: 0 auto !important; text-align: center !important;">
                                 @*<input type="text" asp-for="ShirtSize" placeholder="Shirt Size" class="form-control" />*@
-                               
+
                                 @*<select asp-for="ShirtSize" asp-items="Html.GetEnumSelectList<CommonSizes>()">
                                     <option selected="selected" value="">Please select</option>
                                 </select>*@
@@ -66,35 +69,35 @@
 
                         <div class="form-group">
                             <label class="control-label col-sm-3" style="margin: 0 auto !important" asp-for="PantsSize">Bottom Size<em>*</em></label>
-                            <div class="col-sm-8 col-xs-12" style="text-align: center !important; margin: 0 auto !important">
+                            <div class="col-sm-8 col-xs-12" style="margin: 0 auto !important; text-align: center !important;">
                                 <select class="form-control" asp-for="PantsSize" asp-items="@commonsizesdropdown"></select>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-sm-3" style="margin: 0 auto !important" asp-for="SweatShirtSize">SweatShirt Size<em>*</em></label>
-                            <div class="col-sm-8 col-xs-12" style="text-align: center !important; margin: 0 auto !important">
+                            <div class="col-sm-8 col-xs-12" style="margin: 0 auto !important; text-align: center !important;">
                                 <select class="form-control" asp-for="SweatShirtSize" asp-items="@commonsizesdropdown"></select>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-sm-3" style="margin: 0 auto !important" asp-for="FavoriteBrands">Favorite Brands<em>*</em></label>
-                            <div class="col-sm-8 col-xs-12" style="text-align: center !important; margin: 0 auto !important">
-                                <input type="text" asp-for="FavoriteBrands" placeholder="Favorite Brands" class="form-control" />
+                            <div class="col-sm-8 col-xs-12" style="margin: 0 auto !important; text-align: center !important;">
+                                <input type="text" asp-for="FavoriteBrands" placeholder="Favorite Brands" class="form-control"/>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label asp-for="Notes" class="control-label col-sm-3" style="margin: 0 auto !important">Notes <em>*</em> </label>
-                            <div class="col-sm-8 col-xs-12" style="text-align: center !important; margin: 0 auto !important">
+                            <div class="col-sm-8 col-xs-12" style="margin: 0 auto !important; text-align: center !important;">
                                 <textarea asp-for="Notes" class="form-control" id="exampleTextarea" rows="3"></textarea>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-8">
-                                <input type="submit" name="signin" id="signin" value="Submit" class="btn btn-default btn-lg BtnGreen" />
+                                <input type="submit" name="signin" id="signin" value="Submit" class="btn btn-default btn-lg BtnGreen"/>
 
                             </div>
                         </div>
@@ -108,10 +111,10 @@
             </div>
 
         </div>
-    <!-- /.container -->
+        <!-- /.container -->
     }
 
-    
+
 
 
 

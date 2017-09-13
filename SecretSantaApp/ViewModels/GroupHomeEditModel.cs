@@ -26,5 +26,6 @@ namespace SecretSantaApp.ViewModels
 
         public bool PairingsAssigned { get; set; }
 
+        public bool IsAuthorized { get; set; }
     }
 }
