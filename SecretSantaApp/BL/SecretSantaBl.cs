@@ -249,7 +249,7 @@ namespace SecretSantaApp.BL
             else
                 result.PairingsAssigned = false;
 
-   
+
 
 
             result.GroupMembers = userlist;
@@ -356,9 +356,28 @@ namespace SecretSantaApp.BL
 
             foreach (var i in model.InviteUsersCollection.UsersToInvite)
             {
-                Email.DefaultRenderer = new RazorRenderer();
+
+                //only send it if the name has been filled out
+                if (i.Name != null)
+                {
+                    Email.DefaultRenderer = new RazorRenderer();
+
+                    //var emailmodel = new EmailMessageModel();
+                    //emailmodel.FirstName = "Ben";
+                    //emailmodel.LastName = "ONeill";
+                    //emailmodel.Message = "Sup yo";
+
+                    var emailtwo = Email
+                        .From("Santa@ElfBuddies.Com")
+                        .To("boneill1292@gmail.com")
+                        .Subject("Invite")
+                        .UsingTemplateFromFile("Views/Shared/_EmailTemplate.cshtml", i,  true);
+
+                    emailtwo.Send();
+                }
+
                 //var groupurl = "www.yahoo.com";
-               
+
 
                 //var messagetemplate = "Dear @Model.Name, Someone Has Invited you to play a Secret Santa Game at this email: @Model.EmailAddress. Join The Group Here: @GroupUrl ";
 
@@ -372,25 +391,25 @@ namespace SecretSantaApp.BL
             }
 
             // Using Razor templating package
-           
 
-            var templatee = "Dear @Model.Name, You are totally @Model.Compliment.";
+
+            //var templatee = "Dear @Model.Name, You are totally @Model.Compliment.";
 
             // var template = 
 
             //var templatee = "Dear @Model.Name, @Model.GroupAdmin Has Invited you to play a Secret Santa Game. ";
 
-            var eemail = Email
-                .From("Santa@ElfBuddies.Com")
-                .To("boneill1292@gmail.com")
-                .Subject("woo nuget")
-                .UsingTemplate(templatee, new { Name = "Luke", Compliment = "Awesome" });
+            //var eemail = Email
+            //    .From("Santa@ElfBuddies.Com")
+            //    .To("boneill1292@gmail.com")
+            //    .Subject("woo nuget")
+            //    .UsingTemplate(templatee, new { Name = "Luke", Compliment = "Awesome" });
 
 
-            var emailmodel = new EmailMessageModel();
-            emailmodel.FirstName = "Ben";
-            emailmodel.LastName = "ONeill";
-            emailmodel.Message = "Sup yo";
+            //var emailmodel = new EmailMessageModel();
+            //emailmodel.FirstName = "Ben";
+            //emailmodel.LastName = "ONeill";
+            //emailmodel.Message = "Sup yo";
 
             //var emailtwo = Email
             //    .From("Santa@ElfBuddies.Com")

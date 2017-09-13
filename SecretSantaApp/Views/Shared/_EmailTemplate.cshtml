@@ -1,4 +1,6 @@
-﻿@model EmailMessageModel
+﻿@model dynamic
+@{
+    var email = Model.Email;
+}
 <h1>Secret Santa App</h1>
-<h3>@Model.FirstName - @Model.LastName</h3>
-<h5>Message: @Model.Message</h5>
+<h3> Hey there : @email</h3>
