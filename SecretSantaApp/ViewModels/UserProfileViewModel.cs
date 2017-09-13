@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SecretSantaApp.ViewModels
+﻿namespace SecretSantaApp.ViewModels
 {
     public class UserProfileViewModel
     {
@@ -15,6 +9,5 @@ namespace SecretSantaApp.ViewModels
         public string ProfileImage { get; set; }
         public string UserAcctNo { get; set; }
         public int UserId { get; set; }
-
     }
 }

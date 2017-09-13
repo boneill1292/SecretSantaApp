@@ -1,14 +1,12 @@
-﻿@using System.Security.Claims
-@using SecretSantaApp.BL
+﻿@using SecretSantaApp.BL
 @model GroupRulesDisplayModel
 @inject ISecretSantaBl ssbl
 @{
-//var userconditionsurl = Url.Action("NewMemberConditionPopup", "Groups", new { groupid = Model.GroupId });
+    //var userconditionsurl = Url.Action("NewMemberConditionPopup", "Groups", new { groupid = Model.GroupId });
 }
 
 @if (Model.GroupConditions.Count > 0)
 {
-
     <table class="table table-responsive table-striped">
         <thead>
         <tr>
@@ -49,7 +47,6 @@
         }
         </tbody>
     </table>
-
 }
 else
 {

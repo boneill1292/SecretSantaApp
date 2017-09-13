@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using SecretSantaApp.Models;
 
@@ -10,7 +7,6 @@ namespace SecretSantaApp.DAL
 {
     public class MemberConditionsDal : IMemberConditionsDal
     {
-
         private readonly AppDbContext _appDbContext;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
@@ -19,7 +15,6 @@ namespace SecretSantaApp.DAL
             _appDbContext = appDbContext;
             _httpContextAccessor = httpContextAccessor;
         }
-
 
 
         public MemberConditions MemberConditionByConditionId(int id)
@@ -34,12 +29,12 @@ namespace SecretSantaApp.DAL
             return result;
         }
 
-        
 
         public List<MemberConditions> MemberConditionsByGroupIdByAcctNo(int groupid, string acctno)
         {
             var result = new List<MemberConditions>();
-            result = _appDbContext.MemberConditions.Where(x => x.GroupId == groupid && x.UserReceivingConditionAcctNo == acctno).ToList();
+            result = _appDbContext.MemberConditions
+                .Where(x => x.GroupId == groupid && x.UserReceivingConditionAcctNo == acctno).ToList();
             return result;
         }
 
@@ -53,14 +48,11 @@ namespace SecretSantaApp.DAL
                 _appDbContext.SaveChanges();
                 return m;
             }
-            else
-            {
-                var result = new MemberConditions();
-                result.Update(m);
-                _appDbContext.Add(result);
-                _appDbContext.SaveChanges();
-                return result;
-            }
+            var result = new MemberConditions();
+            result.Update(m);
+            _appDbContext.Add(result);
+            _appDbContext.SaveChanges();
+            return result;
         }
 
         public MemberConditions Delete(MemberConditions m)
@@ -72,6 +64,5 @@ namespace SecretSantaApp.DAL
             _appDbContext.SaveChanges();
             return result;
         }
-
     }
 }

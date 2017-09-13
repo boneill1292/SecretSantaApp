@@ -50,7 +50,6 @@ namespace SecretSantaApp.Controllers
         }
 
 
-
         [HttpGet]
         //[Route("groups/group/_defaultsearchresult")]
         public ActionResult GroupHome(int id)
@@ -70,7 +69,6 @@ namespace SecretSantaApp.Controllers
             }
             return View("_ErrorMessage", new StringModel(msg));
         }
-
 
 
         [HttpGet]
@@ -94,7 +92,6 @@ namespace SecretSantaApp.Controllers
         }
 
 
-
         [HttpPost]
         //[Route("tickets/{department}/newcategoryonticketview/edit")]
         public ActionResult SaveNewGroup(GroupEditModel model)
@@ -108,7 +105,7 @@ namespace SecretSantaApp.Controllers
                 var grouphome = _secretSantaBl.GroupHomeEditModelByGroupId(m.GroupId);
                 grouphome.NewGroup = true;
 
-                return RedirectToAction("GroupHome", new { id = m.GroupId });
+                return RedirectToAction("GroupHome", new {id = m.GroupId});
             }
             catch (AppException ax)
             {
@@ -121,75 +118,6 @@ namespace SecretSantaApp.Controllers
             }
             return View("NewGroup", model);
         }
-
-
-        #region InviteUsersRegion
-        [HttpGet]
-        public ActionResult InviteUsersPartialView(int groupid)
-        {
-            string msg;
-            try
-            {
-                var model = _secretSantaBl.InviteUsersEditModelByGroupId(groupid);
-                return PartialView("_InviteUsers", model);
-            }
-            catch (AppException ax)
-            {
-                msg = ax.Message;
-            }
-            catch (Exception)
-            {
-                msg = "An Error Has Occured";
-            }
-            return PartialView("_ErrorMessage", new StringModel(msg));
-        }
-
-
-        [HttpGet]
-        public ActionResult GetInviteUsersRow(int count, int groupid)
-        {
-            string msg;
-            try
-            {
-                var model = _secretSantaBl.AdditionalInviteUsersViewModel(count, groupid);
-                return PartialView("_InviteUsersRow", model);
-            }
-            catch (AppException ax)
-            {
-                msg = ax.Message;
-            }
-            catch (Exception)
-            {
-                msg = "An Error Has Occured";
-            }
-            return PartialView("_ErrorMessage", new StringModel(msg));
-        }
-
-        [HttpPost]
-        public ActionResult SendInvitesTousers(InviteUsersEditModel model)
-        {
-
-            try
-            {
-                var url = Url.Action("GroupHome", "Groups", new { id = model.GroupId });
-                model.GroupUrl = url;
-                var m = _secretSantaBl.SendInviteToUsers(model);
-                m.Saved = true;
-                return PartialView("_InviteUsers", m);
-            }
-            catch (AppException ax)
-            {
-                ModelState.AddModelError("", ax.AppMessage);
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError("", ex.Message);
-                _log.LogError("", ex);
-            }
-            return PartialView("_InviteUsers", model);
-        }
-
-        #endregion
         //End InviteUsersRegion
 
         [HttpGet]
@@ -215,7 +143,6 @@ namespace SecretSantaApp.Controllers
         }
 
 
-
         [HttpGet]
         [Route("secretsanta/joingroup/{id}")]
         public ActionResult PromptUserForPassword(int id)
@@ -236,8 +163,6 @@ namespace SecretSantaApp.Controllers
             }
             return PartialView("_ErrorMessage", new StringModel(msg));
         }
-
-
 
 
         [HttpPost]
@@ -288,7 +213,6 @@ namespace SecretSantaApp.Controllers
         }
 
 
-
         [HttpGet]
         public ActionResult EditRulePopup(int ruleid)
         {
@@ -310,7 +234,6 @@ namespace SecretSantaApp.Controllers
         }
 
 
-
         [HttpGet]
         public ActionResult DeleteRulePopup(int ruleid)
         {
@@ -329,7 +252,6 @@ namespace SecretSantaApp.Controllers
                 msg = "An Error Has Occured";
             }
             return PartialView("_ErrorMessage", new StringModel(msg));
-
         }
 
         [HttpPost]
@@ -398,7 +320,6 @@ namespace SecretSantaApp.Controllers
                 msg = "An Error Has Occured";
             }
             return PartialView("_ErrorMessage", new StringModel(msg));
-
         }
 
 
@@ -420,7 +341,6 @@ namespace SecretSantaApp.Controllers
                 msg = "An Error Has Occured";
             }
             return PartialView("_ErrorMessage", new StringModel(msg));
-
         }
 
 
@@ -442,7 +362,6 @@ namespace SecretSantaApp.Controllers
                 msg = "An Error Has Occured";
             }
             return PartialView("_ErrorMessage", new StringModel(msg));
-
         }
 
 
@@ -553,10 +472,8 @@ namespace SecretSantaApp.Controllers
             catch (Exception ex)
             {
                 ModelState.AddModelError("", ex.Message);
-
             }
             return PartialView("_DeleteConditionPopup", model);
-
         }
 
 
@@ -624,5 +541,74 @@ namespace SecretSantaApp.Controllers
             }
             return PartialView("_ErrorMessage", new StringModel(msg));
         }
+
+
+        #region InviteUsersRegion
+
+        [HttpGet]
+        public ActionResult InviteUsersPartialView(int groupid)
+        {
+            string msg;
+            try
+            {
+                var model = _secretSantaBl.InviteUsersEditModelByGroupId(groupid);
+                return PartialView("_InviteUsers", model);
+            }
+            catch (AppException ax)
+            {
+                msg = ax.Message;
+            }
+            catch (Exception)
+            {
+                msg = "An Error Has Occured";
+            }
+            return PartialView("_ErrorMessage", new StringModel(msg));
+        }
+
+
+        [HttpGet]
+        public ActionResult GetInviteUsersRow(int count, int groupid)
+        {
+            string msg;
+            try
+            {
+                var model = _secretSantaBl.AdditionalInviteUsersViewModel(count, groupid);
+                return PartialView("_InviteUsersRow", model);
+            }
+            catch (AppException ax)
+            {
+                msg = ax.Message;
+            }
+            catch (Exception)
+            {
+                msg = "An Error Has Occured";
+            }
+            return PartialView("_ErrorMessage", new StringModel(msg));
+        }
+
+        [HttpPost]
+        public ActionResult SendInvitesTousers(InviteUsersEditModel model)
+        {
+            try
+            {
+                var url = Url.Action("GroupHome", "Groups", new {id = model.GroupId});
+                model.GroupUrl = url;
+                var m = _secretSantaBl.SendInviteToUsers(model);
+                m.Saved = true;
+                return PartialView("_InviteUsers", m);
+            }
+            catch (AppException ax)
+            {
+                ModelState.AddModelError("", ax.AppMessage);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+                _log.LogError("", ex);
+            }
+            return PartialView("_InviteUsers", model);
+        }
+
+        #endregion
     }
 }

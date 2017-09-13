@@ -10,38 +10,37 @@
 <div id="@containerid">
     @if (Model.GroupMembers.Count > 0)
     {
-
         <h5>Group Members:</h5>
 
 
         <div class="row">
             <table class="table table-responsive table-striped">
                 <thead>
-                    <tr>
-                        <th>&nbsp;</th>
-                        <th>Name</th>
-                        <th>&nbsp;</th>
-                        <th>&nbsp;</th>
+                <tr>
+                    <th>&nbsp;</th>
+                    <th>Name</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
 
-                    </tr>
+                </tr>
                 </thead>
                 <tbody>
-                    @foreach (var u in Model.GroupMembershipModelList)
-                    {
-                        var user = ssbl.UserFullNameByAccountNumberString(u.AccountNumberString);
-                        var image = ssbl.UserImageByAccountNumberString(u.AccountNumberString);
-                        var userconditionsurl = Url.Action("NewMemberConditionPopup", "Groups", new { membershipid = u.ID, acctno = u.AccountNumberString });
-                        var userdetailsurl = Url.Action("ViewOtherUserDetailsPartial", "Account", new { acctno = u.AccountNumberString });
-                        <tr>
-                            <td>
-                                <img src="@image"
-                                     alt="" class="img-rounded img-circle" style="max-width: 65px;" />
-                            </td>
-                            <td>@user</td>
-                            <td>&nbsp;</td>
-                            @*<td>@u.Email</td>*@
-                            <td>
-                                @*<button class="btn btn-group modal-link BtnGreen"
+                @foreach (var u in Model.GroupMembershipModelList)
+                {
+                    var user = ssbl.UserFullNameByAccountNumberString(u.AccountNumberString);
+                    var image = ssbl.UserImageByAccountNumberString(u.AccountNumberString);
+                    var userconditionsurl = Url.Action("NewMemberConditionPopup", "Groups", new {membershipid = u.ID, acctno = u.AccountNumberString});
+                    var userdetailsurl = Url.Action("ViewOtherUserDetailsPartial", "Account", new {acctno = u.AccountNumberString});
+                    <tr>
+                        <td>
+                            <img src="@image"
+                                 alt="" class="img-rounded img-circle" style="max-width: 65px;"/>
+                        </td>
+                        <td>@user</td>
+                        <td>&nbsp;</td>
+                        @*<td>@u.Email</td>*@
+                        <td>
+                            @*<button class="btn btn-group modal-link BtnGreen"
                                             href="@userconditionsurl"
                                             data-target="#myModal"
                                             data-toggle="modal">
@@ -55,20 +54,20 @@
                                         Info
                                     </a>*@
 
-                                <button class="btn btn-group BtnGreen"
-                                        onclick="LoadPopup('@userconditionsurl')">
-                                    New Condition
-                                </button>
+                            <button class="btn btn-group BtnGreen"
+                                    onclick="LoadPopup('@userconditionsurl')">
+                                New Condition
+                            </button>
 
-                                <button class="btn btn-group BtnRed"
-                                        onclick="LoadPopup('@userdetailsurl')">
-                                    Details
-                                </button>
+                            <button class="btn btn-group BtnRed"
+                                    onclick="LoadPopup('@userdetailsurl')">
+                                Details
+                            </button>
 
 
-                            </td>
-                        </tr>
-                    }
+                        </td>
+                    </tr>
+                }
                 </tbody>
             </table>
         </div>
@@ -85,7 +84,6 @@
         $(document).ready(function() {
             $("#@containerid").trigger("create");
         }); //doc ready
-
 
 
         $(function() {

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SecretSantaApp.Migrations
 {
@@ -9,15 +7,15 @@ namespace SecretSantaApp.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
-                name: "GroupPassWord",
-                table: "Groups",
+                "GroupPassWord",
+                "Groups",
                 nullable: false,
                 oldClrType: typeof(string),
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "GroupName",
-                table: "Groups",
+                "GroupName",
+                "Groups",
                 nullable: false,
                 oldClrType: typeof(string),
                 oldNullable: true);
@@ -26,14 +24,14 @@ namespace SecretSantaApp.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
-                name: "GroupPassWord",
-                table: "Groups",
+                "GroupPassWord",
+                "Groups",
                 nullable: true,
                 oldClrType: typeof(string));
 
             migrationBuilder.AlterColumn<string>(
-                name: "GroupName",
-                table: "Groups",
+                "GroupName",
+                "Groups",
                 nullable: true,
                 oldClrType: typeof(string));
         }

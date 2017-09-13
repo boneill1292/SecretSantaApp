@@ -3,13 +3,11 @@
 @model GroupRulesDisplayModel
 @inject ISecretSantaBl ssbl
 @{
-
 }
 
 
 @if (Model.GroupRules.Count > 0)
 {
-
     <table class="table table-responsive table-striped">
         <thead>
         <tr>
@@ -48,11 +46,11 @@
                                 onclick="LoadPopup('@editruleurl')">
                             Edit
                         </button>
-                        
-                        
+
+
                         <button class="btn btn-group  BtnRed"
                                 onclick="LoadPopup('@deleteruleurl')">
-                           Delete
+                            Delete
                         </button>
                     </td>
                 }
@@ -65,7 +63,6 @@
         }
         </tbody>
     </table>
-
 }
 else
 {

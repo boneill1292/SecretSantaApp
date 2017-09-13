@@ -5,14 +5,16 @@
 
 <div class="row">
     <h1>Welcome to the Secret Santa App</h1>
-   
-    
+
+
     @if (!User.Identity.IsAuthenticated)
     {
         <h2>Login To Play</h2>
-        <a class="btn BtnGreen"  
-           asp-controller="Account" 
-           asp-action="LoginExternal">Login</a>
+        <a class="btn BtnGreen"
+           asp-controller="Account"
+           asp-action="LoginExternal">
+            Login
+        </a>
     }
-    
+
 </div>

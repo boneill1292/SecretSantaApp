@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SecretSantaApp.Migrations
 {
@@ -9,17 +7,17 @@ namespace SecretSantaApp.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.RenameColumn(
-                name: "AccountNumber",
-                table: "CustomUsers",
-                newName: "AccountNumberString");
+                "AccountNumber",
+                "CustomUsers",
+                "AccountNumberString");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.RenameColumn(
-                name: "AccountNumberString",
-                table: "CustomUsers",
-                newName: "AccountNumber");
+                "AccountNumberString",
+                "CustomUsers",
+                "AccountNumber");
         }
     }
 }

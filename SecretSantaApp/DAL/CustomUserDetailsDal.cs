@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using SecretSantaApp.Models;
 
@@ -37,18 +34,15 @@ namespace SecretSantaApp.DAL
             if (d.DetailsId >= 1)
             {
                 _appDbContext.Update(d);
-               // _appDbContext.Add(d);
+                // _appDbContext.Add(d);
                 _appDbContext.SaveChanges();
                 return d;
             }
-            else
-            {
-                var result = new CustomUserDetails();
-                result.Update(d);
-                _appDbContext.Add(result);
-                _appDbContext.SaveChanges();
-                return result;
-            }
+            var result = new CustomUserDetails();
+            result.Update(d);
+            _appDbContext.Add(result);
+            _appDbContext.SaveChanges();
+            return result;
         }
 
         public CustomUserDetails Delete(CustomUserDetails m)

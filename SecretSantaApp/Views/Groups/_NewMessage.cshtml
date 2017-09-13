@@ -7,62 +7,65 @@
 <div id="@containerid">
     @if (Model.Saved)
     {
-
         <p>you created the rule, we need to refresh the </p>
 
         <script>
 
             LoadChat();
-          //LoadNewMessage();
-         // $('#modal-container').modal('hide');
+            //LoadNewMessage();
+            // $('#modal-container').modal('hide');
         </script>
     }
     else
     {
-            <div class="text-center">
-                <span> <img src="~/images/smRedSantaList.png" alt="Reindeer" class="img-responsive" style="display: inline !important"></span>
-                <h3 class="text-center" style="color: green; display: inline !important">New @Model.GroupName Message!</h3>
-                <span> <img src="~/images/smRedSantaList.png" alt="Reindeer" class="img-responsive" style="display: inline !important"></span>
-            </div>
+        <div class="text-center">
+            <span>
+                <img src="~/images/smRedSantaList.png" alt="Reindeer" class="img-responsive" style="display: inline !important">
+            </span>
+            <h3 class="text-center" style="color: green; display: inline !important">New @Model.GroupName Message!</h3>
+            <span>
+                <img src="~/images/smRedSantaList.png" alt="Reindeer" class="img-responsive" style="display: inline !important">
+            </span>
+        </div>
 
 
-            <div class="center-block RoundCornerBox" style="background-color: lightgray; padding-bottom: 2%;">
-                <div class="row">
+        <div class="center-block RoundCornerBox" style="background-color: lightgray; padding-bottom: 2%;">
+            <div class="row">
 
-                    <form asp-action="SaveGroupMessage" method="POST"
-                          data-ajax="true"
-                          data-ajax-method="POST"
-                          data-ajax-mode="replace"
-                          data-ajax-update="#@containerid">
+                <form asp-action="SaveGroupMessage" method="POST"
+                      data-ajax="true"
+                      data-ajax-method="POST"
+                      data-ajax-mode="replace"
+                      data-ajax-update="#@containerid">
 
-                        <div class="form-group">
-                            <label class="control-label col-sm-3" asp-label-for="Message" for="rule">Message<em>*</em></label>
-                            <div class="col-sm-8 col-xs-12">
-                                @*<input type="text" asp-for="Message" placeholder="Message" required="" oninvalid="this.setCustomValidity('Please Enter A Message')" class="form-control" />*@
-                                <textarea asp-for="Message" class="form-control" rows="5"></textarea>
-                            </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" asp-label-for="Message" for="rule">Message<em>*</em></label>
+                        <div class="col-sm-8 col-xs-12">
+                            @*<input type="text" asp-for="Message" placeholder="Message" required="" oninvalid="this.setCustomValidity('Please Enter A Message')" class="form-control" />*@
+                            <textarea asp-for="Message" class="form-control" rows="5"></textarea>
                         </div>
-                        
-                        @*<div class="form-group">
+                    </div>
+
+                    @*<div class="form-group">
                             <label asp-label-for="Message">With Bootstrap:</label>
                             <textarea asp-for="Message" class="form-control" rows="5"></textarea>
                         </div>*@
 
-                        <div class="form-group">
-                            <div class="col-md-12 text-center" >
-                                
-                                <input type="submit" name="signin" id="signin" value="Submit" class="btn BtnGreen"/>
-                            </div>
-                        </div>
-                        @Html.HiddenFor(x => x.ID)
-                        @Html.HiddenFor(x => x.GroupId)
-                        @Html.HiddenFor(x => x.InsertedBy)
-                    </form>
-                </div>
-            </div>
+                    <div class="form-group">
+                        <div class="col-md-12 text-center">
 
-        
-  <!-- /.container -->
+                            <input type="submit" name="signin" id="signin" value="Submit" class="btn BtnGreen"/>
+                        </div>
+                    </div>
+                    @Html.HiddenFor(x => x.ID)
+                    @Html.HiddenFor(x => x.GroupId)
+                    @Html.HiddenFor(x => x.InsertedBy)
+                </form>
+            </div>
+        </div>
+
+
+        <!-- /.container -->
     }
 
 

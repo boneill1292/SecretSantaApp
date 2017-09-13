@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using SecretSantaApp.BL;
 using SecretSantaApp.Models;
 
 namespace SecretSantaApp.DAL
 {
     public class GroupRulesDal : IGroupRulesDal
     {
-
         private readonly AppDbContext _appDbContext;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
@@ -31,14 +26,11 @@ namespace SecretSantaApp.DAL
                 _appDbContext.SaveChanges();
                 return g;
             }
-            else
-            {
-                var result = new GroupRules();
-                result.Update(g);
-                _appDbContext.Add(result);
-                _appDbContext.SaveChanges();
-                return result;
-            }
+            var result = new GroupRules();
+            result.Update(g);
+            _appDbContext.Add(result);
+            _appDbContext.SaveChanges();
+            return result;
         }
 
         public GroupRules DeleteRule(GroupRules g)

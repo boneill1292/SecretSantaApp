@@ -1,9 +1,9 @@
 ﻿<!-- Views/Account/Profile.cshtml -->
 
-@model SecretSantaApp.ViewModels.UserProfileViewModel
+@model UserProfileViewModel
 @{
     ViewData["Title"] = "User Profile";
-    var userdetailsurl = Url.Action("UserDetailsPartial", "Account", new { userid = Model.UserId });
+    var userdetailsurl = Url.Action("UserDetailsPartial", "Account", new {userid = Model.UserId});
 }
 
 <div class="row">
@@ -13,7 +13,7 @@
 
             <div class="col-md-2">
                 <img src="@Model.ProfileImage"
-                     alt="" class="img-rounded img-responsive" />
+                     alt="" class="img-rounded img-responsive"/>
             </div>
 
             <div class="col-md-4">
@@ -45,11 +45,9 @@
         }); //doc ready
 
 
-
         function ReloadUserDetails() {
             window.LayoutLoadPartial('userdetails', '@userdetailsurl', { 'label': 'Reloading...' });
         }
-
 
 
     </script>

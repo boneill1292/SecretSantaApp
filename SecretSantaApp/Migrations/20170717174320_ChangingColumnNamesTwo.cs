@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SecretSantaApp.Migrations
 {
@@ -9,27 +7,27 @@ namespace SecretSantaApp.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.RenameColumn(
-                name: "UserAcctNo",
-                table: "MemberConditions",
-                newName: "UserSelectedForConditionAcctNo");
+                "UserAcctNo",
+                "MemberConditions",
+                "UserSelectedForConditionAcctNo");
 
             migrationBuilder.RenameColumn(
-                name: "ConditionalUserAcctNo",
-                table: "MemberConditions",
-                newName: "UserReceivingConditionAcctNo");
+                "ConditionalUserAcctNo",
+                "MemberConditions",
+                "UserReceivingConditionAcctNo");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.RenameColumn(
-                name: "UserSelectedForConditionAcctNo",
-                table: "MemberConditions",
-                newName: "UserAcctNo");
+                "UserSelectedForConditionAcctNo",
+                "MemberConditions",
+                "UserAcctNo");
 
             migrationBuilder.RenameColumn(
-                name: "UserReceivingConditionAcctNo",
-                table: "MemberConditions",
-                newName: "ConditionalUserAcctNo");
+                "UserReceivingConditionAcctNo",
+                "MemberConditions",
+                "ConditionalUserAcctNo");
         }
     }
 }

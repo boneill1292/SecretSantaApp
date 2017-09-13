@@ -10,7 +10,6 @@
 <div id="@containerid">
     @if (Model.Saved)
     {
-
         <p>you created the rule, we need to refresh the </p>
 
         <script>
@@ -22,10 +21,9 @@
     }
     else
     {
-
         <div class="container col-lg-12 ControlBox" style="background-color: white">
             <div class="">
-                <div class="" style="display:inline!important">
+                <div class="" style="display: inline !important">
 
 
                     <h4 class="text-center" style="color: green; display: inline !important">
@@ -33,7 +31,7 @@
                     </h4>
 
                 </div>
-                <div class="row col-xs-12 center-block RoundCornerBox" style="background-color: white; ">
+                <div class="row col-xs-12 center-block RoundCornerBox" style="background-color: white;">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <form asp-action="SaveNewMemberCondition" method="POST"
                           data-ajax="true"
@@ -45,14 +43,16 @@
 
                             <div class="col-sm-8 col-xs-12">
                                 <div>
-                                    <h4 style="display:inline!important">  @Model.UserReceivingConditionName Cant Have: </h4>
-                                    <span style="display:inline"> @Html.DropDownListFor(x => x.ConditionId, otherpeopledropdown, "--Selet a User They Cannot have--", new { id = "changepersondropdown" })</span>
+                                    <h4 style="display: inline !important"> @Model.UserReceivingConditionName Cant Have: </h4>
+                                    <span style="display: inline"> @Html.DropDownListFor(x => x.ConditionId, otherpeopledropdown, "--Selet a User They Cannot have--", new {id = "changepersondropdown"})</span>
 
                                 </div>
                             </div>
                             <div>
-                                <div class="form-group" style="display:none;">
-                                    <label class="control-label col-sm-3" for="UserSelectedForConditionAcctNo"><em>*</em></label>
+                                <div class="form-group" style="display: none;">
+                                    <label class="control-label col-sm-3" for="UserSelectedForConditionAcctNo">
+                                        <em>*</em>
+                                    </label>
                                     <div class="col-sm-8 col-xs-12">
                                         <input type="text"
                                                placeholder="Person"
@@ -66,7 +66,7 @@
 
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-8">
-                                <input type="submit" name="signin" id="signin" value="Submit" class="btn btn-default btn-lg BtnGreen" />
+                                <input type="submit" name="signin" id="signin" value="Submit" class="btn btn-default btn-lg BtnGreen"/>
                             </div>
                         </div>
                         @Html.HiddenFor(x => x.UserReceivingConditionAcctNo)
@@ -82,14 +82,14 @@
             </div>
 
         </div>
-    <!-- /.container -->
+        <!-- /.container -->
 
 
         <script>
             //Going to hardcode  -999 *This is wrong, but it'll do for now.'
             //$('#UserSelectedForConditionMembershipNo').val(-999);
 
-            $("#changepersondropdown").change(function () {
+            $("#changepersondropdown").change(function() {
                 var selectedid = $("#changepersondropdown").val();
                 console.log("id: " + selectedid);
                 $('#UserSelectedForConditionMembershipNo').val(selectedid);

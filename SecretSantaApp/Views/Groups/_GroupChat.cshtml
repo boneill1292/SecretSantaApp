@@ -1,49 +1,46 @@
-﻿@using System.Security.Claims
-@using SecretSantaApp.BL
+﻿@using SecretSantaApp.BL
 @model GroupChatDisplayModel
 @inject ISecretSantaBl ssbl
 @{
     var uid = Guid.NewGuid();
     var containerid = $"divcontainerid-{uid}";
-    var newmessageurl = Url.Action("NewMessagePartial", "Groups", new { groupid = Model.GroupId });
+    var newmessageurl = Url.Action("NewMessagePartial", "Groups", new {groupid = Model.GroupId});
 }
 
 <div id="@containerid">
 
 
-
-
     <button type="button" onclick="ToggleChat()" id="btnDrawNames" class="btn BtnGreen " data-dismiss="modal">New Message</button>
-   
-        <div id="newmessageinput" class="col-md-12" style=" display: none;">
 
-            <h5>New Message</h5>
-   
+    <div id="newmessageinput" class="col-md-12" style="display: none;">
+
+        <h5>New Message</h5>
+
     </div>
 
 
     <div class="row">
-        <div class="col-md-12" >
+        <div class="col-md-12">
             @if (Model.MessagesList.Count > 0)
             {
                 <div id="divgroupchat">
-                    <table class="table table-responsive table-striped" style="max-height:60px!important;">
+                    <table class="table table-responsive table-striped" style="max-height: 60px !important;">
                         <thead>
-                            <tr>
-                                <th>&nbsp;</th>
-                                <th>&nbsp;</th>
-                            </tr>
+                        <tr>
+                            <th>&nbsp;</th>
+                            <th>&nbsp;</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            @foreach (var r in Model.MessagesList.OrderByDescending(x => x.InsertedDtm))
-                            {
-                                var user = ssbl.UserFullNameByAccountNumberString(r.InsertedBy);
-                                <tr>
-                                    <td> <span style="font-size:.9em">@r.InsertedDtm.ToString("g")</span> @user said:  @r.Message </td>
-                                    <td>&nbsp;</td>
+                        @foreach (var r in Model.MessagesList.OrderByDescending(x => x.InsertedDtm))
+                        {
+                            var user = ssbl.UserFullNameByAccountNumberString(r.InsertedBy);
+                            <tr>
+                                <td> <span style="font-size: .9em">@r.InsertedDtm.ToString("g")</span> @user said: @r.Message </td>
+                                <td>&nbsp;</td>
 
-                                </tr>
-                            }
+                            </tr>
+                        }
                         </tbody>
                     </table>
                 </div>
@@ -82,4 +79,5 @@
 
 <style>
 
+    
 </style>

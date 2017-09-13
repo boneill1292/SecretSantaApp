@@ -1,13 +1,11 @@
-﻿@using System.Security.Claims
-@using SecretSantaApp.BL
+﻿@using SecretSantaApp.BL
 @model GroupRulesDisplayModel
 @inject ISecretSantaBl ssbl
 @{
-
 }
 
 
-<h3 style="text-decoration:underline">Group @Model.GroupName Rules:</h3>
+<h3 style="text-decoration: underline">Group @Model.GroupName Rules:</h3>
 <div class="row">
     @Html.Partial("_GroupRulesTable", Model)
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SecretSantaApp.Migrations
@@ -9,8 +8,8 @@ namespace SecretSantaApp.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<DateTime>(
-                name: "InsertedDtm",
-                table: "GroupMessages",
+                "InsertedDtm",
+                "GroupMessages",
                 nullable: false,
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
         }
@@ -18,8 +17,8 @@ namespace SecretSantaApp.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "InsertedDtm",
-                table: "GroupMessages");
+                "InsertedDtm",
+                "GroupMessages");
         }
     }
 }

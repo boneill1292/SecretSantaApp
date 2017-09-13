@@ -1,55 +1,65 @@
 ﻿// modal.js
 
-$(function () {
+$(function() {
     //init modal dialog
     // attach modal-container bootstrap attributes to links with .modal-link class.
     // when a link is clicked with these attributes, bootstrap will display the href content ina  modal dialog.
-    $('body').on('click', '.modal-link', function (e) {
-        e.preventDefault();
-        $(this).attr('data-target', '#modal-container');
-        $(this).attr('data-toggle', 'modal');
-    });
+    $("body").on("click",
+        ".modal-link",
+        function(e) {
+            e.preventDefault();
+            $(this).attr("data-target", "#modal-container");
+            $(this).attr("data-toggle", "modal");
+        });
 
     //attach a listener to .modal-close-btn so when button is pressed the modal disappears
-    $('body').on('click', '.modal-close-btn', function () {
-        $('#modal-container').modal('hide');
-    });
+    $("body").on("click",
+        ".modal-close-btn",
+        function() {
+            $("#modal-container").modal("hide");
+        });
 
     //clear modal cache, so that new content can be loaded
-    $('#modal-container').on('hidden.bs.modal', function () {
-        $(this).removeData('bs.modal');
-    });
-
-
+    $("#modal-container").on("hidden.bs.modal",
+        function() {
+            $(this).removeData("bs.modal");
+        });
 
 
     //Clear the other modal?
-    $('body').on('click', '.modal-link', function (e) {
-        e.preventDefault();
-        $(this).attr('data-target', '#myModal');
-        $(this).attr('data-toggle', 'modal');
-    });
+    $("body").on("click",
+        ".modal-link",
+        function(e) {
+            e.preventDefault();
+            $(this).attr("data-target", "#myModal");
+            $(this).attr("data-toggle", "modal");
+        });
 
     //attach a listener to .modal-close-btn so when button is pressed the modal disappears
-    $('body').on('click', '.modal-close-btn', function () {
-        $('#myModal').modal('hide');
-    });
+    $("body").on("click",
+        ".modal-close-btn",
+        function() {
+            $("#myModal").modal("hide");
+        });
 
     //clear modal cache, so that new content can be loaded
-    $('#myModal').on('hidden.bs.modal', function () {
-        $(this).removeData('bs.modal');
-       
-        //Doesnt work :(
-        $("#myModal .modal-content .ControlBox").html('<div><h4>Loading... </h4> </div> <div class="santaloadspinner"> </div>');
-        
-    });
+    $("#myModal").on("hidden.bs.modal",
+        function() {
+            $(this).removeData("bs.modal");
 
-    $('#myModal').on('shown.bs.modal', function () {
-        console.log("showing yo");
+            //Doesnt work :(
+            $("#myModal .modal-content .ControlBox")
+                .html('<div><h4>Loading... </h4> </div> <div class="santaloadspinner"> </div>');
 
-        // $(this).addClass('santaloadspinner');
+        });
 
-    });
+    $("#myModal").on("shown.bs.modal",
+        function() {
+            console.log("showing yo");
+
+            // $(this).addClass('santaloadspinner');
+
+        });
 
 
     //function GetLoadingSpinner() {

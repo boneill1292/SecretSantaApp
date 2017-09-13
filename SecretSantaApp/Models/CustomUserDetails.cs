@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace SecretSantaApp.Models
 {
@@ -28,7 +23,6 @@ namespace SecretSantaApp.Models
         public string Notes { get; set; }
 
 
-
         public virtual void Update(CustomUserDetails c)
         {
             DetailsId = c.DetailsId;
@@ -40,7 +34,6 @@ namespace SecretSantaApp.Models
             SweatShirtSize = c.SweatShirtSize;
             FavoriteBrands = c.FavoriteBrands;
             Notes = c.Notes;
-
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SecretSantaApp.Migrations
 {
@@ -9,8 +7,8 @@ namespace SecretSantaApp.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<bool>(
-                name: "Active",
-                table: "Groups",
+                "Active",
+                "Groups",
                 nullable: false,
                 defaultValue: true);
         }
@@ -18,8 +16,8 @@ namespace SecretSantaApp.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Active",
-                table: "Groups");
+                "Active",
+                "Groups");
         }
     }
 }

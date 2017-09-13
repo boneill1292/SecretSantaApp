@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace SecretSantaApp.Migrations
 {
@@ -10,41 +8,37 @@ namespace SecretSantaApp.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "GroupMemberDetails");
+                "GroupMemberDetails");
 
             migrationBuilder.CreateTable(
-                name: "GroupMembership",
-                columns: table => new
+                "GroupMembership",
+                table => new
                 {
                     ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:ValueGenerationStrategy",
+                            SqlServerValueGenerationStrategy.IdentityColumn),
                     AccountNumberString = table.Column<string>(nullable: true),
                     GroupId = table.Column<int>(nullable: false)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GroupMembership", x => x.ID);
-                });
+                constraints: table => { table.PrimaryKey("PK_GroupMembership", x => x.ID); });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "GroupMembership");
+                "GroupMembership");
 
             migrationBuilder.CreateTable(
-                name: "GroupMemberDetails",
-                columns: table => new
+                "GroupMemberDetails",
+                table => new
                 {
                     ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:ValueGenerationStrategy",
+                            SqlServerValueGenerationStrategy.IdentityColumn),
                     AccountNumberString = table.Column<string>(nullable: true),
                     GroupId = table.Column<int>(nullable: false)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GroupMemberDetails", x => x.ID);
-                });
+                constraints: table => { table.PrimaryKey("PK_GroupMemberDetails", x => x.ID); });
         }
     }
 }

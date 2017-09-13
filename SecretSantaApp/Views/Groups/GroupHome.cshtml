@@ -1,13 +1,13 @@
 ﻿@model GroupHomeEditModel
 @{
 
-    var newruleurl = Url.Action("GetManageRulesPopup", "Groups", new { groupid = Model.GroupId });
-    var grouprulesurl = Url.Action("GetGroupRulesPartial", "Groups", new { groupid = Model.GroupId });
-    var chaturl = Url.Action("GetChatPartial", "Groups", new { groupid = Model.GroupId });
-    var getdrawnamesurl = Url.Action("GetDrawNamesPartial", "Groups", new { groupid = Model.GroupId });
-    var grouppairedmemberurl = Url.Action("DisplayGroupPairedMember", "Groups", new { groupid = Model.GroupId });
-    var inviteusersurl = Url.Action("InviteUsersPartialView", "Groups", new { groupid = Model.GroupId });
-    var joingroupurl = Url.Action("PromptUserForPassword", "Groups", new { id = Model.GroupId });
+    var newruleurl = Url.Action("GetManageRulesPopup", "Groups", new {groupid = Model.GroupId});
+    var grouprulesurl = Url.Action("GetGroupRulesPartial", "Groups", new {groupid = Model.GroupId});
+    var chaturl = Url.Action("GetChatPartial", "Groups", new {groupid = Model.GroupId});
+    var getdrawnamesurl = Url.Action("GetDrawNamesPartial", "Groups", new {groupid = Model.GroupId});
+    var grouppairedmemberurl = Url.Action("DisplayGroupPairedMember", "Groups", new {groupid = Model.GroupId});
+    var inviteusersurl = Url.Action("InviteUsersPartialView", "Groups", new {groupid = Model.GroupId});
+    var joingroupurl = Url.Action("PromptUserForPassword", "Groups", new {id = Model.GroupId});
     var uid = Guid.NewGuid();
     var containerid = $"divcontainerid-{uid}";
 }
@@ -16,10 +16,14 @@
 
     @if (Model.IsAuthorized)
     {
-        <div style="text-align:center">
-            <span> <img src="~/images/smNorthPole.png" alt="NorthPole" class="img-circle" style="display: inline !important"></span>
-            <h3 style="display: inline !important; color:#4CAF50">Welcome to Group: @Model.GroupName</h3>
-            <span> <img src="~/images/smNorthPole.png" alt="NorthPole" class="img-circle" style="display: inline !important"></span>
+        <div style="text-align: center">
+            <span>
+                <img src="~/images/smNorthPole.png" alt="NorthPole" class="img-circle" style="display: inline !important">
+            </span>
+            <h3 style="color: #4CAF50; display: inline !important;">Welcome to Group: @Model.GroupName</h3>
+            <span>
+                <img src="~/images/smNorthPole.png" alt="NorthPole" class="img-circle" style="display: inline !important">
+            </span>
             <h5>Group Admin: @Model.GroupAdmin.FullName</h5>
         </div>
 
@@ -29,25 +33,19 @@
 
         if (Model.NewGroup)
         {
-
-
         }
 
         else //its not a new group. its the go to group home method
         {
-
-
             <div class="container">
 
-                <div class="col-md-12" style="padding-top:2%">
+                <div class="col-md-12" style="padding-top: 2%">
                     <div style="text-align: center;">
                         <div>
                             @if (Model.PairingsAssigned)
-                    {
-
+                            {
                                 <div id="pairedmember">
                                 </div>
-
                             }
                             else
                             {
@@ -81,29 +79,26 @@
                     </div>
 
 
-
                     @*The Div That Holds The Rules*@
-                    <div id="rulesdiv" class="col-md-5" style="outline:1px green solid;">
+                    <div id="rulesdiv" class="col-md-5" style="outline: 1px green solid;">
                     </div>
 
                     <div class="clearfix"></div>
-                    <br />
+                    <br/>
 
                     <div class="clearfix"></div>
-                    <br />
+                    <br/>
 
                     @*The Div That Holds The Chat*@
-                    <div id="chatdiv" class="col-md-12" style="outline:1px green solid">
+                    <div id="chatdiv" class="col-md-12" style="outline: 1px green solid">
                     </div>
 
                     <div class="clearfix"></div>
-
-
 
 
                     <div style="padding-top: 5%">
                         @if (Model.GroupAdminBool)
-                    {
+                        {
                             <p>You are the group admin, feel free to do things.</p>
                         }
                         else
@@ -117,79 +112,72 @@
         }
 
 
+@section scripts{
+    <script>
+        $(document).ready(function() {
 
+            LoadRules();
+            LoadChat();
+            LoadPairedMember();
 
-        @section scripts{
-            <script>
-                $(document).ready(function () {
-
-                    LoadRules();
-                    LoadChat();
-                    LoadPairedMember();
-
-                    @*var isnew = '@Model.NewGroup';
+            @*var isnew = '@Model.NewGroup';
             console.log(isnew);
 
             if (isnew === "True") {
                 LoadInviteUsers();
             }*@
 
-                }); //doc ready
+        }); //doc ready
 
-                function LoadRules() {
-                    window.LayoutLoadPartial('rulesdiv', '@grouprulesurl', { 'label': 'Loading Rules...' });
-                }
-
-                //Load the chat partial view
-                function LoadChat() {
-                    window.LayoutLoadPartial('chatdiv', '@chaturl', { 'label': 'Loading Chat...' });
-                }
-
-                function LoadPairedMember() {
-                    window.LayoutLoadPartial('pairedmember', '@grouppairedmemberurl');
-                }
-
-
-                function LoadInviteUsers() {
-                    window.LayoutLoadPartial('inviteusersdiv', '@inviteusersurl');
-                }
-
-
-            </script>
+        function LoadRules() {
+            window.LayoutLoadPartial('rulesdiv', '@grouprulesurl', { 'label': 'Loading Rules...' });
         }
 
+        //Load the chat partial view
+        function LoadChat() {
+            window.LayoutLoadPartial('chatdiv', '@chaturl', { 'label': 'Loading Chat...' });
+        }
+
+        function LoadPairedMember() {
+            window.LayoutLoadPartial('pairedmember', '@grouppairedmemberurl');
+        }
+
+
+        function LoadInviteUsers() {
+            window.LayoutLoadPartial('inviteusersdiv', '@inviteusersurl');
+        }
+
+
+    </script>
+}
 
         <style>
             /*body{
               background-color: #525252;
             }*/
-            .centered-form {
-                margin-top: 60px;
-            }
+            .centered-form { margin-top: 60px; }
 
-                .centered-form .panel {
-                    background: rgba(255, 255, 255, 0.8);
-                    box-shadow: rgba(0, 0, 0, 0.3) 10px 10px 10px;
-                }
+            .centered-form .panel {
+                background: rgba(255, 255, 255, 0.8);
+                box-shadow: rgba(0, 0, 0, 0.3) 10px 10px 10px;
+            }
         </style>
     }
     else
     {
-
         <h3> You Do Not Have Access To This Group.</h3>
 
         <div id="joingroupdiv"></div>
 
 
-        @section scripts{
-            <script>
-                $(document).ready(function () {
-                    window.LayoutLoadPartial('joingroupdiv', '@joingroupurl');
-                });
+@section scripts{
+    <script>
+        $(document).ready(function() {
+            window.LayoutLoadPartial('joingroupdiv', '@joingroupurl');
+        });
 
-            </script>
-        }
-    }
+    </script>
+}    }
 
 
 </div>

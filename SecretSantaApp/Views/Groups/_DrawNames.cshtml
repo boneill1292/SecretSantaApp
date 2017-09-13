@@ -1,5 +1,4 @@
-﻿@using System.Security.Claims
-@using SecretSantaApp.BL
+﻿@using SecretSantaApp.BL
 @model DrawNamesDisplayModel
 @inject ISecretSantaBl ssbl
 @{
@@ -15,33 +14,33 @@
             <div class="">
                 <table class="table table-responsive table-striped">
                     <thead>
-                        <tr>
-                            <th>User One:</th>
-                            <th>User Two:</th>
+                    <tr>
+                        <th>User One:</th>
+                        <th>User Two:</th>
 
-                        </tr>
+                    </tr>
                     </thead>
                     <tbody>
-                        @foreach (var u in Model.DrawNamesList)
-                        {
-                            var userone = ssbl.UserFullNameByAccountNumberString(u.PersonOne);
-                            var usertwo = ssbl.UserFullNameByAccountNumberString(u.PersonTwo);
-                            <tr>
-                                <td>
-                                    @userone
-                                </td>
-                                <td>
-                                    @usertwo
-                                </td>
-                            </tr>
-                        }
+                    @foreach (var u in Model.DrawNamesList)
+                    {
+                        var userone = ssbl.UserFullNameByAccountNumberString(u.PersonOne);
+                        var usertwo = ssbl.UserFullNameByAccountNumberString(u.PersonTwo);
+                        <tr>
+                            <td>
+                                @userone
+                            </td>
+                            <td>
+                                @usertwo
+                            </td>
+                        </tr>
+                    }
                     </tbody>
                 </table>
             </div>
         </div>
 
         <script>
-            $("document").ready(function () {
+            $("document").ready(function() {
 
                 window.LoadPairedMember();
 
@@ -51,7 +50,7 @@
     else
     {
         <div class="container col-lg-12 ControlBox" style="background-color: white">
-            <h3 style="text-decoration:underline">Draw Names For Group @Model.Group.GroupName?</h3>
+            <h3 style="text-decoration: underline">Draw Names For Group @Model.Group.GroupName?</h3>
 
             <div asp-validation-summary="All" class="text-danger"></div>
 
@@ -70,7 +69,7 @@
 
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-8">
-                        <input type="submit" name="signin" id="signin" value="Submit" class="btn btn-default btn-lg BtnGreen" />
+                        <input type="submit" name="signin" id="signin" value="Submit" class="btn btn-default btn-lg BtnGreen"/>
                     </div>
                 </div>
 

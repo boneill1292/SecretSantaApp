@@ -1,39 +1,39 @@
 ﻿@model JoinGroupEditModel
 
 @{
-//var joingrouppopupurl = Url.Action("PromptUserForPassword", "Groups");
+    //var joingrouppopupurl = Url.Action("PromptUserForPassword", "Groups");
 }
 <h3>These are the available groups you can join</h3>
 <div class="row">
     <table class="table table-responsive table-striped">
         <thead>
-            <tr>
-                <th>Group Name</th>
-                @*<th>Password</th>*@
-                @*<td>&nbsp;</td>*@
-            </tr>
+        <tr>
+            <th>Group Name</th>
+            @*<th>Password</th>*@
+            @*<td>&nbsp;</td>*@
+        </tr>
         </thead>
         <tbody>
-            @foreach (var g in Model.GroupsNotMemberOf)
-            {
-                var url = Url.Action("PromptUserForPassword", "Groups", new { id = g.GroupId });
-                <tr>
-                    <td>@g.GroupName</td>
-                    <td>
-                        <button class="btn btn-group  BtnGreen"
-                                onclick="LoadPopup('@url')">
-                            Join Group
-                        </button>
-                    </td>
-                </tr>
-            }
+        @foreach (var g in Model.GroupsNotMemberOf)
+        {
+            var url = Url.Action("PromptUserForPassword", "Groups", new {id = g.GroupId});
+            <tr>
+                <td>@g.GroupName</td>
+                <td>
+                    <button class="btn btn-group  BtnGreen"
+                            onclick="LoadPopup('@url')">
+                        Join Group
+                    </button>
+                </td>
+            </tr>
+        }
         </tbody>
     </table>
 </div>
 
 @section scripts{
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
 
         });
 

@@ -1,12 +1,10 @@
-﻿@using SecretSantaApp.Views.Groups
-@model SecretSantaApp.Views.QuickPick.QuickPickModel
+﻿@model SecretSantaApp.Views.QuickPick.QuickPickModel
 @{
-
 }
 <div class="container">
 
     <div class="clearfix"></div>
-    <div class="col-md-12" style="text-align: center; color: black; padding-top: 2%; padding-bottom:2%; outline:2px black solid">
+    <div class="col-md-12" style="color: black; outline: 2px black solid; padding-bottom: 2%; padding-top: 2%; text-align: center;">
         <div>
             <h3>Quick Pick Game </h3>
             <h5>Click Start If Everyone Is In The Room</h5>
@@ -18,7 +16,9 @@
 
             <a class="btn BtnGreen"
                id="startquickpickBtn"
-               onclick="StartQuickPick()">Start</a>
+               onclick="StartQuickPick()">
+                Start
+            </a>
         </div>
     </div>
     <div class="clearfix"></div>
@@ -27,7 +27,7 @@
     @****************Names****************@
     <div class="col-md-12" style="text-align: center;">
         <form id="formSubmitNames">
-            <div id="namesdivid" style="outline: 1px red solid; display: none; text-align: center; margin: 0 auto;">
+            <div id="namesdivid" style="display: none; margin: 0 auto; outline: 1px red solid; text-align: center;">
 
 
             </div>
@@ -40,9 +40,9 @@
                 Submit
             </button>
 
-            <input type="submit" style="display: none" />
+            <input type="submit" style="display: none"/>
         </form>
-        <div id="divsubmittednames" style="outline: 1px blue solid; display: none;">
+        <div id="divsubmittednames" style="display: none; outline: 1px blue solid;">
             <select class="form-control"
                     style="margin: auto !important"
                     id="submittednamesdropdown">
@@ -67,7 +67,7 @@
                 </button>*@
         </div>
 
-        <div id="resultsdiv" style="outline: 1px green solid; display: none">
+        <div id="resultsdiv" style="display: none; outline: 1px green solid;">
             <h3>
                 You have drawn: <span id="receivedmsg"></span> !
             </h3>
@@ -88,7 +88,7 @@
 @****************Game Control****************@
 <div>
     <div class="col-md-12">
-        <div id="divGameControl" style="display:none;">
+        <div id="divGameControl" style="display: none;">
             <h4>How It Works:</h4>
             <p>
                 Pass the device around the room, and select 'Draw' to pick your person. If you cannot have that person,
@@ -114,19 +114,19 @@
 <div class="modal" id="quickpickModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content modal-xl">
-            <div class="modal-header" style="text-align: center; display:none;">
+            <div class="modal-header" style="display: none; text-align: center;">
             </div>
-            <div id="modalloading" style="display:none; margin: 0 auto !important; text-align:center;">
+            <div id="modalloading" style="display: none; margin: 0 auto !important; text-align: center;">
                 <h4>Loading...</h4>
-                <div class="santaloadspinner" style="margin:auto!important"></div>
+                <div class="santaloadspinner" style="margin: auto !important"></div>
             </div>
 
             <div class="modal-scroll" id="quickpickModalBody">
                 <form>
-                    <p id="quantitywarning" class="text-danger" style="display:none;"> Please Enter A Number Greater Than 1</p>
+                    <p id="quantitywarning" class="text-danger" style="display: none;"> Please Enter A Number Greater Than 1</p>
                     <h5>How Many People Are Playing?</h5>
 
-                    <input id="amountOfPeopleInput" type="number" class="form-control" />
+                    <input id="amountOfPeopleInput" type="number" class="form-control"/>
 
                     <button type="button"
                             id="submitNumberBtn"
@@ -136,16 +136,15 @@
                     </button>
                 </form>
             </div>
-            <div class="modal-footer" style="display:none;"></div>
+            <div class="modal-footer" style="display: none;"></div>
         </div>
     </div>
 </div>
 
 
-
 @section scripts{
     <script>
-        $("document").ready(function () {
+        $("document").ready(function() {
 
             //$('#formSubmitNames').submit(function (e) {
             //    e.preventDefault();
@@ -170,7 +169,6 @@
         }
 
 
-
         function SubmitNumberOfPeople() {
             var quantity = $('#amountOfPeopleInput').val();
 
@@ -193,7 +191,6 @@
             }
 
         }
-
 
 
         function GenerateNamesInput(quantity) {
@@ -238,13 +235,11 @@
         }
 
 
-
         function DrawNames() {
             var person = $('#submittednamesdropdown').find(":selected").text();
             console.log("person: " + person);
             //$('#resultsdiv').html('<h3> Your results are: Ben </h3>'); //receivedmsg
             $('#resultsdiv').show();
-
 
 
             //Theory is we need to set a list of available people that are not me.
@@ -306,14 +301,12 @@
         }
 
 
-        $("#submittednamesdropdown").change(function () {
+        $("#submittednamesdropdown").change(function() {
             var person = $(this).find("option:selected").text();
 
             // console.log("hi: " + person);
             GetPeopleNotMe(person);
         });
-
-
 
 
         function GetPeopleNotMe(person) {
@@ -354,8 +347,6 @@
         }
 
 
-
-
         function ClearModal() {
             $('#amountOfPeopleInput').val('');
             $('#quantitywarning').hide();
@@ -380,8 +371,8 @@
 
 <style>
     .generatedInput {
-        outline: 2px green solid;
         margin: 0 auto !important;
+        outline: 2px green solid;
         text-align: center;
     }
 </style>

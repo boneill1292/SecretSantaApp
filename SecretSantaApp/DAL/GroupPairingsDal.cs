@@ -47,15 +47,12 @@ namespace SecretSantaApp.DAL
 
         public GroupPairings Delete(GroupPairings m)
         {
-           // var result = new GroupPairings();
+            // var result = new GroupPairings();
             //result.Update(m);
 
             _appDbContext.Remove(m);
             _appDbContext.SaveChanges();
             return m;
         }
-
-
-
     }
 }

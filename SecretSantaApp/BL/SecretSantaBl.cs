@@ -5,10 +5,7 @@ using System.Security.Claims;
 using FluentEmail.Core;
 using FluentEmail.Razor;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Mvc.Routing;
-using Microsoft.AspNetCore.Routing;
 using SecretSantaApp.DAL;
 using SecretSantaApp.Enumerations;
 using SecretSantaApp.Exceptions;
@@ -220,7 +217,6 @@ namespace SecretSantaApp.BL
             var groupmembership = _groupMembershipDal.AllGroupMembersByGroupId(groupid);
 
 
-
             foreach (var g in groupmembership)
             {
                 var user = new CustomUser();
@@ -232,13 +228,9 @@ namespace SecretSantaApp.BL
 
 
             if (groupmembership.Any(x => x.AccountNumberString == loggedinuser.AccountNumberString))
-            {
                 result.IsAuthorized = true;
-            }
             else
-            {
                 result.IsAuthorized = false;
-            }
 
 
             //check to see if the pairings have been assigned: (AKA - You have your secret santa)
@@ -248,8 +240,6 @@ namespace SecretSantaApp.BL
                 result.PairingsAssigned = true;
             else
                 result.PairingsAssigned = false;
-
-
 
 
             result.GroupMembers = userlist;
@@ -358,8 +348,6 @@ namespace SecretSantaApp.BL
             var result = new InviteUsersEditModel();
 
             foreach (var i in model.InviteUsersCollection.UsersToInvite)
-            {
-
                 //only send it if the name has been filled out
                 if (i.Name != null)
                 {
@@ -374,24 +362,22 @@ namespace SecretSantaApp.BL
                         .From("Santa@ElfBuddies.Com")
                         .To("boneill1292@gmail.com")
                         .Subject("Invite")
-                        .UsingTemplateFromFile("Views/Shared/_EmailTemplate.cshtml", i,  true);
+                        .UsingTemplateFromFile("Views/Shared/_EmailTemplate.cshtml", i, true);
 
                     emailtwo.Send();
                 }
 
-                //var groupurl = "www.yahoo.com";
+            //var groupurl = "www.yahoo.com";
 
+            //var messagetemplate = "Dear @Model.Name, Someone Has Invited you to play a Secret Santa Game at this email: @Model.EmailAddress. Join The Group Here: @GroupUrl ";
 
-                //var messagetemplate = "Dear @Model.Name, Someone Has Invited you to play a Secret Santa Game at this email: @Model.EmailAddress. Join The Group Here: @GroupUrl ";
+            //var email = Email
+            //    .From("Santa@ElfBuddies.Com")
+            //    .To("boneill1292@gmail.com")n
+            //    .Subject("woo nuget")
+            //    .UsingTemplate(messagetemplate, new { Name = i.Name, EmailAddress = i.Email, GroupUrl = groupurl });
 
-                //var email = Email
-                //    .From("Santa@ElfBuddies.Com")
-                //    .To("boneill1292@gmail.com")n
-                //    .Subject("woo nuget")
-                //    .UsingTemplate(messagetemplate, new { Name = i.Name, EmailAddress = i.Email, GroupUrl = groupurl });
-
-                //email.Send();
-            }
+            //email.Send();
 
             // Using Razor templating package
 

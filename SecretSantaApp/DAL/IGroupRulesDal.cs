@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using SecretSantaApp.Models;
 
 namespace SecretSantaApp.DAL
 {
-  public interface IGroupRulesDal
-  {
+    public interface IGroupRulesDal
+    {
+        GroupRules SaveRules(GroupRules g);
 
-    GroupRules SaveRules(GroupRules g);
+        GroupRules DeleteRule(GroupRules g);
+        List<GroupRules> RulesByGroupId(int groupid);
 
-    GroupRules DeleteRule(GroupRules g);
-    List<GroupRules> RulesByGroupId(int groupid);
-
-    GroupRules GetRuleByRuleId(int ruleid);
-  }
+        GroupRules GetRuleByRuleId(int ruleid);
+    }
 }

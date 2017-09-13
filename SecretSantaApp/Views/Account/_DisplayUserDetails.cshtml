@@ -1,7 +1,6 @@
-﻿
-@model SecretSantaApp.ViewModels.CustomUserDetailsDisplayModel
+﻿@model CustomUserDetailsDisplayModel
 @{
-    string test = "hey";
+    var test = "hey";
     var uid = Guid.NewGuid();
     var containerid = $"divcontainerid-{uid}";
 }
@@ -14,62 +13,61 @@
         <div style="">
             <table class="table table-responsive table-striped">
                 <tbody>
-                    @if (Model.ShoeSize >= 1)
-                    {
-                        <tr>
-                            <th>Shoe Size</th>
-                            <td>@Model.ShoeSize</td>
-                            <th>&nbsp;</th>
-                        </tr>
-                    }
+                @if (Model.ShoeSize >= 1)
+                {
+                    <tr>
+                        <th>Shoe Size</th>
+                        <td>@Model.ShoeSize</td>
+                        <th>&nbsp;</th>
+                    </tr>
+                }
 
-                    @if (Model.ShirtSize != null)
-                    {
-                        <tr>
-                            <th>Shirt Size</th>
-                            <td>@Model.ShirtSize</td>
-                            <th>&nbsp;</th>
-                        </tr>
-                    }
+                @if (Model.ShirtSize != null)
+                {
+                    <tr>
+                        <th>Shirt Size</th>
+                        <td>@Model.ShirtSize</td>
+                        <th>&nbsp;</th>
+                    </tr>
+                }
 
-                    @if (Model.PantsSize != null)
-                    {
-                        <tr>
-                            <th>Pant Size</th>
-                            <td>@Model.PantsSize</td>
-                            <th>&nbsp;</th>
-                        </tr>
-                    }
+                @if (Model.PantsSize != null)
+                {
+                    <tr>
+                        <th>Pant Size</th>
+                        <td>@Model.PantsSize</td>
+                        <th>&nbsp;</th>
+                    </tr>
+                }
 
-                    @if (Model.SweatShirtSize != null)
-                    {
-                        <tr>
-                            <th>Sweat Shirt Size</th>
-                            <td>@Model.SweatShirtSize</td>
-                            <th>&nbsp;</th>
-                        </tr>
-                    }
-
-
-                    @if (Model.FavoriteBrands != null)
-                    {
-                        <tr>
-                            <th>Favorite Brands</th>
-                            <td>@Model.FavoriteBrands</td>
-                            <th>&nbsp;</th>
-                        </tr>
-                    }
+                @if (Model.SweatShirtSize != null)
+                {
+                    <tr>
+                        <th>Sweat Shirt Size</th>
+                        <td>@Model.SweatShirtSize</td>
+                        <th>&nbsp;</th>
+                    </tr>
+                }
 
 
-                    @if (Model.Notes != null)
-                    {
+                @if (Model.FavoriteBrands != null)
+                {
+                    <tr>
+                        <th>Favorite Brands</th>
+                        <td>@Model.FavoriteBrands</td>
+                        <th>&nbsp;</th>
+                    </tr>
+                }
 
-                        <tr>
-                            <th>Notes</th>
-                            <td>@Model.Notes</td>
-                            <th>&nbsp;</th>
-                        </tr>
-                    }
+
+                @if (Model.Notes != null)
+                {
+                    <tr>
+                        <th>Notes</th>
+                        <td>@Model.Notes</td>
+                        <th>&nbsp;</th>
+                    </tr>
+                }
 
                 </tbody>
             </table>
