@@ -75,8 +75,10 @@ namespace SecretSantaApp
 
             //MailGun
             var sender = new MailgunSender(
-                "sandbox3c051cffd5d14c0885493d6cfbe1fa8e.mailgun.org", // Mailgun Domain
-                "key-30e16c6964d4f339fab512a5aa3b988d" // Mailgun API Key
+                "secretsantaapp.azurewebsites.net", // Mailgun Domain
+                //"sandbox3c051cffd5d14c0885493d6cfbe1fa8e.mailgun.org"
+                 //"key-30e16c6964d4f339fab512a5aa3b988d" // Mailgun API Key
+                "key-30e16c6964d4f339fab512a5aa3b988d"
             );
             Email.DefaultSender = sender;
 

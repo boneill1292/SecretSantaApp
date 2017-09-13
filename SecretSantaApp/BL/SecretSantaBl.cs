@@ -357,12 +357,14 @@ namespace SecretSantaApp.BL
                     //emailmodel.FirstName = "Ben";
                     //emailmodel.LastName = "ONeill";
                     //emailmodel.Message = "Sup yo";
+                    var recipient = i.Email;
+
 
                     var emailtwo = Email
                         .From("Santa@ElfBuddies.Com")
-                        .To("boneill1292@gmail.com")
-                        .Subject("Invite")
-                        .UsingTemplateFromFile("Views/Shared/_EmailTemplate.cshtml", i, true);
+                        .To(recipient)
+                        .Subject("Invite To Play")
+                        .UsingTemplateFromFile("Views/Shared/_InviteUsersEmailTemplate.cshtml", i, true);
 
                     emailtwo.Send();
                 }
