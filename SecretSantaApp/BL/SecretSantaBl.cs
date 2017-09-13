@@ -320,32 +320,35 @@ namespace SecretSantaApp.BL
 
 
             //Assuming that at least 4 people will want to be invited.
-            result.InviteUsersCollection = InviteUsersCollectionModelByAmountToGet(4);
+            result.InviteUsersCollection = InviteUsersCollectionModelByAmountToGet(4, groupid);
 
 
             return result;
         }
 
-        public InviteUsersCollectionModel InviteUsersCollectionModelByAmountToGet(int amount)
+        public InviteUsersCollectionModel InviteUsersCollectionModelByAmountToGet(int amount, int groupid)
         {
             var result = new InviteUsersCollectionModel();
             result.UsersToInvite = new List<InviteUsersViewModel>();
 
             if (amount <= 0)
                 return result;
+
             for (var a = 0; a < amount; a++)
             {
                 var usertoinvite = new InviteUsersViewModel();
+                usertoinvite.GroupId = groupid;
                 result.UsersToInvite.Add(usertoinvite);
             }
             return result;
         }
 
 
-        public InviteUsersViewModel AdditionalInviteUsersViewModel(int tempid)
+        public InviteUsersViewModel AdditionalInviteUsersViewModel(int tempid, int groupid)
         {
             var result = new InviteUsersViewModel();
             result.TempId = tempid;
+            result.GroupId = groupid;
             return result;
         }
 

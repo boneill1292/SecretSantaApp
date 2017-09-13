@@ -1,6 +1,10 @@
 ﻿@model dynamic
 @{
+    //Its always going to be InviteUsersViewModel so we can assume and hardcode these values
     var email = Model.Email;
+    var name = Model.Name;
+    var groupid = Model.GroupId;
+
 }
 <h1>Secret Santa App</h1>
-<h3> Hey there : @email</h3>
+<h3> Hey there : @email - You are invited to @groupid</h3>

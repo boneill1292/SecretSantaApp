@@ -54,10 +54,11 @@
                                     <input asp-for="@Model.InviteUsersCollection.UsersToInvite[i].Email" class="form-control"/>
                                     <span asp-validation-for="@Model.InviteUsersCollection.UsersToInvite[i].Email" class="text-danger"></span>
                                 </div>
+                                @Html.HiddenFor(x => Model.InviteUsersCollection.UsersToInvite[i].GroupId)
                             </div>
                         }
                     </div>
-
+                   
                 </form>
 
                 <div class="clearfix"></div>
@@ -67,8 +68,10 @@
         </div>
 
         <script>
+            var groupid = '@Model.GroupId';
             var invitecount = "@Model.InviteUsersCollection.UsersToInvite.Count";
-            var inviteurl = "@Url.Action("GetInviteUsersFields", "Groups", new {count = -1})";
+            var inviteurl = "@Url.Action("GetInviteUsersRow", "Groups", new {count = -1, groupid = -2})";
+            inviteurl = inviteurl.replace('-2', groupid);
             var baseurl = inviteurl;
 
 

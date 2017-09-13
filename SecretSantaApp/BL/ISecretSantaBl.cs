@@ -35,9 +35,9 @@ namespace SecretSantaApp.BL
         JoinGroupEditModel JoinGroupEditModelByAccountNumberString(string acctno);
 
         InviteUsersEditModel InviteUsersEditModelByGroupId(int groupid);
-        InviteUsersCollectionModel InviteUsersCollectionModelByAmountToGet(int amount);
+        InviteUsersCollectionModel InviteUsersCollectionModelByAmountToGet(int amount, int groupid);
 
-        InviteUsersViewModel AdditionalInviteUsersViewModel(int tempid);
+        InviteUsersViewModel AdditionalInviteUsersViewModel(int tempid, int groupid);
 
         InviteUsersEditModel SendInviteToUsers(InviteUsersEditModel model);
         JoinGroupEditModel JoinGroupEditModelByGroupId(int groupid);

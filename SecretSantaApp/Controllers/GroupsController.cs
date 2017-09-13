@@ -123,6 +123,7 @@ namespace SecretSantaApp.Controllers
         }
 
 
+        #region InviteUsersRegion
         [HttpGet]
         public ActionResult InviteUsersPartialView(int groupid)
         {
@@ -145,12 +146,12 @@ namespace SecretSantaApp.Controllers
 
 
         [HttpGet]
-        public ActionResult GetInviteUsersFields(int count)
+        public ActionResult GetInviteUsersRow(int count, int groupid)
         {
             string msg;
             try
             {
-                var model = _secretSantaBl.AdditionalInviteUsersViewModel(count);
+                var model = _secretSantaBl.AdditionalInviteUsersViewModel(count, groupid);
                 return PartialView("_InviteUsersRow", model);
             }
             catch (AppException ax)
@@ -170,7 +171,7 @@ namespace SecretSantaApp.Controllers
 
             try
             {
-                var url = Url.Action("GroupHome", "Groups", new {id = model.GroupId} );
+                var url = Url.Action("GroupHome", "Groups", new { id = model.GroupId });
                 model.GroupUrl = url;
                 var m = _secretSantaBl.SendInviteToUsers(model);
                 m.Saved = true;
@@ -188,6 +189,8 @@ namespace SecretSantaApp.Controllers
             return PartialView("_InviteUsers", model);
         }
 
+        #endregion
+        //End InviteUsersRegion
 
         [HttpGet]
         public ActionResult AvailableGroupsToJoin()
