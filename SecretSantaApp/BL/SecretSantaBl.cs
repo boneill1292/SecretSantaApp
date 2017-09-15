@@ -4,10 +4,12 @@ using System.Linq;
 using System.Security.Claims;
 using FluentEmail.Core;
 using FluentEmail.Razor;
+using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using MimeKit;
 using RestSharp;
 using RestSharp.Authenticators;
 using SecretSantaApp.DAL;
@@ -78,7 +80,7 @@ namespace SecretSantaApp.BL
 
             var result = new CustomUserEditModel();
             var name = user.Identity.Name;
-            var email = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
+            var email = user.Claims?.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
 
             if (email == null)
             {
@@ -377,27 +379,45 @@ namespace SecretSantaApp.BL
         {
             var result = new InviteUsersEditModel();
 
-            foreach (var i in model.InviteUsersCollection.UsersToInvite)
-                //only send it if the name has been filled out
-                if (i.Name != null)
-                {
-                    Email.DefaultRenderer = new RazorRenderer();
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress("Santa", "santa@elfbuddies.com  "));
+            message.To.Add(new MailboxAddress("Ben", "boneill1292@gmail.com"));
+            message.Subject = "Invite to Elf Buddies!";
+            message.Body = new TextPart("plain")
+            {
+                Text = "Hello Ben. Want to join elf buddies?"
+            };
 
-                    //var emailmodel = new EmailMessageModel();
-                    //emailmodel.FirstName = "Ben";
-                    //emailmodel.LastName = "ONeill";
-                    //emailmodel.Message = "Sup yo";
-                    var recipient = i.Email;
+            using (var client = new SmtpClient())
+            {
+                client.Connect("smtp.example.com", 587, false);
+                client.AuthenticationMechanisms.Remove("XOAUTH2");
+                // Note: since we don't have an OAuth2 token, disable 	// the XOAUTH2 authentication mechanism.     client.Authenticate("anuraj.p@example.com", "password");
+                client.Send(message);
+                client.Disconnect(true);
+            }
+
+            //foreach (var i in model.InviteUsersCollection.UsersToInvite)
+            //    //only send it if the name has been filled out
+            //    if (i.Name != null)
+            //    {
+            //        Email.DefaultRenderer = new RazorRenderer();
+
+            //        //var emailmodel = new EmailMessageModel();
+            //        //emailmodel.FirstName = "Ben";
+            //        //emailmodel.LastName = "ONeill";
+            //        //emailmodel.Message = "Sup yo";
+            //        var recipient = i.Email;
 
 
-                    var emailtwo = Email
-                        .From("Santa@ElfBuddies.Com")
-                        .To(recipient)
-                        .Subject("Invite To Play")
-                        .UsingTemplateFromFile("Views/Shared/_InviteUsersEmailTemplate.cshtml", i, true);
+            //        var emailtwo = Email
+            //            .From("Santa@ElfBuddies.Com")
+            //            .To(recipient)
+            //            .Subject("Invite To Play")
+            //            .UsingTemplateFromFile("Views/Shared/_InviteUsersEmailTemplate.cshtml", i, true);
 
-                    emailtwo.Send();
-                }
+            //        emailtwo.Send();
+            //    }
 
             return result;
         }
