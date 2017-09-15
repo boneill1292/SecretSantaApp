@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using SecretSantaApp.BL;
+using SecretSantaApp.Exceptions;
 using SecretSantaApp.Models;
 using SecretSantaApp.ViewModels;
 
@@ -90,11 +91,26 @@ namespace SecretSantaApp.Controllers
         [HttpGet]
         public IActionResult CheckUser()
         {
-            var usermodel = _secretSantaBl.CustomUserModelByLoggedInUser(User);
-            //Sends the user to see if it is already in our database, or if should be added
-            var model = _secretSantaBl.CheckUserByCustomUserAccountNumber(usermodel);
-            //return RedirectToAction(nameof(GroupsController.Index), "Groups");
-            return RedirectToAction(nameof(Profile), "Account");
+            string msg;
+            try
+            {
+                var usermodel = _secretSantaBl.CustomUserModelByLoggedInUser(User);
+                //Sends the user to see if it is already in our database, or if should be added
+                var model = _secretSantaBl.CheckUserByCustomUserAccountNumber(usermodel);
+                //return RedirectToAction(nameof(GroupsController.Index), "Groups");
+                return RedirectToAction(nameof(Profile), "Account");
+            }
+            catch (AppException ax)
+            {
+                msg = ax.Message;
+            }
+            catch (Exception)
+            {
+                msg = "An Error Has Occured";
+            }
+            return PartialView("_ErrorMessage", new StringModel(msg));
+
+
         }
 
 

@@ -2,12 +2,13 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using SecretSantaApp.Models;
 
 namespace SecretSantaApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    internal class AppDbContextModelSnapshot : ModelSnapshot
+    partial class AppDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -16,348 +17,348 @@ namespace SecretSantaApp.Migrations
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole", b =>
-            {
-                b.Property<string>("Id")
-                    .ValueGeneratedOnAdd();
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
 
-                b.Property<string>("ConcurrencyStamp")
-                    .IsConcurrencyToken();
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken();
 
-                b.Property<string>("Name")
-                    .HasMaxLength(256);
+                    b.Property<string>("Name")
+                        .HasMaxLength(256);
 
-                b.Property<string>("NormalizedName")
-                    .HasMaxLength(256);
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256);
 
-                b.HasKey("Id");
+                    b.HasKey("Id");
 
-                b.HasIndex("NormalizedName")
-                    .IsUnique()
-                    .HasName("RoleNameIndex");
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasName("RoleNameIndex");
 
-                b.ToTable("AspNetRoles");
-            });
+                    b.ToTable("AspNetRoles");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
-            {
-                b.Property<int>("Id")
-                    .ValueGeneratedOnAdd();
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
 
-                b.Property<string>("ClaimType");
+                    b.Property<string>("ClaimType");
 
-                b.Property<string>("ClaimValue");
+                    b.Property<string>("ClaimValue");
 
-                b.Property<string>("RoleId")
-                    .IsRequired();
+                    b.Property<string>("RoleId")
+                        .IsRequired();
 
-                b.HasKey("Id");
+                    b.HasKey("Id");
 
-                b.HasIndex("RoleId");
+                    b.HasIndex("RoleId");
 
-                b.ToTable("AspNetRoleClaims");
-            });
+                    b.ToTable("AspNetRoleClaims");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUser", b =>
-            {
-                b.Property<string>("Id")
-                    .ValueGeneratedOnAdd();
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
 
-                b.Property<int>("AccessFailedCount");
+                    b.Property<int>("AccessFailedCount");
 
-                b.Property<string>("ConcurrencyStamp")
-                    .IsConcurrencyToken();
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken();
 
-                b.Property<string>("Email")
-                    .HasMaxLength(256);
+                    b.Property<string>("Email")
+                        .HasMaxLength(256);
 
-                b.Property<bool>("EmailConfirmed");
+                    b.Property<bool>("EmailConfirmed");
 
-                b.Property<bool>("LockoutEnabled");
+                    b.Property<bool>("LockoutEnabled");
 
-                b.Property<DateTimeOffset?>("LockoutEnd");
+                    b.Property<DateTimeOffset?>("LockoutEnd");
 
-                b.Property<string>("NormalizedEmail")
-                    .HasMaxLength(256);
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256);
 
-                b.Property<string>("NormalizedUserName")
-                    .HasMaxLength(256);
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256);
 
-                b.Property<string>("PasswordHash");
+                    b.Property<string>("PasswordHash");
 
-                b.Property<string>("PhoneNumber");
+                    b.Property<string>("PhoneNumber");
 
-                b.Property<bool>("PhoneNumberConfirmed");
+                    b.Property<bool>("PhoneNumberConfirmed");
 
-                b.Property<string>("SecurityStamp");
+                    b.Property<string>("SecurityStamp");
 
-                b.Property<bool>("TwoFactorEnabled");
+                    b.Property<bool>("TwoFactorEnabled");
 
-                b.Property<string>("UserName")
-                    .HasMaxLength(256);
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256);
 
-                b.HasKey("Id");
+                    b.HasKey("Id");
 
-                b.HasIndex("NormalizedEmail")
-                    .HasName("EmailIndex");
+                    b.HasIndex("NormalizedEmail")
+                        .HasName("EmailIndex");
 
-                b.HasIndex("NormalizedUserName")
-                    .IsUnique()
-                    .HasName("UserNameIndex");
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasName("UserNameIndex");
 
-                b.ToTable("AspNetUsers");
-            });
+                    b.ToTable("AspNetUsers");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserClaim<string>", b =>
-            {
-                b.Property<int>("Id")
-                    .ValueGeneratedOnAdd();
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
 
-                b.Property<string>("ClaimType");
+                    b.Property<string>("ClaimType");
 
-                b.Property<string>("ClaimValue");
+                    b.Property<string>("ClaimValue");
 
-                b.Property<string>("UserId")
-                    .IsRequired();
+                    b.Property<string>("UserId")
+                        .IsRequired();
 
-                b.HasKey("Id");
+                    b.HasKey("Id");
 
-                b.HasIndex("UserId");
+                    b.HasIndex("UserId");
 
-                b.ToTable("AspNetUserClaims");
-            });
+                    b.ToTable("AspNetUserClaims");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserLogin<string>", b =>
-            {
-                b.Property<string>("LoginProvider");
+                {
+                    b.Property<string>("LoginProvider");
 
-                b.Property<string>("ProviderKey");
+                    b.Property<string>("ProviderKey");
 
-                b.Property<string>("ProviderDisplayName");
+                    b.Property<string>("ProviderDisplayName");
 
-                b.Property<string>("UserId")
-                    .IsRequired();
+                    b.Property<string>("UserId")
+                        .IsRequired();
 
-                b.HasKey("LoginProvider", "ProviderKey");
+                    b.HasKey("LoginProvider", "ProviderKey");
 
-                b.HasIndex("UserId");
+                    b.HasIndex("UserId");
 
-                b.ToTable("AspNetUserLogins");
-            });
+                    b.ToTable("AspNetUserLogins");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserRole<string>", b =>
-            {
-                b.Property<string>("UserId");
+                {
+                    b.Property<string>("UserId");
 
-                b.Property<string>("RoleId");
+                    b.Property<string>("RoleId");
 
-                b.HasKey("UserId", "RoleId");
+                    b.HasKey("UserId", "RoleId");
 
-                b.HasIndex("RoleId");
+                    b.HasIndex("RoleId");
 
-                b.ToTable("AspNetUserRoles");
-            });
+                    b.ToTable("AspNetUserRoles");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserToken<string>", b =>
-            {
-                b.Property<string>("UserId");
+                {
+                    b.Property<string>("UserId");
 
-                b.Property<string>("LoginProvider");
+                    b.Property<string>("LoginProvider");
 
-                b.Property<string>("Name");
+                    b.Property<string>("Name");
 
-                b.Property<string>("Value");
+                    b.Property<string>("Value");
 
-                b.HasKey("UserId", "LoginProvider", "Name");
+                    b.HasKey("UserId", "LoginProvider", "Name");
 
-                b.ToTable("AspNetUserTokens");
-            });
+                    b.ToTable("AspNetUserTokens");
+                });
 
             modelBuilder.Entity("SecretSantaApp.Models.CustomUser", b =>
-            {
-                b.Property<int>("UserId")
-                    .ValueGeneratedOnAdd();
+                {
+                    b.Property<int>("UserId")
+                        .ValueGeneratedOnAdd();
 
-                b.Property<string>("AccountNumberString");
+                    b.Property<string>("AccountNumberString");
 
-                b.Property<string>("Email");
+                    b.Property<string>("Email");
 
-                b.Property<string>("FullName");
+                    b.Property<string>("FullName");
 
-                b.Property<string>("ProfileImage");
+                    b.Property<string>("ProfileImage");
 
-                b.HasKey("UserId");
+                    b.HasKey("UserId");
 
-                b.ToTable("CustomUsers");
-            });
+                    b.ToTable("CustomUsers");
+                });
 
             modelBuilder.Entity("SecretSantaApp.Models.CustomUserDetails", b =>
-            {
-                b.Property<int>("DetailsId")
-                    .ValueGeneratedOnAdd();
+                {
+                    b.Property<int>("DetailsId")
+                        .ValueGeneratedOnAdd();
 
-                b.Property<string>("FavoriteBrands");
+                    b.Property<string>("FavoriteBrands");
 
-                b.Property<string>("Notes");
+                    b.Property<string>("Notes");
 
-                b.Property<string>("PantsSize");
+                    b.Property<string>("PantsSize");
 
-                b.Property<string>("ShirtSize");
+                    b.Property<string>("ShirtSize");
 
-                b.Property<decimal>("ShoeSize");
+                    b.Property<decimal>("ShoeSize");
 
-                b.Property<string>("SweatShirtSize");
+                    b.Property<string>("SweatShirtSize");
 
-                b.Property<string>("UserAcctNo");
+                    b.Property<string>("UserAcctNo");
 
-                b.Property<int>("UserId");
+                    b.Property<int>("UserId");
 
-                b.HasKey("DetailsId");
+                    b.HasKey("DetailsId");
 
-                b.ToTable("CustomUserDetails");
-            });
+                    b.ToTable("CustomUserDetails");
+                });
 
             modelBuilder.Entity("SecretSantaApp.Models.Group", b =>
-            {
-                b.Property<int>("GroupId")
-                    .ValueGeneratedOnAdd();
+                {
+                    b.Property<int>("GroupId")
+                        .ValueGeneratedOnAdd();
 
-                b.Property<bool>("Active");
+                    b.Property<bool>("Active");
 
-                b.Property<string>("GroupName")
-                    .IsRequired();
+                    b.Property<string>("GroupName")
+                        .IsRequired();
 
-                b.Property<string>("GroupPassWord")
-                    .IsRequired();
+                    b.Property<string>("GroupPassWord")
+                        .IsRequired();
 
-                b.Property<string>("InsertedBy");
+                    b.Property<string>("InsertedBy");
 
-                b.Property<DateTime>("InsertedDateTime");
+                    b.Property<DateTime>("InsertedDateTime");
 
-                b.HasKey("GroupId");
+                    b.HasKey("GroupId");
 
-                b.ToTable("Groups");
-            });
+                    b.ToTable("Groups");
+                });
 
             modelBuilder.Entity("SecretSantaApp.Models.GroupMembership", b =>
-            {
-                b.Property<int>("ID")
-                    .ValueGeneratedOnAdd();
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
 
-                b.Property<string>("AccountNumberString");
+                    b.Property<string>("AccountNumberString");
 
-                b.Property<int>("GroupId");
+                    b.Property<int>("GroupId");
 
-                b.HasKey("ID");
+                    b.HasKey("ID");
 
-                b.ToTable("GroupMembership");
-            });
+                    b.ToTable("GroupMembership");
+                });
 
             modelBuilder.Entity("SecretSantaApp.Models.GroupMessages", b =>
-            {
-                b.Property<int>("ID")
-                    .ValueGeneratedOnAdd();
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
 
-                b.Property<int>("GroupId");
+                    b.Property<int>("GroupId");
 
-                b.Property<string>("InsertedBy");
+                    b.Property<string>("InsertedBy");
 
-                b.Property<DateTime>("InsertedDtm");
+                    b.Property<DateTime>("InsertedDtm");
 
-                b.Property<string>("Message");
+                    b.Property<string>("Message");
 
-                b.HasKey("ID");
+                    b.HasKey("ID");
 
-                b.ToTable("GroupMessages");
-            });
+                    b.ToTable("GroupMessages");
+                });
 
             modelBuilder.Entity("SecretSantaApp.Models.GroupPairings", b =>
-            {
-                b.Property<int>("ID")
-                    .ValueGeneratedOnAdd();
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
 
-                b.Property<int>("GroupId");
+                    b.Property<int>("GroupId");
 
-                b.Property<string>("PersonOne");
+                    b.Property<string>("PersonOne");
 
-                b.Property<string>("PersonTwo");
+                    b.Property<string>("PersonTwo");
 
-                b.HasKey("ID");
+                    b.HasKey("ID");
 
-                b.ToTable("GroupPairings");
-            });
+                    b.ToTable("GroupPairings");
+                });
 
             modelBuilder.Entity("SecretSantaApp.Models.GroupRules", b =>
-            {
-                b.Property<int>("ID")
-                    .ValueGeneratedOnAdd();
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
 
-                b.Property<int>("GroupId");
+                    b.Property<int>("GroupId");
 
-                b.Property<string>("InsertedBy");
+                    b.Property<string>("InsertedBy");
 
-                b.Property<string>("Rule");
+                    b.Property<string>("Rule");
 
-                b.HasKey("ID");
+                    b.HasKey("ID");
 
-                b.ToTable("GroupRules");
-            });
+                    b.ToTable("GroupRules");
+                });
 
             modelBuilder.Entity("SecretSantaApp.Models.MemberConditions", b =>
-            {
-                b.Property<int>("ConditionId")
-                    .ValueGeneratedOnAdd();
+                {
+                    b.Property<int>("ConditionId")
+                        .ValueGeneratedOnAdd();
 
-                b.Property<int>("ConditionType");
+                    b.Property<int>("ConditionType");
 
-                b.Property<int>("GroupId");
+                    b.Property<int>("GroupId");
 
-                b.Property<string>("InsertedBy");
+                    b.Property<string>("InsertedBy");
 
-                b.Property<string>("UserReceivingConditionAcctNo");
+                    b.Property<string>("UserReceivingConditionAcctNo");
 
-                b.Property<string>("UserSelectedForConditionAcctNo");
+                    b.Property<string>("UserSelectedForConditionAcctNo");
 
-                b.HasKey("ConditionId");
+                    b.HasKey("ConditionId");
 
-                b.ToTable("MemberConditions");
-            });
+                    b.ToTable("MemberConditions");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
-            {
-                b.HasOne("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole")
-                    .WithMany("Claims")
-                    .HasForeignKey("RoleId")
-                    .OnDelete(DeleteBehavior.Cascade);
-            });
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole")
+                        .WithMany("Claims")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserClaim<string>", b =>
-            {
-                b.HasOne("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUser")
-                    .WithMany("Claims")
-                    .HasForeignKey("UserId")
-                    .OnDelete(DeleteBehavior.Cascade);
-            });
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUser")
+                        .WithMany("Claims")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserLogin<string>", b =>
-            {
-                b.HasOne("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUser")
-                    .WithMany("Logins")
-                    .HasForeignKey("UserId")
-                    .OnDelete(DeleteBehavior.Cascade);
-            });
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUser")
+                        .WithMany("Logins")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserRole<string>", b =>
-            {
-                b.HasOne("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole")
-                    .WithMany("Users")
-                    .HasForeignKey("RoleId")
-                    .OnDelete(DeleteBehavior.Cascade);
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole")
+                        .WithMany("Users")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
-                b.HasOne("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUser")
-                    .WithMany("Roles")
-                    .HasForeignKey("UserId")
-                    .OnDelete(DeleteBehavior.Cascade);
-            });
+                    b.HasOne("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUser")
+                        .WithMany("Roles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
         }
     }
 }

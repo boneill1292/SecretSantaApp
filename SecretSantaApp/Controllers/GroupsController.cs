@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SecretSantaApp.BL;
@@ -33,7 +34,7 @@ namespace SecretSantaApp.Controllers
         {
             //  var usermodel = _secretSantaBl.CustomUserModelByLoggedInUser(User);
             var model = _secretSantaBl.DefaultGroupAdminModel();
-            return View("Index", model);
+        return View("Index", model);
         }
 
 
@@ -62,12 +63,17 @@ namespace SecretSantaApp.Controllers
 
                 return View("GroupHome", model);
             }
+            catch (AppException ax)
+            {
+                msg = ax.Message;
+            }
             catch (Exception ex)
             {
                 ModelState.AddModelError("", ex.Message);
                 _log.LogError(" - ", ex.Message);
             }
             return View("_ErrorMessage", new StringModel(msg));
+            // need to make a full page error view but o well
         }
 
 
@@ -551,7 +557,10 @@ namespace SecretSantaApp.Controllers
             string msg;
             try
             {
+           
                 var model = _secretSantaBl.InviteUsersEditModelByGroupId(groupid);
+               // var url = _httpContextAccessor.HttpContext?.Request?.GetDisplayUrl();
+                //model.GroupUrl = url;
                 return PartialView("_InviteUsers", model);
             }
             catch (AppException ax)

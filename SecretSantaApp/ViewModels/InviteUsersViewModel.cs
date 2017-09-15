@@ -7,5 +7,9 @@
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public int GroupId { get; set; }
+
+        public string GroupName { get; set; }
+
+        public string GroupUrl { get; set; }
     }
 }

@@ -5,7 +5,11 @@ using System.Security.Claims;
 using FluentEmail.Core;
 using FluentEmail.Razor;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using RestSharp;
+using RestSharp.Authenticators;
 using SecretSantaApp.DAL;
 using SecretSantaApp.Enumerations;
 using SecretSantaApp.Exceptions;
@@ -52,19 +56,35 @@ namespace SecretSantaApp.BL
 
         public CustomUserEditModel CustomUserModelByLoggedInUser(ClaimsPrincipal user)
         {
-            var acctid = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
-            var existinguser = _customUserDal.CustomUserByAccountNumber(acctid);
 
+            var acctid = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+
+            //resharper ignore nullcheck
+            if (acctid == null)
+            {
+                throw new AppException("Error getting account number");
+            }
+
+            var existinguser = _customUserDal.CustomUserByAccountNumber(acctid);
             if (existinguser != null)
             {
                 var existingusereditmodel = new CustomUserEditModel();
-                existingusereditmodel.Update(existinguser);
+                 existingusereditmodel.Update(existinguser);
                 existingusereditmodel.NewUser = false;
                 return existingusereditmodel;
             }
+
+
+
             var result = new CustomUserEditModel();
             var name = user.Identity.Name;
             var email = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
+
+            if (email == null)
+            {
+                throw new AppException("Error getting email from auth0");
+            }
+
             var pic = user.Claims.FirstOrDefault(c => c.Type == "picture")?.Value;
 
             result.AccountNumberString = acctid;
@@ -302,12 +322,7 @@ namespace SecretSantaApp.BL
         public InviteUsersEditModel InviteUsersEditModelByGroupId(int groupid)
         {
             var result = new InviteUsersEditModel();
-
-            var group = _groupDal.GetGroupById(groupid);
-
-            if (group == null)
-                throw new AppException($"Error Loading Group By ID: {groupid}");
-
+           
 
             //Assuming that at least 4 people will want to be invited.
             result.InviteUsersCollection = InviteUsersCollectionModelByAmountToGet(4, groupid);
@@ -321,6 +336,19 @@ namespace SecretSantaApp.BL
             var result = new InviteUsersCollectionModel();
             result.UsersToInvite = new List<InviteUsersViewModel>();
 
+            var group = _groupDal.GetGroupById(groupid);
+
+            if (group == null)
+                throw new AppException($"Error Loading Group By ID: {groupid}");
+
+            var url = _httpContextAccessor.HttpContext?.Request?.GetDisplayUrl();
+           
+
+            // UrlHelperExtensions.Action("GroupHome", "Groups", new { id = groupid });
+            // Microsoft.AspNetCore.Http.Extensions.UriHelper.GetFullUrl(Request)
+
+            // var url = _httpContext.Request.GetEncodedUrl();
+
             if (amount <= 0)
                 return result;
 
@@ -328,6 +356,8 @@ namespace SecretSantaApp.BL
             {
                 var usertoinvite = new InviteUsersViewModel();
                 usertoinvite.GroupId = groupid;
+                usertoinvite.GroupName = group.GroupName;
+                usertoinvite.GroupUrl = url;
                 result.UsersToInvite.Add(usertoinvite);
             }
             return result;
@@ -369,58 +399,27 @@ namespace SecretSantaApp.BL
                     emailtwo.Send();
                 }
 
-            //var groupurl = "www.yahoo.com";
-
-            //var messagetemplate = "Dear @Model.Name, Someone Has Invited you to play a Secret Santa Game at this email: @Model.EmailAddress. Join The Group Here: @GroupUrl ";
-
-            //var email = Email
-            //    .From("Santa@ElfBuddies.Com")
-            //    .To("boneill1292@gmail.com")n
-            //    .Subject("woo nuget")
-            //    .UsingTemplate(messagetemplate, new { Name = i.Name, EmailAddress = i.Email, GroupUrl = groupurl });
-
-            //email.Send();
-
-            // Using Razor templating package
-
-
-            //var templatee = "Dear @Model.Name, You are totally @Model.Compliment.";
-
-            // var template = 
-
-            //var templatee = "Dear @Model.Name, @Model.GroupAdmin Has Invited you to play a Secret Santa Game. ";
-
-            //var eemail = Email
-            //    .From("Santa@ElfBuddies.Com")
-            //    .To("boneill1292@gmail.com")
-            //    .Subject("woo nuget")
-            //    .UsingTemplate(templatee, new { Name = "Luke", Compliment = "Awesome" });
-
-
-            //var emailmodel = new EmailMessageModel();
-            //emailmodel.FirstName = "Ben";
-            //emailmodel.LastName = "ONeill";
-            //emailmodel.Message = "Sup yo";
-
-            //var emailtwo = Email
-            //    .From("Santa@ElfBuddies.Com")
-            //    .To("boneill1292@gmail.com")
-            //    .Subject("Invite")
-            //    .UsingTemplateFromFile("_EmailTemplate.cshtml", true);
-
-
-            //emailtwo.Send();
-
-            //var email = Email
-            //    .From(fromEmail)
-            //    .To(toEmail)
-            //    .Subject(subject)
-            //    .Body(body);
-
-            //var response = email.SendAsync();
-
             return result;
         }
+
+        //public static IRestResponse SendSimpleMessage()
+        //{
+        //    RestClient client = new RestClient();
+        //    client.BaseUrl = new Uri("https://api.mailgun.net/v3");
+        //    client.Authenticator =
+        //        new HttpBasicAuthenticator("api",
+        //            "YOUR_API_KEY");
+        //    RestRequest request = new RestRequest();
+        //    request.AddParameter("domain", "YOUR_DOMAIN_NAME", ParameterType.UrlSegment);
+        //    request.Resource = "{domain}/messages";
+        //    request.AddParameter("from", "Excited User <mailgun@YOUR_DOMAIN_NAME>");
+        //    request.AddParameter("to", "bar@example.com");
+        //    request.AddParameter("to", "YOU@YOUR_DOMAIN_NAME");
+        //    request.AddParameter("subject", "Hello");
+        //    request.AddParameter("text", "Testing some Mailgun awesomness!");
+        //    request.Method = Method.POST;
+        //    return client.(request);
+        //}
 
         public JoinGroupEditModel JoinGroupEditModelByGroupId(int groupid)
         {

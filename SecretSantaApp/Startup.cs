@@ -29,7 +29,7 @@ namespace SecretSantaApp
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", false, true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true)
+                //.AddJsonFile($"appsettings.{env.EnvironmentName}.json", true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
         }
@@ -75,10 +75,10 @@ namespace SecretSantaApp
 
             //MailGun
             var sender = new MailgunSender(
-                "secretsantaapp.azurewebsites.net", // Mailgun Domain
-                //"sandbox3c051cffd5d14c0885493d6cfbe1fa8e.mailgun.org"
-                 //"key-30e16c6964d4f339fab512a5aa3b988d" // Mailgun API Key
-                "key-30e16c6964d4f339fab512a5aa3b988d"
+                "elfbuddies.com", // Mailgun Domain
+                                  //"sandbox3c051cffd5d14c0885493d6cfbe1fa8e.mailgun.org"
+                "key-30e16c6964d4f339fab512a5aa3b988d"// Mailgun API Key
+
             );
             Email.DefaultSender = sender;
 

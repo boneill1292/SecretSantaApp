@@ -55,6 +55,8 @@
                                     <span asp-validation-for="@Model.InviteUsersCollection.UsersToInvite[i].Email" class="text-danger"></span>
                                 </div>
                                 @Html.HiddenFor(x => Model.InviteUsersCollection.UsersToInvite[i].GroupId)
+                                @Html.HiddenFor(x=> Model.InviteUsersCollection.UsersToInvite[i].GroupName)
+                                @Html.HiddenFor(x=> Model.InviteUsersCollection.UsersToInvite[i].GroupUrl)
                             </div>
                         }
                     </div>
