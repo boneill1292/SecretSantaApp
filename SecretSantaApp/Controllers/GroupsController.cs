@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
@@ -7,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using SecretSantaApp.BL;
 using SecretSantaApp.Exceptions;
 using SecretSantaApp.Models;
+using SecretSantaApp.Services;
 using SecretSantaApp.ViewModels;
 using SecretSantaApp.Views.Groups;
 
@@ -18,13 +20,15 @@ namespace SecretSantaApp.Controllers
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILogger<GroupsController> _log;
         private readonly ISecretSantaBl _secretSantaBl;
+        private readonly IViewRenderService _viewRenderService;
 
 
-        public GroupsController(ISecretSantaBl secretSantaBl, IHttpContextAccessor httpContextAccessor,
+        public GroupsController(ISecretSantaBl secretSantaBl, IHttpContextAccessor httpContextAccessor, IViewRenderService viewRenderService,
             ILogger<GroupsController> log)
         {
             _secretSantaBl = secretSantaBl;
             _httpContextAccessor = httpContextAccessor;
+            _viewRenderService = viewRenderService;
             _log = log;
         }
 
@@ -561,6 +565,7 @@ namespace SecretSantaApp.Controllers
                 var model = _secretSantaBl.InviteUsersEditModelByGroupId(groupid);
                // var url = _httpContextAccessor.HttpContext?.Request?.GetDisplayUrl();
                 //model.GroupUrl = url;
+               // model.ViewString = RenderInviteView();
                 return PartialView("_InviteUsers", model);
             }
             catch (AppException ax)
@@ -582,6 +587,7 @@ namespace SecretSantaApp.Controllers
             try
             {
                 var model = _secretSantaBl.AdditionalInviteUsersViewModel(count, groupid);
+                
                 return PartialView("_InviteUsersRow", model);
             }
             catch (AppException ax)
@@ -600,6 +606,7 @@ namespace SecretSantaApp.Controllers
         {
             try
             {
+                
                 var url = Url.Action("GroupHome", "Groups", new {id = model.GroupId});
                 model.GroupUrl = url;
                 var m = _secretSantaBl.SendInviteToUsers(model);
@@ -618,6 +625,28 @@ namespace SecretSantaApp.Controllers
             return PartialView("_InviteUsers", model);
         }
 
-        #endregion
+
+        //[Route("invite")]
+        //public async Task<IActionResult> RenderInviteView()
+        //{
+        //    ViewData["Message"] = "Your application description page.";
+
+        //    var ivm = new InviteUsersViewModel();
+
+        //    ivm.Email = "knwoyafklow@gmail.com";
+        //    ivm.GroupName = "hi";
+        //    ivm.Name = "bo janglez";
+
+        //    var result = await _viewRenderService.RenderToStringAsync("Shared/_InviteUsersEmailTemplate", ivm);
+
+        //    var str = Content(result);
+
+        //    _secretSantaBl.GetContextFromController(str);
+        //    return Content(result);
+        //}
     }
+
+
+    #endregion
+    // End Invite Users
 }

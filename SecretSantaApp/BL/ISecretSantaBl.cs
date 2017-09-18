@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SecretSantaApp.ViewModels;
 using SecretSantaApp.Views.Groups;
@@ -72,6 +73,8 @@ namespace SecretSantaApp.BL
 
         //helpers
         CustomUserEditModel GetLoggedInUser();
+
+        void GetContextFromController(ContentResult content);
 
         string ConditionDisplayByAccountNumbers(string ur, string us);
 

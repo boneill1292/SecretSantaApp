@@ -18,6 +18,7 @@ using Microsoft.IdentityModel.Tokens;
 using SecretSantaApp.BL;
 using SecretSantaApp.DAL;
 using SecretSantaApp.Models;
+using SecretSantaApp.Services;
 
 namespace SecretSantaApp
 {
@@ -55,6 +56,8 @@ namespace SecretSantaApp
             services.AddTransient<IMemberConditionsDal, MemberConditionsDal>();
             services.AddTransient<ICustomUserDetailsDal, CustomUserDetailsDal>();
             services.AddTransient<IGroupPairingsDal, GroupPairingsDal>();
+           
+
 
             // Add authentication services
             //services.AddAuthentication(
@@ -64,7 +67,7 @@ namespace SecretSantaApp
 
             //Test Dependency Injection
             services.AddTransient<ISecretSantaBl, SecretSantaBl>();
-
+            services.AddTransient<IViewRenderService, ViewRenderService>();
 
 
             // Add authentication services
@@ -83,6 +86,9 @@ namespace SecretSantaApp
                 // Configure the Auth0 Client ID and Client Secret
                 options.ClientId = Configuration["Auth0:ClientId"];
                 options.ClientSecret = Configuration["Auth0:ClientSecret"];
+
+                //options.ClientId = auth0Settings.Value.ClientId;
+                //options.ClientSecret = auth0Settings.Value.ClientSecret;
 
                 // Set response type to code
                 options.ResponseType = "code";

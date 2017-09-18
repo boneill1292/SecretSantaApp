@@ -11,5 +11,7 @@
         public string GroupName { get; set; }
 
         public string GroupUrl { get; set; }
+        
     }
+
 }

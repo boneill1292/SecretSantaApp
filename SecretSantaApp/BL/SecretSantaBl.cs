@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using FluentEmail.Core;
 using FluentEmail.Razor;
 using MailKit.Net.Smtp;
+using MailKit.Security;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using MimeKit;
 using RestSharp;
 using RestSharp.Authenticators;
@@ -16,6 +21,7 @@ using SecretSantaApp.DAL;
 using SecretSantaApp.Enumerations;
 using SecretSantaApp.Exceptions;
 using SecretSantaApp.Models;
+using SecretSantaApp.Services;
 using SecretSantaApp.ViewModels;
 using SecretSantaApp.Views.Groups;
 
@@ -34,6 +40,7 @@ namespace SecretSantaApp.BL
         private readonly IGroupRulesDal _groupRulesDal;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IMemberConditionsDal _memberConditionsDal;
+        private readonly IViewRenderService _viewRenderService;
 
         public SecretSantaBl(IGroupDal groupDal,
             ICustomUserDal customUserDal,
@@ -43,6 +50,7 @@ namespace SecretSantaApp.BL
             IGroupMessagesDal groupMessagesDal,
             IMemberConditionsDal memberConditionsDal,
             IGroupPairingsDal groupPairingDal,
+            IViewRenderService viewRenderService,
             ICustomUserDetailsDal customUserDetailsDal)
         {
             _groupDal = groupDal;
@@ -53,6 +61,7 @@ namespace SecretSantaApp.BL
             _groupMessagesDal = groupMessagesDal;
             _memberConditionsDal = memberConditionsDal;
             _customUserDetailsDal = customUserDetailsDal;
+            _viewRenderService = viewRenderService;
             _groupPairingsDal = groupPairingDal;
         }
 
@@ -71,7 +80,7 @@ namespace SecretSantaApp.BL
             if (existinguser != null)
             {
                 var existingusereditmodel = new CustomUserEditModel();
-                 existingusereditmodel.Update(existinguser);
+                existingusereditmodel.Update(existinguser);
                 existingusereditmodel.NewUser = false;
                 return existingusereditmodel;
             }
@@ -324,7 +333,7 @@ namespace SecretSantaApp.BL
         public InviteUsersEditModel InviteUsersEditModelByGroupId(int groupid)
         {
             var result = new InviteUsersEditModel();
-           
+
 
             //Assuming that at least 4 people will want to be invited.
             result.InviteUsersCollection = InviteUsersCollectionModelByAmountToGet(4, groupid);
@@ -344,7 +353,7 @@ namespace SecretSantaApp.BL
                 throw new AppException($"Error Loading Group By ID: {groupid}");
 
             var url = _httpContextAccessor.HttpContext?.Request?.GetDisplayUrl();
-           
+
 
             // UrlHelperExtensions.Action("GroupHome", "Groups", new { id = groupid });
             // Microsoft.AspNetCore.Http.Extensions.UriHelper.GetFullUrl(Request)
@@ -379,69 +388,178 @@ namespace SecretSantaApp.BL
         {
             var result = new InviteUsersEditModel();
 
-            var message = new MimeMessage();
-            message.From.Add(new MailboxAddress("Santa", "santa@elfbuddies.com  "));
-            message.To.Add(new MailboxAddress("Ben", "boneill1292@gmail.com"));
-            message.Subject = "Invite to Elf Buddies!";
-            message.Body = new TextPart("plain")
-            {
-                Text = "Hello Ben. Want to join elf buddies?"
-            };
-
-            using (var client = new SmtpClient())
-            {
-                client.Connect("smtp.example.com", 587, false);
-                client.AuthenticationMechanisms.Remove("XOAUTH2");
-                // Note: since we don't have an OAuth2 token, disable 	// the XOAUTH2 authentication mechanism.     client.Authenticate("anuraj.p@example.com", "password");
-                client.Send(message);
-                client.Disconnect(true);
-            }
-
-            //foreach (var i in model.InviteUsersCollection.UsersToInvite)
-            //    //only send it if the name has been filled out
-            //    if (i.Name != null)
-            //    {
-            //        Email.DefaultRenderer = new RazorRenderer();
-
-            //        //var emailmodel = new EmailMessageModel();
-            //        //emailmodel.FirstName = "Ben";
-            //        //emailmodel.LastName = "ONeill";
-            //        //emailmodel.Message = "Sup yo";
-            //        var recipient = i.Email;
 
 
-            //        var emailtwo = Email
-            //            .From("Santa@ElfBuddies.Com")
-            //            .To(recipient)
-            //            .Subject("Invite To Play")
-            //            .UsingTemplateFromFile("Views/Shared/_InviteUsersEmailTemplate.cshtml", i, true);
+            // var email = "knowyaflow@gmail.com";
 
-            //        emailtwo.Send();
-            //    }
+            // var please = SendAsync();
+
+
+
+
+
+            // SendEmailAsync(email, "invite", "do you wanna play");
+            //SendSimpleMessge();
+
+            //var message = new MimeMessage();
+            //message.From.Add(new MailboxAddress("Santa", "santa@elfbuddies.com  "));
+            //message.To.Add(new MailboxAddress("Ben", "boneill1292@gmail.com"));
+            //message.Subject = "Invite to Elf Buddies!";
+            //message.Body = new TextPart("plain")
+            //{
+            //    Text = "Hello Ben. Want to join elf buddies?"
+            //};
+
+            //using (var client = new SmtpClient())
+            //{
+            //    client.Connect("smtp.example.com", 587, false);
+            //    client.AuthenticationMechanisms.Remove("XOAUTH2");
+            //    // Note: since we don't have an OAuth2 token, disable 	// the XOAUTH2 authentication mechanism.     client.Authenticate("anuraj.p@example.com", "password");
+            //    client.Send(message);
+            //    client.Disconnect(true);
+            //}
+
+            foreach (var i in model.InviteUsersCollection.UsersToInvite)
+                //only send it if the name has been filled out
+                if (i.Name != null)
+                {
+                    //This is how it works. keep experimenting 
+                     SendInviteEmailAsync(i);
+                    ////Email.DefaultRenderer = new RazorRenderer();
+
+
+                    ////var recipient = i.Email;
+
+
+                    ////var emailtwo = Email
+                    ////    .From("Santa@ElfBuddies.Com")
+                    ////    .To(recipient)
+                    ////    .Subject("Invite To Play")
+                    ////    .UsingTemplateFromFile("Views/Shared/_InviteUsersEmailTemplate.cshtml", i, true);
+
+                    ////emailtwo.Send();
+                }
 
             return result;
         }
 
-        //public static IRestResponse SendSimpleMessage()
-        //{
-        //    RestClient client = new RestClient();
-        //    client.BaseUrl = new Uri("https://api.mailgun.net/v3");
-        //    client.Authenticator =
-        //        new HttpBasicAuthenticator("api",
-        //            "YOUR_API_KEY");
-        //    RestRequest request = new RestRequest();
-        //    request.AddParameter("domain", "YOUR_DOMAIN_NAME", ParameterType.UrlSegment);
-        //    request.Resource = "{domain}/messages";
-        //    request.AddParameter("from", "Excited User <mailgun@YOUR_DOMAIN_NAME>");
-        //    request.AddParameter("to", "bar@example.com");
-        //    request.AddParameter("to", "YOU@YOUR_DOMAIN_NAME");
-        //    request.AddParameter("subject", "Hello");
-        //    request.AddParameter("text", "Testing some Mailgun awesomness!");
-        //    request.Method = Method.POST;
-        //    return client.(request);
-        //}
 
-        public JoinGroupEditModel JoinGroupEditModelByGroupId(int groupid)
+        
+
+
+
+        public void GetContextFromController(ContentResult content)
+        {
+            
+        }
+
+        //This method works
+        public async Task<bool> SendInviteEmailAsync(InviteUsersViewModel i)
+        {
+            var emailbody = $"Yo {i.Name}, Do you want to join group: {i.GroupName}";
+
+            var ms = new MailService(); 
+
+            var from = "santa@elfbuddies.com";
+            var to = i.Email;
+            var subject = "Invite to Join";
+            var body = "hello world from mailgun";
+
+
+            //Get the razor view here
+            //https://stackoverflow.com/questions/40912375/return-view-as-string-in-net-core
+            bool mailto = await ms.SendAsync(from, to, subject, emailbody);
+
+            return mailto;
+        }
+
+
+      
+    
+
+    //public async Task SendEmailAsync(string email, string subject, string message)
+    //{
+    //    var emailMessage = new MimeMessage();
+
+    //    emailMessage.From.Add(new MailboxAddress("Joe Bloggs", "jbloggs@example.com"));
+    //    emailMessage.To.Add(new MailboxAddress("", email));
+    //    emailMessage.Subject = subject;
+    //    emailMessage.Body = new TextPart("plain") { Text = message };
+
+    //    using (var client = new SmtpClient())
+    //    {
+    //        client.LocalDomain = "http://elfbuddies.com";
+    //        await client.ConnectAsync("smtp.relay.uri", 25, SecureSocketOptions.None).ConfigureAwait(false);
+    //        await client.SendAsync(emailMessage).ConfigureAwait(false);
+    //        await client.DisconnectAsync(true).ConfigureAwait(false);
+    //    }
+    //}
+
+
+    //    public void SendSimpleMessge()
+    //    {
+
+    //        RestClient client = new RestClient();
+    //        client.BaseUrl = new Uri("https://api.mailgun.net/v3/elfbuddies.com");
+    //        client.Authenticator = new HttpBasicAuthenticator("api",
+    //                "key-30e16c6964d4f339fab512a5aa3b988d");
+    //        RestRequest request = new RestRequest();
+    //        request.AddParameter("domain", "elfbuddies.com", ParameterType.UrlSegment);
+    //        request.Resource = "elfbuddies.com/messages";
+    //        request.AddParameter("from", "Excited User <santa@elfbuddies.com>");
+    //        request.AddParameter("to", "boneill1292@gmail.com");
+    //        request.AddParameter("to", "santa@elfbuddies.com");
+    //        request.AddParameter("subject", "Hello");
+    //        request.AddParameter("text", "Testing some Mailgun awesomness!");
+    //        request.Method = Method.POST;
+    //        client.ExecuteAsync<RestClient>(request, (response) =>
+    //{
+
+    //});
+
+
+    //    }
+
+    //public async IRestResponse SendSimpleMessage()
+    //{
+    //    RestClient client = new RestClient();
+    //    client.BaseUrl = new Uri("https://api.mailgun.net/v3");
+    //    client.Authenticator =
+    //        new HttpBasicAuthenticator("api",
+    //            "YOUR_API_KEY");
+    //    RestRequest request = new RestRequest();
+    //    request.AddParameter("domain", "YOUR_DOMAIN_NAME", ParameterType.UrlSegment);
+    //    request.Resource = "{domain}/messages";
+    //    request.AddParameter("from", "Excited User <mailgun@YOUR_DOMAIN_NAME>");
+    //    request.AddParameter("to", "bar@example.com");
+    //    request.AddParameter("to", "YOU@YOUR_DOMAIN_NAME");
+    //    request.AddParameter("subject", "Hello");
+    //    request.AddParameter("text", "Testing some Mailgun awesomness!");
+    //    request.Method = Method.POST;
+    //    return client.ExecuteAsync(request, "hi");
+    //}
+
+
+    //public static IRestResponse SendSimpleMessage()
+    //{
+    //    RestClient client = new RestClient();
+    //    client.BaseUrl = new Uri("https://api.mailgun.net/v3");
+    //    client.Authenticator =
+    //        new HttpBasicAuthenticator("api",
+    //            "YOUR_API_KEY");
+    //    RestRequest request = new RestRequest();
+    //    request.AddParameter("domain", "YOUR_DOMAIN_NAME", ParameterType.UrlSegment);
+    //    request.Resource = "{domain}/messages";
+    //    request.AddParameter("from", "Excited User <mailgun@YOUR_DOMAIN_NAME>");
+    //    request.AddParameter("to", "bar@example.com");
+    //    request.AddParameter("to", "YOU@YOUR_DOMAIN_NAME");
+    //    request.AddParameter("subject", "Hello");
+    //    request.AddParameter("text", "Testing some Mailgun awesomness!");
+    //    request.Method = Method.POST;
+    //    return client.(request);
+    //}
+
+    public JoinGroupEditModel JoinGroupEditModelByGroupId(int groupid)
         {
             var group = _groupDal.GetGroupById(groupid);
 
@@ -821,6 +939,8 @@ namespace SecretSantaApp.BL
             //var user = _httpContextAccessor.HttpContext.User;
             var result = new UserProfileViewModel();
             result.Name = user.Identity.Name;
+
+            //          var testg = user.Claims.FirstOrDefault(x=> x.Type == ClaimsIdentit)
             result.EmailAddress = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
             result.ProfileImage = user.Claims.FirstOrDefault(c => c.Type == "picture")?.Value;
             result.UserAcctNo = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
