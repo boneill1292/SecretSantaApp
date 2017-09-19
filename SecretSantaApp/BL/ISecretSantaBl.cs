@@ -17,8 +17,10 @@ namespace SecretSantaApp.BL
         GroupAdminModel DefaultGroupAdminModel();
 
         GroupEditModel DefaultGroupEditModel();
+        GroupEditModel GroupEditModelByGroupId(int id);
 
         GroupEditModel SaveNewGroup(GroupEditModel model);
+        GroupEditModel SaveGroup(GroupEditModel model);
 
         CustomUserEditModel CheckUserByCustomUserAccountNumber(CustomUserEditModel model);
 

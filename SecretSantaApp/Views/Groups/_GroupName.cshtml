@@ -1,0 +1,36 @@
+﻿@model SecretSantaApp.Views.Groups.GroupEditModel
+
+
+@{
+    ViewBag.Title = "New Group";
+    var uid = Guid.NewGuid();
+    var containerid = $"divcontainerid-{uid}";
+}
+
+<div id="@containerid">
+
+    <div class="">
+        <div class="">
+            <span>
+                <img src="~/images/smNorthPole.png" alt="NorthPole" class="img-circle" style="display: inline !important">
+            </span>
+            
+       
+                <h3 style="color: #4CAF50; display: inline !important;">Welcome to Group: @Model.GroupName</h3>
+                <span class="small">password: @Model.GroupPassWord</span>
+       
+            <span>
+                <img src="~/images/smNorthPole.png" alt="NorthPole" class="img-circle" style="display: inline !important">
+            </span>
+        </div>
+    </div>
+
+    <script>
+        $(document)
+            .ready(function() {
+                $("#@containerid").trigger("create");
+
+            });
+    </script>
+
+</div>

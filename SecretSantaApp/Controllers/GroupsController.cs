@@ -80,6 +80,27 @@ namespace SecretSantaApp.Controllers
             // need to make a full page error view but o well
         }
 
+        [HttpGet]
+       public ActionResult GetGroupName(int id)
+        {
+            var msg = "";
+            try
+            {
+                var model = _secretSantaBl.GroupEditModelByGroupId(id);
+                return PartialView("_GroupName", model);
+            }
+            catch (AppException ax)
+            {
+                msg = ax.Message;
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+                _log.LogError(" - ", ex.Message);
+            }
+            return PartialView("_ErrorMessage", new StringModel(msg));
+        }
+
 
         [HttpGet]
         public ActionResult NewGroupPage()
@@ -100,6 +121,27 @@ namespace SecretSantaApp.Controllers
             }
             return View("_ErrorMessage", new StringModel(msg));
         }
+
+        [HttpGet]
+        public ActionResult EditGroup(int id)
+        {
+            string msg;
+            try
+            {
+                var model = _secretSantaBl.GroupEditModelByGroupId(id);
+                return PartialView("_EditGroupPopup", model);
+            }
+            catch (AppException ax)
+            {
+                msg = ax.Message;
+            }
+            catch (Exception)
+            {
+                msg = "An Error Has Occured";
+            }
+            return PartialView("_ErrorMessage", new StringModel(msg));
+        }
+
 
 
         [HttpPost]
@@ -127,6 +169,34 @@ namespace SecretSantaApp.Controllers
                 _log.LogWarning(ex.Message);
             }
             return View("NewGroup", model);
+        }
+
+
+
+        [HttpPost]
+        //[Route("tickets/{department}/newcategoryonticketview/edit")]
+        public ActionResult SaveGroup(GroupEditModel model)
+        {
+            if (!ModelState.IsValid)
+                return View("NewGroup", model);
+            try
+            {
+                //save the new group - get the ID
+                var m = _secretSantaBl.SaveGroup(model);
+                m.Saved = true;
+                return PartialView("_EditGroupPopup", m);
+                //return RedirectToAction("GroupHome", new { id = m.GroupId });
+            }
+            catch (AppException ax)
+            {
+                ModelState.AddModelError("", ax.AppMessage);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+                _log.LogWarning(ex.Message);
+            }
+            return PartialView("_EditGroupPopup", model);
         }
         //End InviteUsersRegion
 

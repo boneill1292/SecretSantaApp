@@ -46,9 +46,9 @@
                         <a asp-area="" asp-controller="Groups" asp-action="MyGroups">My Groups</a>
                     </li>
                 }
-                <li>
+                @*<li>
                     <a asp-area="" asp-controller="QuickPick" asp-action="Index">Quick Pick</a>
-                </li>
+                </li>*@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 @if (User.Identity.IsAuthenticated)
@@ -164,7 +164,7 @@
     @RenderBody()
     <hr/>
     <footer>
-        <p>&copy; 2017 - SecretSantaApp</p>
+        <p>&copy; 2017 - Elf Buddies</p>
     </footer>
 </div>
 

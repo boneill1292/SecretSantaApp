@@ -40,14 +40,29 @@ namespace SecretSantaApp.Models
             var result = new Group();
             result.GroupName = g.GroupName;
             result.GroupPassWord = g.GroupPassWord;
-            result.InsertedBy = _httpContextAccessor.HttpContext.User.Claims
-                .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            result.InsertedBy = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
             result.Active = true;
             result.InsertedDateTime = DateTime.Now;
 
             _appDbContext.Groups.Add(result);
             _appDbContext.SaveChanges();
 
+            return result;
+        }
+
+        public Group SaveGroup(Group g)
+        {
+            if (g.GroupId >= 1)
+            {
+              //  _appDbContext.Add(g);
+                _appDbContext.Update(g);
+                _appDbContext.SaveChanges();
+                return g;
+            }
+            var result = new Group();
+            result.Update(g);
+            _appDbContext.Add(result);
+            _appDbContext.SaveChanges();
             return result;
         }
     }

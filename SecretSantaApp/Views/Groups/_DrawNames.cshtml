@@ -4,6 +4,7 @@
 @{
     var uid = Guid.NewGuid();
     var containerid = $"divcontainerid-{uid}";
+    var grouppairedmemberurl = Url.Action("DisplayGroupPairedMember", "Groups", new {groupid = Model.Group.GroupId});
 }
 
 <div id="@containerid">
@@ -11,8 +12,11 @@
     @if (Model.Saved)
     {
         <div class="">
-            <div class="">
-                <table class="table table-responsive table-striped">
+            
+            <div class="text-center">
+                <h3>The Names Have Been Drawn:</h3>
+                <div id="drawnperson"></div>
+                @*<table class="table table-responsive table-striped">
                     <thead>
                     <tr>
                         <th>User One:</th>
@@ -35,13 +39,14 @@
                         </tr>
                     }
                     </tbody>
-                </table>
+                </table>*@
             </div>
         </div>
 
         <script>
             $("document").ready(function() {
 
+                window.LayoutLoadPartial("drawnperson", '@grouppairedmemberurl');
                 window.LoadPairedMember();
 
             }); // Doc Ready

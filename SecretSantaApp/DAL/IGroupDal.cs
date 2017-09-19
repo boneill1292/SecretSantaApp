@@ -11,5 +11,7 @@ namespace SecretSantaApp.Models
         List<Group> GroupByGroupName(string groupname);
 
         Group SaveNewGroup(Group g);
+
+        Group SaveGroup(Group g);
     }
 }

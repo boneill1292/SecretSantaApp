@@ -141,14 +141,36 @@ namespace SecretSantaApp.BL
             return result;
         }
 
+        public GroupEditModel GroupEditModelByGroupId(int id)
+        {
+            var group = _groupDal.GetGroupById(id);
+
+            if (group == null)
+            {
+                throw new AppException($"Error loading Group by ID: {id}");
+            }
+
+            var result = new GroupEditModel();
+            result.Update(group);
+            result.GroupId = group.GroupId;
+
+            return result;
+        }
+
         public GroupEditModel SaveNewGroup(GroupEditModel model)
         {
             //Check to make sure there are values
             if (model.GroupName == null)
-                throw new Exception("Name is Required");
+                throw new AppException("Name is Required");
 
-            if (model.GroupName == "abc123")
-                throw new AppException("You are dumb");
+            
+            var group = _groupDal.GetGroupById(model.GroupId);
+
+            if (group == null)
+            {
+                throw new AppException($"Error loading Group ID: {model.GroupId}");
+            }
+
 
             //code to get the currently logged in user
             //var liu = _httpContextAccessor.HttpContext.User;
@@ -169,6 +191,22 @@ namespace SecretSantaApp.BL
             _groupMembershipDal.SaveMemberToGroup(gmd);
 
             model.Saved = true;
+            return model;
+        }
+
+        public GroupEditModel SaveGroup(GroupEditModel model)
+        {
+            if (model.GroupName == null)
+                throw new Exception("Name is Required");
+
+
+            var group = new Group();
+            group.Update(model);
+            group.GroupId = model.GroupId;
+
+            var saved = _groupDal.SaveGroup(group);
+            model.Update(saved);
+
             return model;
         }
 
@@ -280,6 +318,8 @@ namespace SecretSantaApp.BL
 
             return result;
         }
+
+
 
 
         public JoinGroupEditModel JoinGroupEditModelByAccountNumberString(string acctno)

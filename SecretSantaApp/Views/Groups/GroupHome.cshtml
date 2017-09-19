@@ -8,8 +8,12 @@
     var grouppairedmemberurl = Url.Action("DisplayGroupPairedMember", "Groups", new {groupid = Model.GroupId});
     var inviteusersurl = Url.Action("InviteUsersPartialView", "Groups", new {groupid = Model.GroupId});
     var joingroupurl = Url.Action("PromptUserForPassword", "Groups", new {id = Model.GroupId});
+    var editgroupurl = Url.Action("EditGroup", "Groups", new {id = Model.GroupId});
     var uid = Guid.NewGuid();
     var containerid = $"divcontainerid-{uid}";
+    var groupnameurl = Url.Action("GetGroupName", "Groups", new {id = Model.GroupId});
+
+    ViewBag.Title = Model.GroupName;
 }
 
 <div id="@containerid">
@@ -17,16 +21,28 @@
     @if (Model.IsAuthorized)
     {
         <div style="text-align: center">
-            <span>
+            @*<span>
                 <img src="~/images/smNorthPole.png" alt="NorthPole" class="img-circle" style="display: inline !important">
+            </span>*@
+            
+            <span id="groupnamediv" style="display:inline!important">
+                @*<h3 style="color: #4CAF50; display: inline !important;">Welcome to Group: @Model.GroupName</h3>*@
             </span>
-            <h3 style="color: #4CAF50; display: inline !important;">Welcome to Group: @Model.GroupName</h3>
-            <span>
+           
+           
+            @*<span>
                 <img src="~/images/smNorthPole.png" alt="NorthPole" class="img-circle" style="display: inline !important">
-            </span>
-            <h5>Group Admin: @Model.GroupAdmin.FullName</h5>
-        </div>
+            </span>*@
+            <div>
+                <button class="btn btn-group BtnRed btn-sm"
+                        onclick="LoadPopup('@editgroupurl')">
+                    Edit Group Details
+                </button>
+            </div>
 
+            @*<h5>Group Admin: @Model.GroupAdmin.FullName</h5>*@
+        </div>
+    
 
      
 
@@ -126,7 +142,7 @@
             LoadRules();
             LoadChat();
             LoadPairedMember();
-
+            LoadGroupName();
             @*var isnew = '@Model.NewGroup';
             console.log(isnew);
 
@@ -153,6 +169,10 @@
         function LoadInviteUsers() {
             @*window.LayoutLoadPartial('inviteusersdiv', '@inviteusersurl');*@
             LoadPopup('@inviteusersurl');
+        }
+
+        function LoadGroupName() {
+            window.LayoutLoadPartial("groupnamediv", '@groupnameurl');
         }
 
 
