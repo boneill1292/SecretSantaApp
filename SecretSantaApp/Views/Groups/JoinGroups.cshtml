@@ -1,39 +1,53 @@
 ﻿@model JoinGroupEditModel
 
 @{
-    //var joingrouppopupurl = Url.Action("PromptUserForPassword", "Groups");
+//var joingrouppopupurl = Url.Action("PromptUserForPassword", "Groups");
 }
-<h3>These are the available groups you can join</h3>
-<div class="row">
-    <table class="table table-responsive table-striped">
-        <thead>
-        <tr>
-            <th>Group Name</th>
-            @*<th>Password</th>*@
-            @*<td>&nbsp;</td>*@
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var g in Model.GroupsNotMemberOf)
-        {
-            var url = Url.Action("PromptUserForPassword", "Groups", new {id = g.GroupId});
-            <tr>
-                <td>@g.GroupName</td>
-                <td>
-                    <button class="btn btn-group  BtnGreen"
-                            onclick="LoadPopup('@url')">
-                        Join Group
-                    </button>
-                </td>
-            </tr>
-        }
-        </tbody>
-    </table>
-</div>
+
+@if (Model.GroupsNotMemberOf.Count >= 1)
+{
+    <h3>Available Groups To Join:</h3>
+    <div class="row">
+        <table class="table table-responsive table-striped">
+            <thead>
+                <tr>
+                    <th>Group Name</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var g in Model.GroupsNotMemberOf)
+                {
+                    var url = Url.Action("PromptUserForPassword", "Groups", new { id = g.GroupId });
+                    <tr>
+                        <td>@g.GroupName</td>
+                        <td>
+                            <button class="btn btn-group  BtnGreen"
+                                    onclick="LoadPopup('@url')">
+                                Join Group
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+}
+else
+{
+ 
+
+    <div class="text-center" style="padding-top:3%">
+        <h4>There are no existing groups. Create one here: </h4>
+        @Html.ActionLink("New Group","NewGroupPage","Groups", null, new { @class = "btn btn-primary BtnGreen" })
+    </div>
+}   
+
 
 @section scripts{
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
 
         });
 

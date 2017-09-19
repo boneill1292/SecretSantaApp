@@ -388,8 +388,10 @@ namespace SecretSantaApp.BL
         {
             var result = new InviteUsersEditModel();
 
-
-
+            if (model.InviteUsersCollection.UsersToInvite.All(x => x.Name == null))
+            {
+                throw new AppException("You must at least invite 1 person");
+            }
             // var email = "knowyaflow@gmail.com";
 
             // var please = SendAsync();
@@ -456,7 +458,9 @@ namespace SecretSantaApp.BL
         //This method works
         public async Task<bool> SendInviteEmailAsync(InviteUsersViewModel i)
         {
-            var emailbody = $"Yo {i.Name}, Do you want to join group: {i.GroupName}";
+            var emailbody = $"Yo {i.Name}! @<br>" +
+                            $"You were invited to join group: {i.GroupName}. <br> " +
+                            $"<h4><a href={i.GroupUrl}>Click Here To Join The Group</a></h4> ";
 
             var ms = new MailService(); 
 

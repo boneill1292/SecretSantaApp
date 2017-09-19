@@ -32,17 +32,25 @@
                   style="padding-top: 2%">
                 <div asp-validation-summary="All" class="text-danger"></div>
 
-                <div class="form-group">
-                    <label class="control-label col-sm-3" style="margin: 0 auto !important" for="username">Group Name<em>*</em></label>
-                    <div class="col-sm-8 col-xs-12" sstyle="text-align: center !important; margin: 0 auto !important">
-                        <input type="text" asp-for="GroupName" placeholder="Group Name" required="" oninvalid="this.setCustomValidity('Please Enter the Group Name')" class="form-control"/>
+                <div class="form-group text-center">
+                    <label class="control-label col-md-5 col-sm-2" style="margin: 0 auto !important" for="username">Group Name<em>*</em></label>
+                    <div class="col-md-7 col-sm-10" sstyle="text-align: center !important; margin: 0 auto !important">
+                        <input type="text" 
+                               asp-for="GroupName" 
+                               placeholder="Group Name" 
+                               required="" 
+                               oninvalid="this.setCustomValidity('Please Enter the Group Name')" class="form-control"/>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="control-label col-sm-3" for="password">Password<em>*</em></label>
-                    <div class="col-sm-8 col-xs-12">
-                        <input type="text" asp-for="GroupPassWord" placeholder="Group Password" required="" oninvalid="this.setCustomValidity('Please Enter the Password')" class="form-control"/>
+                    <label class="control-label col-md-5 col-sm-2" for="password">Password<em>*</em></label>
+                    <div class="col-md-7 col-sm-10">
+                        <input type="text" 
+                               asp-for="GroupPassWord" 
+                               placeholder="Group Password" 
+                               required="" 
+                               oninvalid="this.setCustomValidity('Please Enter the Password')" class="form-control"/>
                     </div>
                 </div>
 
