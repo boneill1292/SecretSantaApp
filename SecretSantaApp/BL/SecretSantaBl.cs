@@ -498,9 +498,9 @@ namespace SecretSantaApp.BL
         //This method works
         public async Task<bool> SendInviteEmailAsync(InviteUsersViewModel i)
         {
-            var emailbody = $"Yo {i.Name}! @<br>" +
-                            $"You were invited to join group: {i.GroupName}. <br> " +
-                            $"<h4><a href={i.GroupUrl}>Click Here To Join The Group</a></h4> ";
+            var emailbody = $"Yo {i.Name}!  \n" +
+                            $"You were invited to join group: {i.GroupName}. \n " +
+                            $"Click Here To Join The Group ";
 
             var ms = new MailService(); 
 
@@ -991,6 +991,8 @@ namespace SecretSantaApp.BL
 
             var u = _customUserDal.CustomUserByAccountNumber(result.UserAcctNo);
             result.UserId = u.UserId;
+
+            result.Claims = user.Claims.ToList();
 
             return result;
         }

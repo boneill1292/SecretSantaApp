@@ -8,7 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Auth0.AuthenticationApi;
 using Auth0.AuthenticationApi.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
+using SecretSantaApp.Auth;
 using SecretSantaApp.BL;
 using SecretSantaApp.Exceptions;
 using SecretSantaApp.Models;
@@ -27,66 +29,130 @@ namespace SecretSantaApp.Controllers
     {
         private readonly Auth0Settings _auth0Settings;
         private readonly ISecretSantaBl _secretSantaBl;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
 
-        public AccountController(IOptions<Auth0Settings> auth0Settings, ISecretSantaBl secretSantaBl)
+        public AccountController(IOptions<Auth0Settings> auth0Settings, ISecretSantaBl secretSantaBl,
+        UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager)
         {
             _auth0Settings = auth0Settings.Value;
             _secretSantaBl = secretSantaBl;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
-        [HttpGet]
-        public IActionResult Login(string returnUrl = "/")
+        //[HttpGet]
+        //public IActionResult Login(string returnUrl = "/")
+        //{
+        //    ViewData["ReturnUrl"] = returnUrl;
+        //    return View();
+        //}
+
+        //[HttpPost]
+        //public async Task<IActionResult> Login(LoginViewModel vm, string returnUrl = null)
+        //{
+        //    if (ModelState.IsValid)
+        //        try
+        //        {
+        //            var client = new AuthenticationApiClient(new Uri($"https://{_auth0Settings.Domain}/"));
+
+        //            var result = await client.GetTokenAsync(new ResourceOwnerTokenRequest
+        //            {
+        //                ClientId = _auth0Settings.ClientId,
+        //                ClientSecret = _auth0Settings.ClientSecret,
+        //                Scope = "openid profile",
+        //                Realm = "Username-Password-Authentication", // Specify the correct name of your DB connection
+        //                Username = vm.EmailAddress,
+        //                Password = vm.Password
+        //            });
+
+        //            // Get user info from token
+        //            var user = await client.GetUserInfoAsync(result.AccessToken);
+
+        //            var id = user.UserId;
+        //            var username = user.PreferredUsername;
+        //            var email = user.Email;
+
+
+        //            // Create claims principal
+        //            var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new[]
+        //            {
+        //                new Claim(ClaimTypes.NameIdentifier, user.UserId),
+        //                new Claim(ClaimTypes.Name, user.FullName)
+        //            }, CookieAuthenticationDefaults.AuthenticationScheme));
+
+        //            // Sign user into cookie middleware
+        //            await HttpContext.Authentication.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+        //                claimsPrincipal);
+
+        //            return RedirectToLocal(returnUrl);
+        //        }
+        //        catch (Exception e)
+        //        {
+        //            ModelState.AddModelError("", e.Message);
+        //        }
+
+        //    return View("Login", vm);
+        //}
+
+        [AllowAnonymous]
+        public IActionResult Login(string returnUrl)
         {
-            ViewData["ReturnUrl"] = returnUrl;
-            return View();
+            return View(new LoginViewModel
+            {
+                ReturnUrl = returnUrl
+            });
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel vm, string returnUrl = null)
+        [AllowAnonymous]
+        public async Task<IActionResult> Login(LoginViewModel loginViewModel)
+        {
+            if (!ModelState.IsValid)
+                return View(loginViewModel);
+
+            var user = await _userManager.FindByNameAsync(loginViewModel.UserName);
+
+            if (user != null)
+            {
+                var result = await _signInManager.PasswordSignInAsync(user, loginViewModel.Password, false, false);
+                if (result.Succeeded)
+                {
+                    if (string.IsNullOrEmpty(loginViewModel.ReturnUrl))
+                        return RedirectToAction("Index", "Home");
+
+                    return Redirect(loginViewModel.ReturnUrl);
+                }
+            }
+
+            ModelState.AddModelError("", "Username/password not found");
+            return View("Login",loginViewModel);
+        }
+
+
+        public IActionResult Register()
+        {
+            return View("Register");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(LoginViewModel loginViewModel)
         {
             if (ModelState.IsValid)
-                try
+            {
+                var user = new IdentityUser() { UserName = loginViewModel.UserName };
+                var result = await _userManager.CreateAsync(user, loginViewModel.Password);
+
+                if (result.Succeeded)
                 {
-                    var client = new AuthenticationApiClient(new Uri($"https://{_auth0Settings.Domain}/"));
-
-                    var result = await client.GetTokenAsync(new ResourceOwnerTokenRequest
-                    {
-                        ClientId = _auth0Settings.ClientId,
-                        ClientSecret = _auth0Settings.ClientSecret,
-                        Scope = "openid profile",
-                        Realm = "Username-Password-Authentication", // Specify the correct name of your DB connection
-                        Username = vm.EmailAddress,
-                        Password = vm.Password
-                    });
-
-                    // Get user info from token
-                    var user = await client.GetUserInfoAsync(result.AccessToken);
-
-                    var id = user.UserId;
-                    var username = user.PreferredUsername;
-                    var email = user.Email;
-
-
-                    // Create claims principal
-                    var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new[]
-                    {
-                        new Claim(ClaimTypes.NameIdentifier, user.UserId),
-                        new Claim(ClaimTypes.Name, user.FullName)
-                    }, CookieAuthenticationDefaults.AuthenticationScheme));
-
-                    // Sign user into cookie middleware
-                    await HttpContext.Authentication.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                        claimsPrincipal);
-
-                    return RedirectToLocal(returnUrl);
+                    return RedirectToAction("Index", "Home");
                 }
-                catch (Exception e)
-                {
-                    ModelState.AddModelError("", e.Message);
-                }
-
-            return View("Login", vm);
+            }
+            return View("Register",loginViewModel);
         }
+
 
 
         [HttpGet]
@@ -217,21 +283,31 @@ namespace SecretSantaApp.Controllers
             await HttpContext.ChallengeAsync("Auth0", new AuthenticationProperties() { RedirectUri = returnUrl });
         }
 
-
-
-
-        [Authorize]
-        public async Task Logout()
+        [HttpPost]
+        public async Task<IActionResult> Logout()
         {
-            await HttpContext.SignOutAsync("Auth0", new AuthenticationProperties
-            {
-                // Indicate here where Auth0 should redirect the user after a logout.
-                // Note that the resulting absolute Uri must be whitelisted in the 
-                // **Allowed Logout URLs** settings for the client.
-                RedirectUri = Url.Action("Index", "Home")
-            });
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
         }
+
+        public IActionResult AccessDenied()
+        {
+            return View("AccessDenied");
+        }
+
+
+        //[Authorize]
+        //public async Task Logout()
+        //{
+        //    await HttpContext.SignOutAsync("Auth0", new AuthenticationProperties
+        //    {
+        //        // Indicate here where Auth0 should redirect the user after a logout.
+        //        // Note that the resulting absolute Uri must be whitelisted in the 
+        //        // **Allowed Logout URLs** settings for the client.
+        //        RedirectUri = Url.Action("Index", "Home")
+        //    });
+        //    await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        //}
 
 
         [HttpGet]

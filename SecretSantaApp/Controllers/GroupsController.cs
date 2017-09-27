@@ -633,9 +633,6 @@ namespace SecretSantaApp.Controllers
             {
            
                 var model = _secretSantaBl.InviteUsersEditModelByGroupId(groupid);
-               // var url = _httpContextAccessor.HttpContext?.Request?.GetDisplayUrl();
-                //model.GroupUrl = url;
-               // model.ViewString = RenderInviteView();
                 return PartialView("_InviteUsers", model);
             }
             catch (AppException ax)

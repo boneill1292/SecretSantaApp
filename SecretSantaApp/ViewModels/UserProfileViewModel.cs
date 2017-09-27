@@ -1,4 +1,7 @@
-﻿namespace SecretSantaApp.ViewModels
+﻿using System.Collections;
+using System.Collections.Generic;
+
+namespace SecretSantaApp.ViewModels
 {
     public class UserProfileViewModel
     {
@@ -9,5 +12,7 @@
         public string ProfileImage { get; set; }
         public string UserAcctNo { get; set; }
         public int UserId { get; set; }
+
+        public virtual IEnumerable Claims { get; set; }
     }
 }
