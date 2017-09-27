@@ -673,9 +673,13 @@ namespace SecretSantaApp.Controllers
         {
             try
             {
-                
-                var url = Url.Action("GroupHome", "Groups", new {id = model.GroupId});
-                model.GroupUrl = url;
+                //var baseurl = "www.elfbuddies.com/";
+                //var url = Url.Action("GroupHome", "Groups", new {id = model.GroupId});
+                //var resulturl = baseurl + url;
+                var groupurlprefix = $"http://elfbuddies.com/Groups/GroupHome/{model.GroupId}?";
+                var groupurlsuffix = model.GroupId + "?";
+                var url = groupurlprefix + groupurlsuffix;
+                model.GroupUrl = groupurlprefix;
                 var m = _secretSantaBl.SendInviteToUsers(model);
                 m.Saved = true;
                 return PartialView("_InviteUsers", m);

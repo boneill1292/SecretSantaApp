@@ -466,6 +466,7 @@ namespace SecretSantaApp.BL
                 if (i.Name != null)
                 {
                     //This is how it works. keep experimenting 
+                    i.GroupUrl = model.GroupUrl;
                      SendInviteEmailAsync(i);
                     ////Email.DefaultRenderer = new RazorRenderer();
 
@@ -500,7 +501,8 @@ namespace SecretSantaApp.BL
         {
             var emailbody = $"Yo {i.Name}!  \n" +
                             $"You were invited to join group: {i.GroupName}. \n " +
-                            $"Click Here To Join The Group ";
+                            $"Click Here To Join The Group: {i.GroupUrl}" +"\n" +
+                            "(The redirect isn't going to work yet, but i'm getting it there. Just got .netcore 2 working)";
 
             var ms = new MailService(); 
 

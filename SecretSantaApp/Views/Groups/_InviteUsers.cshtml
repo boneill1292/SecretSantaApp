@@ -11,6 +11,13 @@
     @if (Model.Saved)
     {
         <h4>It's sent. </h4>
+
+        <script>
+            $(document).ready(function() {
+                ClosePopup();
+            }); //doc ready
+
+        </script>
     }
     else
     {
@@ -63,6 +70,8 @@
                     <div class="text-center">
                         <button id="btnInviteMoreUsers" type="button" class="btn btn-default BtnRed" onclick="">More People</button>     
                     </div>
+                    
+                    @Html.HiddenFor(x=> x.GroupId)
                 </form>
 
                 <div class="clearfix"></div>
