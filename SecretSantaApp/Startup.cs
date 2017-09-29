@@ -56,13 +56,6 @@ namespace SecretSantaApp
             services.AddTransient<IMemberConditionsDal, MemberConditionsDal>();
             services.AddTransient<ICustomUserDetailsDal, CustomUserDetailsDal>();
             services.AddTransient<IGroupPairingsDal, GroupPairingsDal>();
-           
-
-
-            // Add authentication services
-            //services.AddAuthentication(
-            //    options => options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
-
 
 
             //Test Dependency Injection
@@ -87,8 +80,6 @@ namespace SecretSantaApp
                 options.ClientId = Configuration["Auth0:ClientId"];
                 options.ClientSecret = Configuration["Auth0:ClientSecret"];
 
-                //options.ClientId = auth0Settings.Value.ClientId;
-                //options.ClientSecret = auth0Settings.Value.ClientSecret;
 
                 // Set response type to code
                 options.ResponseType = "code";
@@ -124,8 +115,8 @@ namespace SecretSantaApp
                                 {
                                     if (postLogoutUri.StartsWith("/"))
                                     {
-                                // transform to absolute
-                                var request = context.Request;
+                                        // transform to absolute
+                                        var request = context.Request;
                                         postLogoutUri = request.Scheme + "://" + request.Host + request.PathBase + postLogoutUri;
                                     }
                                     logoutUri += $"&returnTo={ Uri.EscapeDataString(postLogoutUri)}";
@@ -185,7 +176,7 @@ namespace SecretSantaApp
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            loggerFactory.AddFile("Logs/SecretSantaApp-{Date}.txt");
+            // loggerFactory.AddFile("Logs/SecretSantaApp-{Date}.txt");
 
             //app related settings
             app.UseStaticFiles();

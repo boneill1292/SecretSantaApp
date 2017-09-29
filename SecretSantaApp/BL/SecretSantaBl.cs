@@ -1,22 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using FluentEmail.Core;
-using FluentEmail.Razor;
-using MailKit.Net.Smtp;
-using MailKit.Security;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Mvc.ViewEngines;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using MimeKit;
-using RestSharp;
-using RestSharp.Authenticators;
 using SecretSantaApp.DAL;
 using SecretSantaApp.Enumerations;
 using SecretSantaApp.Exceptions;
@@ -67,14 +57,11 @@ namespace SecretSantaApp.BL
 
         public CustomUserEditModel CustomUserModelByLoggedInUser(ClaimsPrincipal user)
         {
-
             var acctid = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
 
             //resharper ignore nullcheck
             if (acctid == null)
-            {
                 throw new AppException("Error getting account number");
-            }
 
             var existinguser = _customUserDal.CustomUserByAccountNumber(acctid);
             if (existinguser != null)
@@ -86,15 +73,12 @@ namespace SecretSantaApp.BL
             }
 
 
-
             var result = new CustomUserEditModel();
             var name = user.Identity.Name;
             var email = user.Claims?.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
 
             if (email == null)
-            {
                 throw new AppException("Error getting email from auth0");
-            }
 
             var pic = user.Claims.FirstOrDefault(c => c.Type == "picture")?.Value;
 
@@ -146,9 +130,7 @@ namespace SecretSantaApp.BL
             var group = _groupDal.GetGroupById(id);
 
             if (group == null)
-            {
                 throw new AppException($"Error loading Group by ID: {id}");
-            }
 
             var result = new GroupEditModel();
             result.Update(group);
@@ -163,13 +145,11 @@ namespace SecretSantaApp.BL
             if (model.GroupName == null)
                 throw new AppException("Name is Required");
 
-            
+
             var group = _groupDal.GetGroupById(model.GroupId);
 
             if (group == null)
-            {
                 throw new AppException($"Error loading Group ID: {model.GroupId}");
-            }
 
 
             //code to get the currently logged in user
@@ -320,8 +300,6 @@ namespace SecretSantaApp.BL
         }
 
 
-
-
         public JoinGroupEditModel JoinGroupEditModelByAccountNumberString(string acctno)
         {
             var result = new JoinGroupEditModel();
@@ -429,15 +407,10 @@ namespace SecretSantaApp.BL
             var result = new InviteUsersEditModel();
 
             if (model.InviteUsersCollection.UsersToInvite.All(x => x.Name == null))
-            {
                 throw new AppException("You must at least invite 1 person");
-            }
             // var email = "knowyaflow@gmail.com";
 
             // var please = SendAsync();
-
-
-
 
 
             // SendEmailAsync(email, "invite", "do you wanna play");
@@ -467,7 +440,7 @@ namespace SecretSantaApp.BL
                 {
                     //This is how it works. keep experimenting 
                     i.GroupUrl = model.GroupUrl;
-                     SendInviteEmailAsync(i);
+                    SendInviteEmailAsync(i);
                     ////Email.DefaultRenderer = new RazorRenderer();
 
 
@@ -487,125 +460,94 @@ namespace SecretSantaApp.BL
         }
 
 
-        
-
-
-
         public void GetContextFromController(ContentResult content)
         {
-            
-        }
-
-        //This method works
-        public async Task<bool> SendInviteEmailAsync(InviteUsersViewModel i)
-        {
-            var emailbody = $"Yo {i.Name}!  \n" +
-                            $"You were invited to join group: {i.GroupName}. \n " +
-                            $"Click Here To Join The Group: {i.GroupUrl}" +"\n" +
-                            "(The redirect isn't going to work yet, but i'm getting it there. Just got .netcore 2 working)";
-
-            var ms = new MailService(); 
-
-            var from = "santa@elfbuddies.com";
-            var to = i.Email;
-            var subject = "Invite to Join";
-            var body = "hello world from mailgun";
-
-
-            //Get the razor view here
-            //https://stackoverflow.com/questions/40912375/return-view-as-string-in-net-core
-            bool mailto = await ms.SendAsync(from, to, subject, emailbody);
-
-            return mailto;
         }
 
 
-      
-    
+        //public async Task SendEmailAsync(string email, string subject, string message)
+        //{
+        //    var emailMessage = new MimeMessage();
 
-    //public async Task SendEmailAsync(string email, string subject, string message)
-    //{
-    //    var emailMessage = new MimeMessage();
+        //    emailMessage.From.Add(new MailboxAddress("Joe Bloggs", "jbloggs@example.com"));
+        //    emailMessage.To.Add(new MailboxAddress("", email));
+        //    emailMessage.Subject = subject;
+        //    emailMessage.Body = new TextPart("plain") { Text = message };
 
-    //    emailMessage.From.Add(new MailboxAddress("Joe Bloggs", "jbloggs@example.com"));
-    //    emailMessage.To.Add(new MailboxAddress("", email));
-    //    emailMessage.Subject = subject;
-    //    emailMessage.Body = new TextPart("plain") { Text = message };
-
-    //    using (var client = new SmtpClient())
-    //    {
-    //        client.LocalDomain = "http://elfbuddies.com";
-    //        await client.ConnectAsync("smtp.relay.uri", 25, SecureSocketOptions.None).ConfigureAwait(false);
-    //        await client.SendAsync(emailMessage).ConfigureAwait(false);
-    //        await client.DisconnectAsync(true).ConfigureAwait(false);
-    //    }
-    //}
+        //    using (var client = new SmtpClient())
+        //    {
+        //        client.LocalDomain = "http://elfbuddies.com";
+        //        await client.ConnectAsync("smtp.relay.uri", 25, SecureSocketOptions.None).ConfigureAwait(false);
+        //        await client.SendAsync(emailMessage).ConfigureAwait(false);
+        //        await client.DisconnectAsync(true).ConfigureAwait(false);
+        //    }
+        //}
 
 
-    //    public void SendSimpleMessge()
-    //    {
+        //    public void SendSimpleMessge()
+        //    {
 
-    //        RestClient client = new RestClient();
-    //        client.BaseUrl = new Uri("https://api.mailgun.net/v3/elfbuddies.com");
-    //        client.Authenticator = new HttpBasicAuthenticator("api",
-    //                "key-30e16c6964d4f339fab512a5aa3b988d");
-    //        RestRequest request = new RestRequest();
-    //        request.AddParameter("domain", "elfbuddies.com", ParameterType.UrlSegment);
-    //        request.Resource = "elfbuddies.com/messages";
-    //        request.AddParameter("from", "Excited User <santa@elfbuddies.com>");
-    //        request.AddParameter("to", "boneill1292@gmail.com");
-    //        request.AddParameter("to", "santa@elfbuddies.com");
-    //        request.AddParameter("subject", "Hello");
-    //        request.AddParameter("text", "Testing some Mailgun awesomness!");
-    //        request.Method = Method.POST;
-    //        client.ExecuteAsync<RestClient>(request, (response) =>
-    //{
+        //        RestClient client = new RestClient();
+        //        client.BaseUrl = new Uri("https://api.mailgun.net/v3/elfbuddies.com");
+        //        client.Authenticator = new HttpBasicAuthenticator("api",
+        //                "key-30e16c6964d4f339fab512a5aa3b988d");
+        //        RestRequest request = new RestRequest();
+        //        request.AddParameter("domain", "elfbuddies.com", ParameterType.UrlSegment);
+        //        request.Resource = "elfbuddies.com/messages";
+        //        request.AddParameter("from", "Excited User <santa@elfbuddies.com>");
+        //        request.AddParameter("to", "boneill1292@gmail.com");
+        //        request.AddParameter("to", "santa@elfbuddies.com");
+        //        request.AddParameter("subject", "Hello");
+        //        request.AddParameter("text", "Testing some Mailgun awesomness!");
+        //        request.Method = Method.POST;
+        //        client.ExecuteAsync<RestClient>(request, (response) =>
+        //{
 
-    //});
-
-
-    //    }
-
-    //public async IRestResponse SendSimpleMessage()
-    //{
-    //    RestClient client = new RestClient();
-    //    client.BaseUrl = new Uri("https://api.mailgun.net/v3");
-    //    client.Authenticator =
-    //        new HttpBasicAuthenticator("api",
-    //            "YOUR_API_KEY");
-    //    RestRequest request = new RestRequest();
-    //    request.AddParameter("domain", "YOUR_DOMAIN_NAME", ParameterType.UrlSegment);
-    //    request.Resource = "{domain}/messages";
-    //    request.AddParameter("from", "Excited User <mailgun@YOUR_DOMAIN_NAME>");
-    //    request.AddParameter("to", "bar@example.com");
-    //    request.AddParameter("to", "YOU@YOUR_DOMAIN_NAME");
-    //    request.AddParameter("subject", "Hello");
-    //    request.AddParameter("text", "Testing some Mailgun awesomness!");
-    //    request.Method = Method.POST;
-    //    return client.ExecuteAsync(request, "hi");
-    //}
+        //});
 
 
-    //public static IRestResponse SendSimpleMessage()
-    //{
-    //    RestClient client = new RestClient();
-    //    client.BaseUrl = new Uri("https://api.mailgun.net/v3");
-    //    client.Authenticator =
-    //        new HttpBasicAuthenticator("api",
-    //            "YOUR_API_KEY");
-    //    RestRequest request = new RestRequest();
-    //    request.AddParameter("domain", "YOUR_DOMAIN_NAME", ParameterType.UrlSegment);
-    //    request.Resource = "{domain}/messages";
-    //    request.AddParameter("from", "Excited User <mailgun@YOUR_DOMAIN_NAME>");
-    //    request.AddParameter("to", "bar@example.com");
-    //    request.AddParameter("to", "YOU@YOUR_DOMAIN_NAME");
-    //    request.AddParameter("subject", "Hello");
-    //    request.AddParameter("text", "Testing some Mailgun awesomness!");
-    //    request.Method = Method.POST;
-    //    return client.(request);
-    //}
+        //    }
 
-    public JoinGroupEditModel JoinGroupEditModelByGroupId(int groupid)
+        //public async IRestResponse SendSimpleMessage()
+        //{
+        //    RestClient client = new RestClient();
+        //    client.BaseUrl = new Uri("https://api.mailgun.net/v3");
+        //    client.Authenticator =
+        //        new HttpBasicAuthenticator("api",
+        //            "YOUR_API_KEY");
+        //    RestRequest request = new RestRequest();
+        //    request.AddParameter("domain", "YOUR_DOMAIN_NAME", ParameterType.UrlSegment);
+        //    request.Resource = "{domain}/messages";
+        //    request.AddParameter("from", "Excited User <mailgun@YOUR_DOMAIN_NAME>");
+        //    request.AddParameter("to", "bar@example.com");
+        //    request.AddParameter("to", "YOU@YOUR_DOMAIN_NAME");
+        //    request.AddParameter("subject", "Hello");
+        //    request.AddParameter("text", "Testing some Mailgun awesomness!");
+        //    request.Method = Method.POST;
+        //    return client.ExecuteAsync(request, "hi");
+        //}
+
+
+        //public static IRestResponse SendSimpleMessage()
+        //{
+        //    RestClient client = new RestClient();
+        //    client.BaseUrl = new Uri("https://api.mailgun.net/v3");
+        //    client.Authenticator =
+        //        new HttpBasicAuthenticator("api",
+        //            "YOUR_API_KEY");
+        //    RestRequest request = new RestRequest();
+        //    request.AddParameter("domain", "YOUR_DOMAIN_NAME", ParameterType.UrlSegment);
+        //    request.Resource = "{domain}/messages";
+        //    request.AddParameter("from", "Excited User <mailgun@YOUR_DOMAIN_NAME>");
+        //    request.AddParameter("to", "bar@example.com");
+        //    request.AddParameter("to", "YOU@YOUR_DOMAIN_NAME");
+        //    request.AddParameter("subject", "Hello");
+        //    request.AddParameter("text", "Testing some Mailgun awesomness!");
+        //    request.Method = Method.POST;
+        //    return client.(request);
+        //}
+
+        public JoinGroupEditModel JoinGroupEditModelByGroupId(int groupid)
         {
             var group = _groupDal.GetGroupById(groupid);
 
@@ -1078,6 +1020,29 @@ namespace SecretSantaApp.BL
 
 
             //return result;
+        }
+
+        //This method works
+        public async Task<bool> SendInviteEmailAsync(InviteUsersViewModel i)
+        {
+            var emailbody = $"Yo {i.Name}!  \n" +
+                            $"You were invited to join group: {i.GroupName}. \n " +
+                            $"Click Here To Join The Group: {i.GroupUrl}" + "\n" +
+                            "(The redirect isn't going to work yet, but i'm getting it there. Just got .netcore 2 working)";
+
+            var ms = new MailService();
+
+            var from = "santa@elfbuddies.com";
+            var to = i.Email;
+            var subject = "Invite to Join";
+            var body = "hello world from mailgun";
+
+
+            //Get the razor view here
+            //https://stackoverflow.com/questions/40912375/return-view-as-string-in-net-core
+            var mailto = await ms.SendAsync(from, to, subject, emailbody);
+
+            return mailto;
         }
 
 
