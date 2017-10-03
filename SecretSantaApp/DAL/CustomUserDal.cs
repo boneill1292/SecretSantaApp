@@ -32,7 +32,13 @@ namespace SecretSantaApp.Models
         public CustomUser CustomUserByAccountNumber(string acctno)
         {
             var result = new CustomUser();
-            result = _appDbContext.CustomUsers.FirstOrDefault(u => u.AccountNumberString == acctno);
+            var found = _appDbContext.CustomUsers.Any(u => u.AccountNumberString == acctno);
+
+            if (found)
+            {
+                result = _appDbContext.CustomUsers.FirstOrDefault(x => x.AccountNumberString == acctno);
+            }
+
 
             return result;
         }

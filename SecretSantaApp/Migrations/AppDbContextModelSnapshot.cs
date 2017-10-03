@@ -204,6 +204,8 @@ namespace SecretSantaApp.Migrations
 
                     b.Property<string>("FavoriteBrands");
 
+                    b.Property<string>("FavoriteTeam");
+
                     b.Property<string>("Notes");
 
                     b.Property<string>("PantsSize");

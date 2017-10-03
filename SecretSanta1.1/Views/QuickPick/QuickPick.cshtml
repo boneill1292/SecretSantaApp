@@ -1,0 +1,378 @@
+﻿@model SecretSantaApp.Views.QuickPick.QuickPickModel
+@{
+}
+<div class="container">
+
+    <div class="clearfix"></div>
+    <div class="col-md-12" style="color: black; outline: 2px black solid; padding-bottom: 2%; padding-top: 2%; text-align: center;">
+        <div>
+            <h3>Quick Pick Game </h3>
+            <h5>Click Start If Everyone Is In The Room</h5>
+
+            <div id="directonsdiv" style="display: none;">
+                <p>Click 'Draw' to draw a random person.</p>
+                <p>Click 'Accept' to accept your person.</p>
+            </div>
+
+            <a class="btn BtnGreen"
+               id="startquickpickBtn"
+               onclick="StartQuickPick()">
+                Start
+            </a>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+
+
+    @****************Names****************@
+    <div class="col-md-12" style="text-align: center;">
+        <form id="formSubmitNames">
+            <div id="namesdivid" style="display: none; margin: 0 auto; outline: 1px red solid; text-align: center;">
+
+
+            </div>
+            <button type="button"
+                    id="btnSubmitNames"
+                    style="display: none;"
+                    onclick="SubmitNamesInput()"
+                    class="btn BtnGreen">
+
+                Submit
+            </button>
+
+            <input type="submit" style="display: none"/>
+        </form>
+        <div id="divsubmittednames" style="display: none; outline: 1px blue solid;">
+            <select class="form-control"
+                    style="margin: auto !important"
+                    id="submittednamesdropdown">
+                <option value="">Who Are You?</option>
+
+            </select>
+
+            <button type="button"
+                    id=""
+                    style=""
+                    onclick="DrawNames()"
+                    class="btn BtnGreen">
+                Draw
+            </button>
+
+            @*<button type="button"
+                        id=""
+                        style=""
+                        onclick="AcceptName()"
+                        class="btn BtnRed">
+                    Accept
+                </button>*@
+        </div>
+
+        <div id="resultsdiv" style="display: none; outline: 1px green solid;">
+            <h3>
+                You have drawn: <span id="receivedmsg"></span> !
+            </h3>
+
+            <button type="button"
+                    id=""
+                    style=""
+                    onclick="AcceptName()"
+                    class="btn BtnRed">
+                Accept
+            </button>
+        </div>
+    </div>
+
+</div>
+
+
+@****************Game Control****************@
+<div>
+    <div class="col-md-12">
+        <div id="divGameControl" style="display: none;">
+            <h4>How It Works:</h4>
+            <p>
+                Pass the device around the room, and select 'Draw' to pick your person. If you cannot have that person,
+                click 'Draw' again to generate a new one.
+                Once you have a sufficient pick. Click 'Clear' to remove them from the list
+            </p>
+
+            <button type="button"
+                    id="btnDraw"
+                    class="btn BtnGreen">
+                Draw
+            </button>
+            <button type="button"
+                    class="btn BtnRed ">
+                Clear
+            </button>
+        </div>
+    </div>
+</div>
+
+
+@****************Modal****************@
+<div class="modal" id="quickpickModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content modal-xl">
+            <div class="modal-header" style="display: none; text-align: center;">
+            </div>
+            <div id="modalloading" style="display: none; margin: 0 auto !important; text-align: center;">
+                <h4>Loading...</h4>
+                <div class="santaloadspinner" style="margin: auto !important"></div>
+            </div>
+
+            <div class="modal-scroll" id="quickpickModalBody">
+                <form>
+                    <p id="quantitywarning" class="text-danger" style="display: none;"> Please Enter A Number Greater Than 1</p>
+                    <h5>How Many People Are Playing?</h5>
+
+                    <input id="amountOfPeopleInput" type="number" class="form-control"/>
+
+                    <button type="button"
+                            id="submitNumberBtn"
+                            onclick="SubmitNumberOfPeople()"
+                            class="btn BtnGreen">
+                        Submit
+                    </button>
+                </form>
+            </div>
+            <div class="modal-footer" style="display: none;"></div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+        $("document").ready(function() {
+
+            //$('#formSubmitNames').submit(function (e) {
+            //    e.preventDefault();
+            //    SubmitNamesInput();
+            //});
+
+
+        }); // Doc Ready
+
+        //Variables
+        var allpeople = new Array();
+        var peoplenotme = new Array();
+        var availablepeople = new Array();
+        var acceptedperson = "";
+
+        function StartQuickPick() {
+            console.log("yipee");
+            //$('#quickpickModalBody').html('<h1> hey </h1>');
+            $('#quickpickModal').modal();
+            ClearArrays();
+
+        }
+
+
+        function SubmitNumberOfPeople() {
+            var quantity = $('#amountOfPeopleInput').val();
+
+            if (quantity >= 2) {
+
+                $('#namesdivid').html('');
+                $('#namesdivid').show();
+                console.log("you submitted: " + quantity);
+                $('#startquickpickBtn').text('Start Over');
+                ClearModal();
+                GenerateNamesInput(quantity);
+                $('#btnSubmitNames').show();
+
+                $('#divsubmittednames').hide();
+                $('#submittednamesdropdown').empty();
+                $('#submittednamesdropdown').append('<option value= 0 > Who Are You </option>');
+
+            } else {
+                $('#quantitywarning').show();
+            }
+
+        }
+
+
+        function GenerateNamesInput(quantity) {
+
+            var namesdiv = document.getElementById("namesdivid");
+
+            for (var i = 0; i < quantity; i++) {
+
+                var input = document.createElement("input");
+                input.className = 'form-control generatedInput';
+                input.placeholder = 'Name: ';
+
+                namesdiv.prepend(input);
+            }
+        }
+
+        //Load all the names into a dropdown
+        function SubmitNamesInput() {
+
+            $('#directonsdiv').show();
+            var inputs = document.getElementsByClassName('generatedInput');
+
+            for (var i = 0; i < inputs.length; i++) {
+                console.log("inputs: " + inputs[i].value);
+                $('#submittednamesdropdown').append('<option value=' + i + '>' + inputs[i].value + '</option>');
+            }
+
+
+            //Load the array of all the people *could probably do a different method of getting everyone, but this is quick
+            var allpeopleingame = document.getElementById('submittednamesdropdown');
+
+            for (var i = 1; i < allpeopleingame.length; i++) {
+                //  console.log("loaded from dropdown: " + allpeopleingame[i].text);
+                allpeople.push(allpeopleingame[i].text);
+            }
+
+            availablepeople = allpeople.slice();
+
+            $('#btnSubmitNames').hide();
+            $('#namesdivid').hide();
+            $('#divsubmittednames').show();
+        }
+
+
+        function DrawNames() {
+            var person = $('#submittednamesdropdown').find(":selected").text();
+            console.log("person: " + person);
+            //$('#resultsdiv').html('<h3> Your results are: Ben </h3>'); //receivedmsg
+            $('#resultsdiv').show();
+
+
+            //Theory is we need to set a list of available people that are not me.
+            //once we click accept on a person we will remove the selected person from the available people
+            //thats why we don't set it in the function
+            var pplnotme = GetAvailablePeopleNotMe(person);
+
+
+            var randoperson = peoplenotme[Math.floor(Math.random() * peoplenotme.length)];
+
+            console.log("Your rando person is: " + randoperson);
+
+            $('#receivedmsg').html(randoperson);
+
+        }
+
+
+        function GetAvailablePeople(person) {
+            //var availablepeople = allpeople.slice();
+
+            ////get the index of the person selected in the dropdown
+            //var selectedpersonindex = allpeople.indexOf(person);
+            //console.log("***trying to get available people: **** " + selectedpersonindex);
+
+            // availablepeople = allpeople.splice(selectedpersonindex, 1);
+
+
+            //return availablepeople;
+        }
+
+        function AcceptName(person) {
+            var acceptedperson = $('#receivedmsg').text();
+
+            //We need to remove the user who is drawing names from the drop down list
+
+            //remove the person that the user selected 'accept' on from the available people list
+
+            var allppl = allpeople.slice();
+
+
+            console.log(allppl);
+
+            RemoveSelectedUserFromAllPeople(acceptedperson);
+
+            console.log("wipe out: " + acceptedperson);
+        }
+
+
+        function RemoveSelectedUserFromAllPeople(person) {
+            var selecteduser = allpeople.indexOf(person);
+
+            console.log("removing: " + selecteduser);
+
+            var splicedallpeople = allpeople.splice(selecteduser, 1);
+
+            console.log("Spliced all people: " + splicedallpeople);
+
+            console.log("all people yo: " + allpeople);
+        }
+
+
+        $("#submittednamesdropdown").change(function() {
+            var person = $(this).find("option:selected").text();
+
+            // console.log("hi: " + person);
+            GetPeopleNotMe(person);
+        });
+
+
+        function GetPeopleNotMe(person) {
+            // debugger;
+            var selectedpersonindex = allpeople.indexOf(person);
+
+            //Gets a copy of the global all people
+            var allpeoplecopy = allpeople.slice();
+
+            //cuts the selected person out from the all people copy array, and creates a new array with just the user selected
+            var temppplarray = allpeoplecopy.splice(selectedpersonindex, 1);
+
+            //just doing this to avoid confusion
+            var allpeoplenotme = allpeoplecopy.slice();
+
+            //Setting the value to call later;
+            peoplenotme = allpeoplenotme.slice();
+            return allpeoplenotme;
+        }
+
+
+        function GetAvailablePeopleNotMe(person) {
+            var selectedpersonindex = allpeople.indexOf(person);
+
+            //Gets a copy of the global all people
+            var availablepeopletemp = availablepeople.slice();
+
+            //cuts the selected person out from the all people copy array, and creates a new array with just the user selected
+            var temppplarray = availablepeople.splice(selectedpersonindex, 1);
+
+            //just doing this to avoid confusion
+            var availablepeoplenotme = availablepeopletemp.slice();
+
+            //Setting the value to call later;
+            //peoplenotme = availablepeoplenotme.slice();
+            return availablepeoplenotme;
+
+        }
+
+
+        function ClearModal() {
+            $('#amountOfPeopleInput').val('');
+            $('#quantitywarning').hide();
+            $('#quickpickModal').modal('hide');
+        }
+
+        function DisplayAllUsers() {
+            var me = $('#submittednamesdropdown').find("option:selected").text();
+            console.log("Me: " + me);
+            console.log("All People: " + allpeople);
+            console.log("People Not Me: " + peoplenotme);
+            console.log("Available People:" + availablepeople);
+        }
+
+        function ClearArrays() {
+            allpeople = [];
+            peoplenotme = [];
+        }
+
+    </script>
+}
+
+<style>
+    .generatedInput {
+        margin: 0 auto !important;
+        outline: 2px green solid;
+        text-align: center;
+    }
+</style>

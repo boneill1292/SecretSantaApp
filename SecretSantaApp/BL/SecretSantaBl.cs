@@ -64,7 +64,8 @@ namespace SecretSantaApp.BL
                 throw new AppException("Error getting account number");
 
             var existinguser = _customUserDal.CustomUserByAccountNumber(acctid);
-            if (existinguser != null)
+
+            if (existinguser.AccountNumberString != null)
             {
                 var existingusereditmodel = new CustomUserEditModel();
                 existingusereditmodel.Update(existinguser);
@@ -146,10 +147,10 @@ namespace SecretSantaApp.BL
                 throw new AppException("Name is Required");
 
 
-            var group = _groupDal.GetGroupById(model.GroupId);
+           // var group = _groupDal.GetGroupById(model.GroupId);
 
-            if (group == null)
-                throw new AppException($"Error loading Group ID: {model.GroupId}");
+            //if (group == null)
+            //    throw new AppException($"Error loading Group ID: {model.GroupId}");
 
 
             //code to get the currently logged in user
@@ -387,6 +388,7 @@ namespace SecretSantaApp.BL
                 usertoinvite.GroupId = groupid;
                 usertoinvite.GroupName = group.GroupName;
                 usertoinvite.GroupUrl = url;
+                usertoinvite.GroupPassword = group.GroupPassWord;
                 result.UsersToInvite.Add(usertoinvite);
             }
             return result;
@@ -1028,6 +1030,7 @@ namespace SecretSantaApp.BL
             var emailbody = $"Yo {i.Name}!  \n" +
                             $"You were invited to join group: {i.GroupName}. \n " +
                             $"Click Here To Join The Group: {i.GroupUrl}" + "\n" +
+                            $"The Password is: {i.GroupPassword}" + "\n" +
                             "(The redirect isn't going to work yet, but i'm getting it there. Just got .netcore 2 working)";
 
             var ms = new MailService();

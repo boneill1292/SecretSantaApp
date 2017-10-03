@@ -1,0 +1,61 @@
+﻿@using SecretSantaApp.Views.Groups
+@model SecretSantaApp.Views.Groups.GroupEditModel
+
+
+@if (Model.Saved)
+{
+    <h3>Saved</h3>
+}
+
+<br/>
+<br/>
+
+<div class="container col-lg-12 ControlBox" style="background-color: green">
+    <div class="">
+        <div class="" style="display: inline !important">
+            <span>
+                <img src="~/images/smReindeer.png" alt="Reindeer" class="img-responsive" style="display: inline !important">
+            </span>
+            <h3 class="text-center" style="color: white; display: inline !important">New Group!</h3>
+            <span>
+                <img src="~/images/smReindeer.png" alt="Reindeer" class="img-responsive" style="display: inline !important">
+            </span>
+        </div>
+        <div class="row col-xs-12 center-block RoundCornerBox" style="background-color: lightgray; padding-bottom: 2%;">
+
+
+            <form asp-controller="Groups"
+                  asp-action="SaveNewGroup"
+                  method="POST"
+                  class="form-horizontal"
+                  role="form"
+                  style="padding-top: 2%">
+                <div asp-validation-summary="All" class="text-danger"></div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-3" style="margin: 0 auto !important" for="username">Group Name<em>*</em></label>
+                    <div class="col-sm-8 col-xs-12" sstyle="text-align: center !important; margin: 0 auto !important">
+                        <input type="text" asp-for="GroupName" placeholder="Group Name" required="" oninvalid="this.setCustomValidity('Please Enter the Group Name')" class="form-control"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="password">Password<em>*</em></label>
+                    <div class="col-sm-8 col-xs-12">
+                        <input type="text" asp-for="GroupPassWord" placeholder="Group Password" required="" oninvalid="this.setCustomValidity('Please Enter the Password')" class="form-control"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-8">
+                        <input type="submit" name="signin" id="signin" value="Submit" class="btn btn-default btn-lg BtnGreen"/>
+
+                    </div>
+                </div>
+                @Html.HiddenFor(x => x.Active)
+            </form>
+        </div>
+    </div>
+
+</div>
+<!-- /.container -->

@@ -10,8 +10,10 @@
 
         public string GroupName { get; set; }
 
+        public string GroupPassword { get; set; }
+
         public string GroupUrl { get; set; }
-        
+
     }
 
 }

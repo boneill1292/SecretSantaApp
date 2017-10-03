@@ -1,0 +1,26 @@
+﻿@model GroupPairingDisplayModel
+
+@{
+    var uid = Guid.NewGuid();
+    var containerid = $"divcontainerid-{uid}";
+}
+
+<div id="@containerid">
+
+
+    <div class="container col-lg-12 " style="">
+        <div>
+
+            <h3>Paired Member: @Model.PairedMemberString</h3>
+        </div>
+
+    </div>
+    <!-- /.container -->
+
+
+    <script>
+
+    </script>
+
+
+</div>

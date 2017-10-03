@@ -1,0 +1,54 @@
+﻿@using SecretSantaApp.BL
+@model GroupRulesDisplayModel
+@inject ISecretSantaBl ssbl
+@{
+    //var userconditionsurl = Url.Action("NewMemberConditionPopup", "Groups", new { groupid = Model.GroupId });
+}
+
+@if (Model.GroupConditions.Count > 0)
+{
+    <table class="table table-responsive table-striped">
+        <thead>
+        <tr>
+            <th>Condition</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var gc in Model.GroupConditions)
+        {
+            var conditionstr = ssbl.ConditionDisplayByAccountNumbers(gc.UserReceivingConditionAcctNo, gc.UserSelectedForConditionAcctNo);
+            <tr>
+                <td> @conditionstr</td>
+
+                @{
+                    //var editruleurl = Url.Action("EditRulePopup", "Groups", new { ruleid = gc.ID });
+                    var deleteruleurl = Url.Action("DeleteConditionPopup", "Groups", new {conditionid = gc.ConditionId});
+                }
+                <td>
+                    @*<button class="btn btn-group modal-link BtnRed"
+                            href="@deleteruleurl"
+                            title="Add modal"
+                            data-target="#myModal"
+                            data-toggle="modal">
+                        Delete
+                    </button>*@
+                    <button class="btn btn-group  BtnRed"
+                            onclick="LoadPopup('@deleteruleurl')">
+                        Delete
+                    </button>
+                </td>
+
+
+                @*<td>you cannot edit this rule</td>*@
+
+
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <h4>No Conditions Yet</h4>
+}

@@ -1,0 +1,54 @@
+﻿<!-- Views/Account/Profile.cshtml -->
+
+@model UserProfileViewModel
+@{
+    ViewData["Title"] = "User Profile";
+    var userdetailsurl = Url.Action("UserDetailsPartial", "Account", new {userid = Model.UserId});
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <h2>@ViewData["Title"].</h2>
+
+            <div class="col-md-2">
+                <img src="@Model.ProfileImage"
+                     alt="" class="img-rounded img-responsive"/>
+            </div>
+
+            <div class="col-md-4">
+                <h3>@Model.Name</h3>
+                <p>
+                    <i class="glyphicon glyphicon-envelope"></i> @Model.EmailAddress
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div id="userdetails"></div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function() {
+
+            //LoadDetails();
+            $.get('@userdetailsurl',
+                function(data) {
+                    $("#userdetails").html(data);
+                });
+
+        }); //doc ready
+
+
+        function ReloadUserDetails() {
+            window.LayoutLoadPartial('userdetails', '@userdetailsurl', { 'label': 'Reloading...' });
+        }
+
+
+    </script>
+}

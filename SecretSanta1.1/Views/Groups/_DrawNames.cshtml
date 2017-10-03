@@ -1,0 +1,84 @@
+﻿@using SecretSantaApp.BL
+@model DrawNamesDisplayModel
+@inject ISecretSantaBl ssbl
+@{
+    var uid = Guid.NewGuid();
+    var containerid = $"divcontainerid-{uid}";
+}
+
+<div id="@containerid">
+
+    @if (Model.Saved)
+    {
+        <div class="">
+            <div class="">
+                <table class="table table-responsive table-striped">
+                    <thead>
+                    <tr>
+                        <th>User One:</th>
+                        <th>User Two:</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var u in Model.DrawNamesList)
+                    {
+                        var userone = ssbl.UserFullNameByAccountNumberString(u.PersonOne);
+                        var usertwo = ssbl.UserFullNameByAccountNumberString(u.PersonTwo);
+                        <tr>
+                            <td>
+                                @userone
+                            </td>
+                            <td>
+                                @usertwo
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <script>
+            $("document").ready(function() {
+
+                window.LoadPairedMember();
+
+            }); // Doc Ready
+        </script>
+    }
+    else
+    {
+        <div class="container col-lg-12 ControlBox" style="background-color: white">
+            <h3 style="text-decoration: underline">Draw Names For Group @Model.Group.GroupName?</h3>
+
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <form asp-action="SubmitDrawNames" method="POST"
+                  data-ajax="true"
+                  data-ajax-method="POST"
+                  data-ajax-mode="replace"
+                  data-ajax-update="#@containerid">
+
+                <div class="form-group">
+                    @*<label class="control-label col-sm-3" asp-label-for="Rule" for="rule">Rule<em>*</em></label>*@
+                    <div class="col-sm-8 col-xs-12">
+                        @*<input type="text" asp-for="Rule" placeholder="Rule" required="" oninvalid="this.setCustomValidity('Please Enter A Rule')" class="form-control" />*@
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-8">
+                        <input type="submit" name="signin" id="signin" value="Submit" class="btn btn-default btn-lg BtnGreen"/>
+                    </div>
+                </div>
+
+                @Html.HiddenFor(x => x.Group)
+                @Html.HiddenFor(x => x.Group.GroupId)
+                @Html.HiddenFor(x => x.Group.GroupName)
+                @Html.HiddenFor(x => x.Group.GroupPassWord)
+            </form>
+        </div>
+    }
+
+</div>

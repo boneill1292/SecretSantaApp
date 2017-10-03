@@ -22,6 +22,8 @@ namespace SecretSantaApp.Models
 
         public string Notes { get; set; }
 
+        public string FavoriteTeam { get; set; }
+
 
         public virtual void Update(CustomUserDetails c)
         {
@@ -34,6 +36,7 @@ namespace SecretSantaApp.Models
             SweatShirtSize = c.SweatShirtSize;
             FavoriteBrands = c.FavoriteBrands;
             Notes = c.Notes;
+            FavoriteTeam = c.FavoriteTeam;
         }
     }
 }

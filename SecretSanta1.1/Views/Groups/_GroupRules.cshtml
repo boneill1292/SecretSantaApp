@@ -1,0 +1,20 @@
+﻿@using SecretSantaApp.BL
+@model GroupRulesDisplayModel
+@inject ISecretSantaBl ssbl
+@{
+}
+
+
+<h3 style="text-decoration: underline">Group @Model.GroupName Rules:</h3>
+<div class="row">
+    @Html.Partial("_GroupRulesTable", Model)
+
+
+
+</div>
+<div class="row">
+
+    @Html.Partial("_GroupConditionsTable", Model)
+
+
+</div>

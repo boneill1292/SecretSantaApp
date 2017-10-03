@@ -1,0 +1,18 @@
+﻿@model dynamic
+@{
+    //Its always going to be InviteUsersViewModel so we can assume and hardcode these values
+    var email = Model.Email;
+    var name = Model.Name;
+    var groupid = Model.GroupId;
+    var groupname = Model.GroupName;
+    var groupurl = Model.GroupUrl;
+    var baseurl = "http://elfbuddies.com/";
+   // var groupurl = Url.Action("GroupHome", "Groups", new {id = groupid});
+    //var resulturl = baseurl + groupurl;
+    //var reportsurl = Url.Action("NonSiteReports", "Reports", new { category = "sitecreation", area = "" }, Request.Url?.Scheme);
+}
+
+
+<h1>HO HO HO!</h1>
+<h3> Hey there @name. You have been invited to @groupname. </h3>
+<h4><a href="@groupurl">Click Here To Join The Group</a></h4>

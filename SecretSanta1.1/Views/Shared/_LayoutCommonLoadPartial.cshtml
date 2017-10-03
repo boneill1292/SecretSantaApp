@@ -1,0 +1,126 @@
+﻿@{
+    var uid = Guid.NewGuid();
+    var loadingid = $"loadingid-{uid}";
+    var genericloadingtext = "loading";
+}
+<div id="@loadingid"
+     style="display: none;">
+    <div class="clearfix"></div>
+    @*removed the classes from the inner div bacause I kinda want a mimimalist loading ui when doing a partial replace on something small*@
+
+    <div class=""
+         style="text-align: center;">
+
+        <div class="santaloadspinner"></div>
+        <span class="">[loading]</span>
+    </div>
+
+</div>
+
+
+<script>
+
+    function LayoutLoadPartial(targetelementid, url, options) {
+        console.log("LayoutLoadPartial(" + targetelementid + ", " + url);
+        var successcallbackfunction = null;
+        var failcallbackfunction = null;
+        var replace = false;
+        var labeltext = "@genericloadingtext";
+        var scrollto = false;
+
+        //see what options we have
+        if (options) {
+            if (options["onsuccess"]) {
+                successcallbackfunction = options["onsuccess"];
+            }
+            if (options["onfail"]) {
+                failcallbackfunction = options["onfail"];
+            }
+            if (options["replace"] && options["replace"] === true) {
+                replace = true;
+            }
+            if (options["label"]) {
+                labeltext = options["label"];
+            }
+            if (options["hidelabel"] && options["hidelabel"] === true) {
+                labeltext = "";
+            }
+            if (options["scrollto"]) {
+                scrollto = options["scrollto"];
+            }
+        }
+
+        if (scrollto) {
+            LayoutScrollToElement(targetelementid);
+        }
+
+
+        var container = $("#" + targetelementid);
+        container.html($("#@loadingid").html().replace("[loading]", labeltext));
+
+        //call the server
+        $.ajax({
+            type: "GET",
+            url: url.replace(new RegExp("&amp;", "g"), "&"),
+            cache: false,
+            success: function(data) {
+                if (replace) {
+                    var n = $(data);
+                    container.replaceWith(n);
+                    n.trigger('create');
+                } else {
+                    container.html(data);
+                    container.trigger('create');
+                }
+                try {
+                    if (successcallbackfunction != null) {
+                        successcallbackfunction();
+                    }
+                } catch (err) {
+                    console.log(err);
+                }
+            },
+            error: function(xhr, status, error) {
+                container.html("<p>An Error Has Occured</p>");
+                console.log(url);
+                console.log(xhr);
+                console.log(status);
+                console.log(error);
+                try {
+                    if (failcallbackfunction != null) {
+                        failcallbackfunction();
+                    }
+                } catch (err) {
+                    console.log(err);
+                }
+            }
+        });
+    }
+
+
+    //scroll to element - need to explore
+    function LayoutScrollToElement(elementid) {
+        var win = $(window);
+        var element = $("#" + elementid);
+        var viewport = {
+            top: win.scrollTop(),
+            left: win.scrollLeft()
+        };
+        viewport.right = viewport.left + win.width();
+        viewport.bottom = viewport.top + win.height();
+
+        var bounds = element.offset();
+        bounds.right = bounds.left + element.outerWidth();
+        bounds.bottom = bounds.top + element.outerHeight();
+
+        var elementinviewport = (!(viewport.right < bounds.left ||
+            viewport.left > bounds.right ||
+            viewport.bottom < bounds.top ||
+            viewport.top > bounds.bottom));
+        if (!elementinviewport) {
+            window.location = "#" + elementid;
+        }
+
+
+    }
+</script>

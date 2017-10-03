@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -65,72 +64,72 @@ namespace SecretSantaApp
 
             // Add authentication services
             services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            })
-            .AddCookie()
-            .AddOpenIdConnect("Auth0", options =>
-            {
-                // Set the authority to your Auth0 domain
-                options.Authority = $"https://{Configuration["Auth0:Domain"]}";
-
-                // Configure the Auth0 Client ID and Client Secret
-                options.ClientId = Configuration["Auth0:ClientId"];
-                options.ClientSecret = Configuration["Auth0:ClientSecret"];
-
-
-                // Set response type to code
-                options.ResponseType = "code";
-
-                // Configure the scope
-                options.Scope.Clear();
-                options.Scope.Add("openid");
-                options.Scope.Add("profile");
-
-                // Set the correct name claim type
-                options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    NameClaimType = "name"
-                };
-
-
-                // Set the callback path, so Auth0 will call back to http://localhost:5000/signin-auth0 
-                // Also ensure that you have added the URL as an Allowed Callback URL in your Auth0 dashboard 
-                options.CallbackPath = new PathString("/signin-auth0");
-
-                // Configure the Claims Issuer to be Auth0
-                options.ClaimsIssuer = "Auth0";
-
-                options.Events = new OpenIdConnectEvents
+                    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                })
+                .AddCookie()
+                .AddOpenIdConnect("Auth0", options =>
                 {
-                    // handle the logout redirection 
-                    OnRedirectToIdentityProviderForSignOut = (context) =>
+                    // Set the authority to your Auth0 domain
+                    options.Authority = $"https://{Configuration["Auth0:Domain"]}";
+
+                    // Configure the Auth0 Client ID and Client Secret
+                    options.ClientId = Configuration["Auth0:ClientId"];
+                    options.ClientSecret = Configuration["Auth0:ClientSecret"];
+
+
+                    // Set response type to code
+                    options.ResponseType = "code";
+
+                    // Configure the scope
+                    options.Scope.Clear();
+                    options.Scope.Add("openid");
+                    options.Scope.Add("profile");
+
+                    // Set the correct name claim type
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        NameClaimType = "name"
+                    };
+
+
+                    // Set the callback path, so Auth0 will call back to http://localhost:5000/signin-auth0 
+                    // Also ensure that you have added the URL as an Allowed Callback URL in your Auth0 dashboard 
+                    options.CallbackPath = new PathString("/signin-auth0");
+
+                    // Configure the Claims Issuer to be Auth0
+                    options.ClaimsIssuer = "Auth0";
+
+                    options.Events = new OpenIdConnectEvents
+                    {
+                        // handle the logout redirection 
+                        OnRedirectToIdentityProviderForSignOut = context =>
+                        {
+                            var logoutUri =
+                                $"https://{Configuration["Auth0:Domain"]}/v2/logout?client_id={Configuration["Auth0:ClientId"]}";
+
+                            var postLogoutUri = context.Properties.RedirectUri;
+                            if (!string.IsNullOrEmpty(postLogoutUri))
                             {
-                                var logoutUri = $"https://{Configuration["Auth0:Domain"]}/v2/logout?client_id={Configuration["Auth0:ClientId"]}";
-
-                                var postLogoutUri = context.Properties.RedirectUri;
-                                if (!string.IsNullOrEmpty(postLogoutUri))
+                                if (postLogoutUri.StartsWith("/"))
                                 {
-                                    if (postLogoutUri.StartsWith("/"))
-                                    {
-                                        // transform to absolute
-                                        var request = context.Request;
-                                        postLogoutUri = request.Scheme + "://" + request.Host + request.PathBase + postLogoutUri;
-                                    }
-                                    logoutUri += $"&returnTo={ Uri.EscapeDataString(postLogoutUri)}";
+                                    // transform to absolute
+                                    var request = context.Request;
+                                    postLogoutUri = request.Scheme + "://" + request.Host + request.PathBase +
+                                                    postLogoutUri;
                                 }
-
-                                context.Response.Redirect(logoutUri);
-                                context.HandleResponse();
-
-                                return Task.CompletedTask;
+                                logoutUri += $"&returnTo={Uri.EscapeDataString(postLogoutUri)}";
                             }
-                };
-            });
 
+                            context.Response.Redirect(logoutUri);
+                            context.HandleResponse();
 
+                            return Task.CompletedTask;
+                        }
+                    };
+                });
 
 
             // Add framework services.
@@ -146,9 +145,8 @@ namespace SecretSantaApp
             //MailGun
             var sender = new MailgunSender(
                 "elfbuddies.com", // Mailgun Domain
-                                  //"sandbox3c051cffd5d14c0885493d6cfbe1fa8e.mailgun.org"
-                "key-30e16c6964d4f339fab512a5aa3b988d"// Mailgun API Key
-
+                //"sandbox3c051cffd5d14c0885493d6cfbe1fa8e.mailgun.org"
+                "key-30e16c6964d4f339fab512a5aa3b988d" // Mailgun API Key
             );
             Email.DefaultSender = sender;
 
@@ -156,7 +154,6 @@ namespace SecretSantaApp
             //services.Configure<Auth0Settings>(Configuration.GetSection("Auth0"));
 
             //auth0
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -173,7 +170,8 @@ namespace SecretSantaApp
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                //app.UseExceptionHandler("/Home/Error");
+                app.UseDeveloperExceptionPage();
             }
 
             // loggerFactory.AddFile("Logs/SecretSantaApp-{Date}.txt");

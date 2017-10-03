@@ -1,0 +1,8 @@
+﻿@model StringModel
+@{
+    var display = string.Empty;
+    if (!string.IsNullOrWhiteSpace(Model.Text))
+    {
+        display = Model.Text;
+    }
+}@Html.Raw(display)

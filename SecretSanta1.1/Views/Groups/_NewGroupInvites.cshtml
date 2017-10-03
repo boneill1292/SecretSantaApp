@@ -1,0 +1,52 @@
+﻿@model GroupHomeEditModel
+
+<div class="container">
+    <div class="row">
+        <form asp-controller="Groups" asp-action="SendInvitesTousers" method="POST" class="form-horizontal" role="form">
+
+            <div class="col-xs-12" style="outline: 1px blue solid; text-align: center">
+                <label>Invite People To Play!</label> <br/>
+                <div class="btn-group btn-toggle">
+
+                    @*<button class="btn btn-default" data-toggle="collapse" data-target="#collapsible">Phone</button>
+          <button class="btn btn-primary active" data-toggle="collapse" data-target="#collapsible">Email</button>*@
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="col-xs-12">
+
+                @for (var i = 0; i < Model.InviteUsersCollection.UsersToInvite.Count; i++)
+                {
+                    <div id="invitefields">
+                        <div class="form-group col-xs-6" style="outline: 1px green solid">
+                            <label asp-for="@Model.InviteUsersCollection.UsersToInvite[i].Name" class="col-md-2 control-label"></label>
+                            <input asp-for="@Model.InviteUsersCollection.UsersToInvite[i].Name" class="form-control"/>
+                            <span asp-validation-for="@Model.InviteUsersCollection.UsersToInvite[i].Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-xs-6" style="outline: 1px red solid">
+                            <label asp-for="@Model.InviteUsersCollection.UsersToInvite[i].Email" class="col-md-2 control-label"></label>
+                            <input asp-for="@Model.InviteUsersCollection.UsersToInvite[i].Email" class="form-control"/>
+                            <span asp-validation-for="@Model.InviteUsersCollection.UsersToInvite[i].Email" class="text-danger"></span>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="clearfix"></div>
+            <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
+                <button id="btnInviteMoreUsers" type="button" class="btn btn-default" onclick="">Invite More People</button>
+                <button type="submit" class="btn btn-default">Submit</button>
+            </div>
+
+        </form>
+
+        <div class="clearfix"></div>
+
+        <br/><br/>
+    </div>
+</div>

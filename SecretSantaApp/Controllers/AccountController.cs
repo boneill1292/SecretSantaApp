@@ -171,8 +171,9 @@ namespace SecretSantaApp.Controllers
             {
                 msg = ax.Message;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                var error = ex.Message;
                 msg = "An Error Has Occured";
             }
             return PartialView("_ErrorMessage", new StringModel(msg));
@@ -283,12 +284,12 @@ namespace SecretSantaApp.Controllers
             await HttpContext.ChallengeAsync("Auth0", new AuthenticationProperties() { RedirectUri = returnUrl });
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Logout()
-        {
-            await _signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home");
-        }
+        //[HttpPost]
+        //public async Task<IActionResult> Logout()
+        //{
+        //    await _signInManager.SignOutAsync();
+        //    return RedirectToAction("Index", "Home");
+        //}
 
         public IActionResult AccessDenied()
         {
@@ -296,18 +297,18 @@ namespace SecretSantaApp.Controllers
         }
 
 
-        //[Authorize]
-        //public async Task Logout()
-        //{
-        //    await HttpContext.SignOutAsync("Auth0", new AuthenticationProperties
-        //    {
-        //        // Indicate here where Auth0 should redirect the user after a logout.
-        //        // Note that the resulting absolute Uri must be whitelisted in the 
-        //        // **Allowed Logout URLs** settings for the client.
-        //        RedirectUri = Url.Action("Index", "Home")
-        //    });
-        //    await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-        //}
+        [Authorize]
+        public async Task Logout()
+        {
+            await HttpContext.SignOutAsync("Auth0", new AuthenticationProperties
+            {
+                // Indicate here where Auth0 should redirect the user after a logout.
+                // Note that the resulting absolute Uri must be whitelisted in the 
+                // **Allowed Logout URLs** settings for the client.
+                RedirectUri = Url.Action("Index", "Home")
+            });
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        }
 
 
         [HttpGet]

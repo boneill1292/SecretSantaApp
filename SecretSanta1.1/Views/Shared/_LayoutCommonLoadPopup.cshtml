@@ -1,0 +1,107 @@
+﻿@{
+    var uid = Guid.NewGuid();
+    var popup = $"genericpopup-{uid}";
+    var content = $"genericpopupcontent-{uid}";
+    var loadingid = $"loading-{uid}";
+    var loadingtextid = $"loadingtext-{uid}";
+    var genericloadingtext = "Loading";
+}
+<div id="@popup"
+     data-role="popup"
+     class="ui-content ui-popup-whole">
+
+    <div id="@content"></div>
+    <div id="@loadingid"
+         style="display: none;">
+        <div class="ui-body-a ui-content ui-corner-all"
+             style="text-align: center;">
+            <span class="loadingspinner"
+                  style="vertical-align: middle;">
+            </span>
+            <span id="@loadingtextid" class="fixedfont small">[loading]</span>
+        </div>
+    </div>
+    <div class="clear-fix"></div>
+</div>
+<script>
+
+
+    function LayoutLoadPopup(url, options) {
+
+        var successcallbackfunction = null;
+        var failcallbackfunction = null;
+        var labeltext = "@genericloadingtext";
+
+        //see what options we have
+        if (options) {
+            if (options["onsuccess"]) {
+                successcallbackfunction = options["onsuccess"];
+            }
+            if (options["onfail"]) {
+                failcallbackfunction = options["onfail"];
+            }
+            if (options["label"]) {
+                labeltext = options["label"];
+            }
+        }
+
+        //set the loading text
+        var loadingtext = $("#@loadingtextid");
+        loadingtext.text(labeltext);
+
+        //clear the content div
+        var content = $("#@content");
+        content.html("");
+
+        //show the loading text div
+        var loading = $("#@loadingid");
+        loading.show();
+
+        //open the popup
+        var popup = $("#@popup");
+        popup.popover('show'); //("open");
+
+        //go fetch the content
+        $.ajax({
+            type: "GET",
+            url: url,
+            cache: false,
+            success: function(data) {
+                content.html(data);
+                content.trigger('create');
+                popup.popover("hide"); //popup("close");
+                loading.hide();
+                popup.popover("show"); //popup("open");
+
+                try {
+                    if (successcallbackfunction != null) {
+                        successcallbackfunction();
+                    }
+                } catch (err) {
+                    console.log(err);
+                }
+            },
+            error: function(xhr, status, error) {
+                content.html("<p>An error has occured</p>");
+                loading.hide();
+                console.log(url);
+                console.log(xhr);
+                console.log(status);
+                console.log(error);
+                try {
+                    if (failcallbackfunction != null) {
+                        failcallbackfunction();
+                    }
+                } catch (err) {
+                    console.log(err);
+                }
+            }
+        });
+
+    }
+
+    function LayoutCloseAnyPopup() {
+        //only one popup can be open at a time, so if you want one closed, you want them all closed.
+        $(".ui-popup").hide(); // ("close");
+    }
+</script>
