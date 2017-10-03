@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SecretSantaApp.BL;
@@ -23,7 +21,8 @@ namespace SecretSantaApp.Controllers
         private readonly IViewRenderService _viewRenderService;
 
 
-        public GroupsController(ISecretSantaBl secretSantaBl, IHttpContextAccessor httpContextAccessor, IViewRenderService viewRenderService,
+        public GroupsController(ISecretSantaBl secretSantaBl, IHttpContextAccessor httpContextAccessor,
+            IViewRenderService viewRenderService,
             ILogger<GroupsController> log)
         {
             _secretSantaBl = secretSantaBl;
@@ -38,7 +37,7 @@ namespace SecretSantaApp.Controllers
         {
             //  var usermodel = _secretSantaBl.CustomUserModelByLoggedInUser(User);
             var model = _secretSantaBl.DefaultGroupAdminModel();
-        return View("Index", model);
+            return View("Index", model);
         }
 
 
@@ -81,7 +80,7 @@ namespace SecretSantaApp.Controllers
         }
 
         [HttpGet]
-       public ActionResult GetGroupName(int id)
+        public ActionResult GetGroupName(int id)
         {
             var msg = "";
             try
@@ -143,7 +142,6 @@ namespace SecretSantaApp.Controllers
         }
 
 
-
         [HttpPost]
         //[Route("tickets/{department}/newcategoryonticketview/edit")]
         public ActionResult SaveNewGroup(GroupEditModel model)
@@ -170,7 +168,6 @@ namespace SecretSantaApp.Controllers
             }
             return View("NewGroup", model);
         }
-
 
 
         [HttpPost]
@@ -631,7 +628,6 @@ namespace SecretSantaApp.Controllers
             string msg;
             try
             {
-           
                 var model = _secretSantaBl.InviteUsersEditModelByGroupId(groupid);
                 return PartialView("_InviteUsers", model);
             }
@@ -654,7 +650,7 @@ namespace SecretSantaApp.Controllers
             try
             {
                 var model = _secretSantaBl.AdditionalInviteUsersViewModel(count, groupid);
-                
+
                 return PartialView("_InviteUsersRow", model);
             }
             catch (AppException ax)
@@ -717,7 +713,7 @@ namespace SecretSantaApp.Controllers
         //}
     }
 
-
     #endregion
+
     // End Invite Users
 }

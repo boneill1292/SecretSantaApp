@@ -156,7 +156,7 @@ namespace SecretSantaApp
             var mgkey = Configuration["MailGun:ApiKey"];
             var sender = new MailgunSender(
                 domain, // Mailgun Domain
-              mgkey // Mailgun API Key
+                mgkey // Mailgun API Key
             );
             Email.DefaultSender = sender;
 
@@ -191,7 +191,6 @@ namespace SecretSantaApp
             app.UseSession();
 
             app.UseAuthentication();
-
 
 
             app.UseMvc(routes =>

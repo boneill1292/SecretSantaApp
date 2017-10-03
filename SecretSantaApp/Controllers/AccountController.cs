@@ -1,16 +1,10 @@
 ﻿using System;
-using System.Security.Claims;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-using Auth0.AuthenticationApi;
-using Auth0.AuthenticationApi.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
-using SecretSantaApp.Auth;
+using Microsoft.AspNetCore.Mvc;
 using SecretSantaApp.BL;
 using SecretSantaApp.Exceptions;
 using SecretSantaApp.Models;
@@ -27,16 +21,19 @@ namespace SecretSantaApp.Controllers
     /// </summary>
     public class AccountController : Controller
     {
-        private readonly Auth0Settings _auth0Settings;
+        //private readonly Auth0Settings _auth0Settings;
         private readonly ISecretSantaBl _secretSantaBl;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
 
-        public AccountController(IOptions<Auth0Settings> auth0Settings, ISecretSantaBl secretSantaBl,
-        UserManager<IdentityUser> userManager,
+        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
+
+        public AccountController(
+            //IOptions<Auth0Settings> auth0Settings, 
+            ISecretSantaBl secretSantaBl,
+            UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager)
         {
-            _auth0Settings = auth0Settings.Value;
+            //    _auth0Settings = auth0Settings.Value;
             _secretSantaBl = secretSantaBl;
             _userManager = userManager;
             _signInManager = signInManager;
@@ -127,7 +124,7 @@ namespace SecretSantaApp.Controllers
             }
 
             ModelState.AddModelError("", "Username/password not found");
-            return View("Login",loginViewModel);
+            return View("Login", loginViewModel);
         }
 
 
@@ -142,17 +139,14 @@ namespace SecretSantaApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser() { UserName = loginViewModel.UserName };
+                var user = new IdentityUser {UserName = loginViewModel.UserName};
                 var result = await _userManager.CreateAsync(user, loginViewModel.Password);
 
                 if (result.Succeeded)
-                {
                     return RedirectToAction("Index", "Home");
-                }
             }
-            return View("Register",loginViewModel);
+            return View("Register", loginViewModel);
         }
-
 
 
         [HttpGet]
@@ -163,7 +157,7 @@ namespace SecretSantaApp.Controllers
             {
                 var usermodel = _secretSantaBl.CustomUserModelByLoggedInUser(User);
                 //Sends the user to see if it is already in our database, or if should be added
-                var model = _secretSantaBl.CheckUserByCustomUserAccountNumber(usermodel);
+                _secretSantaBl.CheckUserByCustomUserAccountNumber(usermodel);
                 //return RedirectToAction(nameof(GroupsController.Index), "Groups");
                 return RedirectToAction(nameof(Profile), "Account");
             }
@@ -171,14 +165,12 @@ namespace SecretSantaApp.Controllers
             {
                 msg = ax.Message;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                var error = ex.Message;
+                //var error = ex.Message;
                 msg = "An Error Has Occured";
             }
             return PartialView("_ErrorMessage", new StringModel(msg));
-
-
         }
 
 
@@ -267,8 +259,8 @@ namespace SecretSantaApp.Controllers
                 var m = _secretSantaBl.SaveUserDetails(model);
                 m.IsMe = true;
                 m.Saved = true;
-               //return RedirectToAction("ViewOtherUserDetailsPartial", new { acctno = m.UserAcctNo });
-                 return PartialView("_ViewEditUserDetails", m);
+                //return RedirectToAction("ViewOtherUserDetailsPartial", new { acctno = m.UserAcctNo });
+                return PartialView("_ViewEditUserDetails", m);
             }
             catch (Exception ex)
             {
@@ -300,7 +292,7 @@ namespace SecretSantaApp.Controllers
 
         public async Task LoginAuth(string returnUrl = "/")
         {
-            await HttpContext.ChallengeAsync("Auth0", new AuthenticationProperties() { RedirectUri = returnUrl });
+            await HttpContext.ChallengeAsync("Auth0", new AuthenticationProperties {RedirectUri = returnUrl});
         }
 
         //[HttpPost]
