@@ -266,6 +266,7 @@ namespace SecretSantaApp.Controllers
         {
             //Sends the user to our RedirectToLocal Action
             var url = Url.Action("RedirectToLocal", "Account");
+
             var properties = new AuthenticationProperties
             {
                 RedirectUri = url
