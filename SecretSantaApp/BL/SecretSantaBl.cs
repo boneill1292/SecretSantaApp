@@ -991,6 +991,36 @@ namespace SecretSantaApp.BL
             return result;
         }
 
+        public CustomUserDetailsEditModel CustomUserDetailsEditModelByAcctNo(string acctno)
+        {
+            var result = new CustomUserDetailsEditModel();
+
+            var loggedinuser = GetLoggedInUser();
+
+            if (loggedinuser.AccountNumberString == acctno)
+            {
+                result.IsMe = true;
+
+            }
+
+            var user = _customUserDal.CustomUserByAccountNumber(acctno);
+
+            result.UserFullName = user.FullName;
+            result.UserAcctNo = acctno;
+            result.UserId = user.UserId;
+
+            var details = _customUserDetailsDal.UserDetailsByUserId(user.UserId);
+            if (details != null)
+                result.Update(details);
+
+
+            //var details = _customUserDetailsDal.UserDetailsByCustomUserAcctNo(acctno);
+            //result.Update(details);
+
+
+            return result;
+        }
+
 
         public CustomUserDetailsEditModel SaveUserDetails(CustomUserDetailsEditModel model)
         {

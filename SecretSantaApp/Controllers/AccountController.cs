@@ -231,8 +231,8 @@ namespace SecretSantaApp.Controllers
             string msg;
             try
             {
-                var model = _secretSantaBl.UserDetailsDisplayModelByAcctNo(acctno);
-                return PartialView("_DisplayUserDetails", model);
+                var model = _secretSantaBl.CustomUserDetailsEditModelByAcctNo(acctno);
+                return PartialView("_ViewEditUserDetails", model);
             }
             catch (Exception ex)
             {
@@ -250,7 +250,6 @@ namespace SecretSantaApp.Controllers
                 var m = _secretSantaBl.SaveUserDetails(model);
                 m.Saved = true;
                 return PartialView("_UserDetails", m);
-                //return PartialView("_JoinGroupEntry", m);
             }
             catch (Exception ex)
             {
@@ -258,6 +257,25 @@ namespace SecretSantaApp.Controllers
                 //_log.LogWarning(ex.Message);
             }
             return PartialView("_UserDetails", model);
+        }
+
+        [HttpPost]
+        public ActionResult SaveUserDetailsInGroup(CustomUserDetailsEditModel model)
+        {
+            try
+            {
+                var m = _secretSantaBl.SaveUserDetails(model);
+                m.IsMe = true;
+                m.Saved = true;
+               //return RedirectToAction("ViewOtherUserDetailsPartial", new { acctno = m.UserAcctNo });
+                 return PartialView("_ViewEditUserDetails", m);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+                //_log.LogWarning(ex.Message);
+            }
+            return PartialView("_ViewEditUserDetails", model);
         }
 
 

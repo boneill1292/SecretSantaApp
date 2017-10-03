@@ -1,0 +1,193 @@
+﻿@using SecretSantaApp.BL
+@model CustomUserDetailsEditModel
+@inject ISecretSantaBl ssbl
+@{
+    var test = "hey";
+    var uid = Guid.NewGuid();
+    var containerid = $"divcontainerid-{uid}";
+    var commonsizesdropdown = ssbl.CommonSizesDropdown();
+}
+
+<div id="@containerid">
+
+    @if (Model.IsMe)
+    {
+        if (Model.Saved)
+        {
+            var userdetailsurl = Url.Action("ViewOtherUserDetailsPartial", "Account", new {acctno = Model.UserAcctNo});
+            <h4>Saved.</h4>
+            <script>
+                $(document).ready(function() {
+                    @*window.ReloadSavedDetails('@Model.UserAcctNo');*@
+                    window.LayoutLoadPartial("@containerid", "@userdetailsurl");
+                });
+            </script>
+        }
+        else
+        {
+            <div class="col-lg-12 ControlBox" style="background-color: green">
+                <div class="text-center">
+
+                    <div class="row col-xs-12 center-block RoundCornerBox" style="background-color: lightgray; padding-bottom: 2%;">
+
+
+                        <form asp-action="SaveUserDetailsInGroup"
+                              asp-controller="Account"
+                              data-ajax="true"
+                              data-ajax-method="POST"
+                              data-ajax-mode="replace"
+                              style="padding-top: 2%"
+                              data-ajax-update="#@containerid">
+
+                            <div asp-validation-summary="All" class="text-danger"></div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-3" style="margin: 0 auto !important" asp-for="ShoeSize">Shoe Size<em>*</em></label>
+                                <div class="col-sm-8 col-xs-12" style="margin: 0 auto !important; text-align: center !important;">
+                                    <input type="text" asp-for="ShoeSize" placeholder="Shoe Size" class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-3" style="margin: 0 auto !important" asp-for="ShirtSize">Top Size<em>*</em></label>
+                                <div class="col-sm-8 col-xs-12" style="margin: 0 auto !important; text-align: center !important;">
+
+
+                                    <select class="form-control" asp-for="ShirtSize" asp-items="@commonsizesdropdown"></select>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-3" style="margin: 0 auto !important" asp-for="PantsSize">Bottom Size<em>*</em></label>
+                                <div class="col-sm-8 col-xs-12" style="margin: 0 auto !important; text-align: center !important;">
+                                    <select class="form-control" asp-for="PantsSize" asp-items="@commonsizesdropdown"></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-3" style="margin: 0 auto !important" asp-for="SweatShirtSize">SweatShirt Size<em>*</em></label>
+                                <div class="col-sm-8 col-xs-12" style="margin: 0 auto !important; text-align: center !important;">
+                                    <select class="form-control" asp-for="SweatShirtSize" asp-items="@commonsizesdropdown"></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-3" style="margin: 0 auto !important" asp-for="FavoriteBrands">Favorite Brands<em>*</em></label>
+                                <div class="col-sm-8 col-xs-12" style="margin: 0 auto !important; text-align: center !important;">
+                                    <input type="text" asp-for="FavoriteBrands" placeholder="Favorite Brands" class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Notes" class="control-label col-sm-3" style="margin: 0 auto !important">Notes <em>*</em> </label>
+                                <div class="col-sm-8 col-xs-12" style="margin: 0 auto !important; text-align: center !important;">
+                                    <textarea asp-for="Notes" class="form-control" id="exampleTextarea" rows="3"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-8">
+                                    <input type="submit" name="signin" id="signin" value="Submit" class="btn btn-default btn-lg BtnGreen" />
+                                </div>
+                            </div>
+                            
+                            
+                            @*<div id="@loadingid"
+                                 style="display: none;">
+                                @Html.Partial("_Loading", new StringModel(CommonResource.Saving))
+                            </div>*@
+
+                            @Html.HiddenFor(x => x.DetailsId)
+                            @Html.HiddenFor(x => x.UserAcctNo)
+                            @Html.HiddenFor(x => x.UserId)
+                            @Html.HiddenFor(x => x.IsMe)
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        }
+
+    }
+    else
+    {
+        if (Model.DetailsId >= 1)
+        {
+            <div style="">
+                <table class="table table-responsive table-striped">
+                    <tbody>
+                        @if (Model.ShoeSize >= 1)
+                        {
+                            <tr>
+                                <th>Shoe Size</th>
+                                <td>@Model.ShoeSize</td>
+                                <th>&nbsp;</th>
+                            </tr>
+                        }
+
+                        @if (Model.ShirtSize != null)
+                        {
+                            <tr>
+                                <th>Shirt Size</th>
+                                <td>@Model.ShirtSize</td>
+                                <th>&nbsp;</th>
+                            </tr>
+                        }
+
+                        @if (Model.PantsSize != null)
+                        {
+                            <tr>
+                                <th>Pant Size</th>
+                                <td>@Model.PantsSize</td>
+                                <th>&nbsp;</th>
+                            </tr>
+                        }
+
+                        @if (Model.SweatShirtSize != null)
+                        {
+                            <tr>
+                                <th>Sweat Shirt Size</th>
+                                <td>@Model.SweatShirtSize</td>
+                                <th>&nbsp;</th>
+                            </tr>
+                        }
+
+
+                        @if (Model.FavoriteBrands != null)
+                        {
+                            <tr>
+                                <th>Favorite Brands</th>
+                                <td>@Model.FavoriteBrands</td>
+                                <th>&nbsp;</th>
+                            </tr>
+                        }
+
+
+                        @if (Model.Notes != null)
+                        {
+                            <tr>
+                                <th>Notes</th>
+                                <td>@Model.Notes</td>
+                                <th>&nbsp;</th>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="text-center">
+                <h5>@Model.UserFullName Has Not Entered Any Information</h5>
+            </div>
+        }
+
+    }
+   
+
+
+
+
+</div>

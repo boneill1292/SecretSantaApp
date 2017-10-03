@@ -56,11 +56,7 @@
                         <div class="form-group">
                             <label class="control-label col-sm-3" style="margin: 0 auto !important" asp-for="ShirtSize">Top Size<em>*</em></label>
                             <div class="col-sm-8 col-xs-12" style="margin: 0 auto !important; text-align: center !important;">
-                                @*<input type="text" asp-for="ShirtSize" placeholder="Shirt Size" class="form-control" />*@
 
-                                @*<select asp-for="ShirtSize" asp-items="Html.GetEnumSelectList<CommonSizes>()">
-                                    <option selected="selected" value="">Please select</option>
-                                </select>*@
 
                                 <select class="form-control" asp-for="ShirtSize" asp-items="@commonsizesdropdown"></select>
 

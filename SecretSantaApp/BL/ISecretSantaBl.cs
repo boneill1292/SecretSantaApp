@@ -90,6 +90,7 @@ namespace SecretSantaApp.BL
         CustomUserDetailsEditModel UserDetailsEditModelByAcctNo(string acctno);
 
         CustomUserDetailsDisplayModel UserDetailsDisplayModelByAcctNo(string acctno);
+        CustomUserDetailsEditModel CustomUserDetailsEditModelByAcctNo(string acctno);
         CustomUserDetailsEditModel SaveUserDetails(CustomUserDetailsEditModel model);
 
 

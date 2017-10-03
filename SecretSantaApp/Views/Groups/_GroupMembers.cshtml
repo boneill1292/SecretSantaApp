@@ -38,21 +38,7 @@
                         </td>
                         <td>@user</td>
                         <td>&nbsp;</td>
-                        @*<td>@u.Email</td>*@
                         <td>
-                            @*<button class="btn btn-group modal-link BtnGreen"
-                                            href="@userconditionsurl"
-                                            data-target="#myModal"
-                                            data-toggle="modal">
-                                        New Condition
-                                    </button>
-
-                                    <a href="@userdetailsurl"
-                                       class="btn BtnRed"
-                                       data-target="#myModal"
-                                       data-toggle="modal">
-                                        Info
-                                    </a>*@
 
                             <button class="btn btn-group BtnGreen"
                                     onclick="LoadPopup('@userconditionsurl')">
@@ -84,6 +70,8 @@
         $(document).ready(function() {
             $("#@containerid").trigger("create");
         }); //doc ready
+
+
 
 
         $(function() {

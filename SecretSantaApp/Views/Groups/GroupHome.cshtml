@@ -21,18 +21,11 @@
     @if (Model.IsAuthorized)
     {
         <div style="text-align: center">
-            @*<span>
-                <img src="~/images/smNorthPole.png" alt="NorthPole" class="img-circle" style="display: inline !important">
-            </span>*@
             
             <span id="groupnamediv" style="display:inline!important">
-                @*<h3 style="color: #4CAF50; display: inline !important;">Welcome to Group: @Model.GroupName</h3>*@
             </span>
            
-           
-            @*<span>
-                <img src="~/images/smNorthPole.png" alt="NorthPole" class="img-circle" style="display: inline !important">
-            </span>*@
+
             <div>
                 <button class="btn btn-group BtnGreen btn-sm"
                         onclick="LoadPopup('@editgroupurl')">
@@ -40,7 +33,6 @@
                 </button>
             </div>
 
-            @*<h5>Group Admin: @Model.GroupAdmin.FullName</h5>*@
         </div>
     
 
@@ -90,12 +82,14 @@
                             
                             <button class="btn btn-group BtnRed"
                                     onclick="LoadPopup('@inviteusersurl')">
-                              Invite People
+                                Invite People
                             </button>
                             @* } *@
                         </div>
                     </div>
                 </div>
+    
+
                 <div id="existinggroupdiv">
                     <div class="col-md-7" style="outline: 1px green solid">
                         @Html.Partial("_GroupMembers", Model)
@@ -173,6 +167,14 @@
 
         function LoadGroupName() {
             window.LayoutLoadPartial("groupnamediv", '@groupnameurl');
+        }
+
+
+        function ReloadSavedDetails(useracctno) {
+            
+            var userdetailsurl = '@Url.Action("ViewOtherUserDetailsPartial", "Account", new {acctno = "-1"});';
+            userdetailsurl = userdetailsurl.replace("1", useracctno);
+            LoadPopup(userdetailsurl);
         }
 
 
