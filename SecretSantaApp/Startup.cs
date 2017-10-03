@@ -29,7 +29,7 @@ namespace SecretSantaApp
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
-               // .AddJsonFile("appsettings.json", false, true)
+                // .AddJsonFile("appsettings.json", false, true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
@@ -135,6 +135,15 @@ namespace SecretSantaApp
             // Add framework services.
             services.AddMvc();
 
+
+            services.AddSingleton<IConfiguration>(Configuration);
+
+            //var testtest = Configuration["TestMe:TestOne"];
+            //var testthree = Configuration["TestMe:TestTwo"];
+            //options.ClientId = Configuration["Auth0:ClientId"];
+            //options.ClientSecret = Configuration["Auth0:ClientSecret"];
+
+
             //session and cache
             services.AddDistributedMemoryCache(); // Adds a default in-memory implementation of IDistributedCache
             services.AddSession();
@@ -143,10 +152,11 @@ namespace SecretSantaApp
             services.AddOptions();
 
             //MailGun
+            var domain = Configuration["MailGun:Domain"];
+            var mgkey = Configuration["MailGun:ApiKey"];
             var sender = new MailgunSender(
-                "elfbuddies.com", // Mailgun Domain
-                //"sandbox3c051cffd5d14c0885493d6cfbe1fa8e.mailgun.org"
-                "key-30e16c6964d4f339fab512a5aa3b988d" // Mailgun API Key
+                domain, // Mailgun Domain
+              mgkey // Mailgun API Key
             );
             Email.DefaultSender = sender;
 
@@ -182,7 +192,7 @@ namespace SecretSantaApp
 
             app.UseAuthentication();
 
-            
+
 
             app.UseMvc(routes =>
             {
