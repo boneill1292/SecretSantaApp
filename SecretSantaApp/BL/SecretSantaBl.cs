@@ -59,6 +59,7 @@ namespace SecretSantaApp.BL
         {
             var acctid = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
 
+            var testfromvscode = "Hi im from vs code:";
             //resharper ignore nullcheck
             if (acctid == null)
                 throw new AppException("Error getting account number");
