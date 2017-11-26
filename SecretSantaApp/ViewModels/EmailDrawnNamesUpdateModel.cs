@@ -6,5 +6,7 @@
         public string PersonOneEmail { get; set; }
         public string PersonTwoName { get; set; }
         public string PersonTwoEmail { get; set; }
+
+        public string GroupName { get; set; }
     }
 }

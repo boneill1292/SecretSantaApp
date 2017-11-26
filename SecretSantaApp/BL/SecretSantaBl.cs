@@ -879,16 +879,18 @@ namespace SecretSantaApp.BL
             model.DrawNamesList = drawnnamelist;
 
 
-            await EmailGroupMembersResults(model).ConfigureAwait(false);
+            await EmailGroupMembersResultsAsync(model).ConfigureAwait(false);
             return model;
         }
 
 
-        private async Task EmailGroupMembersResults(DrawNamesDisplayModel model)
+        private async Task EmailGroupMembersResultsAsync(DrawNamesDisplayModel model)
         {
             foreach (var n in model.DrawNamesList)
             {
                 var emailmodel = new EmailDrawnNamesUpdateModel();
+                emailmodel.GroupName = model.Group.GroupName;
+
                 var personemailing = _customUserDal.CustomUserByAccountNumber(n.PersonOne);
                 var persontheyreceived = _customUserDal.CustomUserByAccountNumber(n.PersonTwo);
                 emailmodel.PersonOneName = personemailing.FullName;
@@ -905,7 +907,7 @@ namespace SecretSantaApp.BL
         private async Task<bool> SendPariedMemberResultsAsync(EmailDrawnNamesUpdateModel i)
         {
             var emailbody = $"Yo {i.PersonOneName}!  \n" +
-                            $"We just drew names and you got: {i.PersonTwoName}. \n "
+                            $"We just drew names in Group: {i.GroupName} and you got: {i.PersonTwoName}. \n "
 
                 ;
 
@@ -1109,8 +1111,7 @@ namespace SecretSantaApp.BL
             var emailbody = $"Yo {i.Name}!  \n" +
                             $"You were invited to join group: {i.GroupName}. \n " +
                             $"Click Here To Join The Group: {i.GroupUrl}" + "\n" +
-                            $"The Password is: {i.GroupPassword}" + "\n" +
-                            "(The redirect isn't going to work yet, but i'm getting it there. Just got .netcore 2 working)";
+                            $"The Password is: {i.GroupPassword}" + "\n";
 
             var ms = new MailService();
 

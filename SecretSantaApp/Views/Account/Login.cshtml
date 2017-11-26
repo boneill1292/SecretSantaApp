@@ -14,8 +14,12 @@
                 <hr/>
 
                 <div class="form-group">
-                    <a class="btn btn-lg btn-default btn-block" asp-controller="Account" asp-action="LoginExternal" asp-route-connection="google-oauth2" asp-route-returnurl="@ViewData["ReturnUrl"]">
-                        Login External
+                    <a class="btn btn-lg btn-default btn-block"
+                       asp-controller="Account"
+                       asp-action="LoginExternal"
+                       asp-route-connection="google-oauth2"
+                       asp-route-returnurl="@Model.ReturnUrl">
+                        Facebook or Gmail Login
                     </a>
                 </div>
 

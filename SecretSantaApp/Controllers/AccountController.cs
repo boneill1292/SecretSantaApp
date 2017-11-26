@@ -96,10 +96,9 @@ namespace SecretSantaApp.Controllers
         [AllowAnonymous]
         public IActionResult Login(string returnUrl)
         {
-            return View(new LoginViewModel
-            {
-                ReturnUrl = returnUrl
-            });
+            var model = new LoginViewModel();
+            model.ReturnUrl = returnUrl;
+            return View("Login",model);
         }
 
         [HttpPost]
@@ -272,10 +271,19 @@ namespace SecretSantaApp.Controllers
 
 
         [HttpGet]
-        public IActionResult LoginExternal(string connection, string returnUrl = "/")
+        public IActionResult LoginExternal(string connection, string returnUrl)
         {
             //Sends the user to our RedirectToLocal Action
-            var url = Url.Action("RedirectToLocal", "Account");
+            //var url = Url.Action("RedirectToLocal", "Account");
+            string url;
+            if (returnUrl != null)
+            {
+                url = returnUrl;
+            }
+            else
+            {
+                url = Url.Action("RedirectToLocal", "Account");
+            }
 
             var properties = new AuthenticationProperties
             {
