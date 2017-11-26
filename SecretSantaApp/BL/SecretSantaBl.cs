@@ -60,9 +60,9 @@ namespace SecretSantaApp.BL
             var acctid = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
 
             var testfromvscode = "second vs code test";
-        
 
-        
+
+
             //resharper ignore nullcheck
             if (acctid == null)
                 throw new AppException("Error getting account number");
@@ -151,7 +151,7 @@ namespace SecretSantaApp.BL
                 throw new AppException("Name is Required");
 
 
-           // var group = _groupDal.GetGroupById(model.GroupId);
+            // var group = _groupDal.GetGroupById(model.GroupId);
 
             //if (group == null)
             //    throw new AppException($"Error loading Group ID: {model.GroupId}");
@@ -408,7 +408,7 @@ namespace SecretSantaApp.BL
         }
 
 
-        public InviteUsersEditModel SendInviteToUsers(InviteUsersEditModel model)
+        public async Task<InviteUsersEditModel> SendInviteToUsersAsync(InviteUsersEditModel model)
         {
             var result = new InviteUsersEditModel();
 
@@ -446,7 +446,7 @@ namespace SecretSantaApp.BL
                 {
                     //This is how it works. keep experimenting 
                     i.GroupUrl = model.GroupUrl;
-                    SendInviteEmailAsync(i);
+                    await SendInviteEmailAsync(i).ConfigureAwait(false);
                     ////Email.DefaultRenderer = new RazorRenderer();
 
 
@@ -850,7 +850,7 @@ namespace SecretSantaApp.BL
         }
 
 
-        public DrawNamesDisplayModel DrawNames(DrawNamesDisplayModel model)
+        public async Task<DrawNamesDisplayModel> DrawNamesAsync(DrawNamesDisplayModel model)
         {
             var drawnnamelist = new List<DrawNamesEditModel>();
             var maxretries = 100;
@@ -877,8 +877,53 @@ namespace SecretSantaApp.BL
 
             model.DrawNamesList = new List<DrawNamesEditModel>();
             model.DrawNamesList = drawnnamelist;
+
+
+            await EmailGroupMembersResults(model).ConfigureAwait(false);
             return model;
         }
+
+
+        private async Task EmailGroupMembersResults(DrawNamesDisplayModel model)
+        {
+            foreach (var n in model.DrawNamesList)
+            {
+                var emailmodel = new EmailDrawnNamesUpdateModel();
+                var personemailing = _customUserDal.CustomUserByAccountNumber(n.PersonOne);
+                var persontheyreceived = _customUserDal.CustomUserByAccountNumber(n.PersonTwo);
+                emailmodel.PersonOneName = personemailing.FullName;
+                emailmodel.PersonOneEmail = personemailing.Email;
+
+                emailmodel.PersonTwoName = persontheyreceived.FullName;
+                emailmodel.PersonTwoEmail = persontheyreceived.Email;
+
+                await SendPariedMemberResultsAsync(emailmodel).ConfigureAwait(false);
+
+            }
+        }
+
+        private async Task<bool> SendPariedMemberResultsAsync(EmailDrawnNamesUpdateModel i)
+        {
+            var emailbody = $"Yo {i.PersonOneName}!  \n" +
+                            $"We just drew names and you got: {i.PersonTwoName}. \n "
+
+                ;
+
+            var ms = new MailService();
+
+            var from = "santa@elfbuddies.com";
+            var to = i.PersonOneEmail;
+            var subject = "We Drew Names!";
+
+
+            //Get the razor view here
+            //https://stackoverflow.com/questions/40912375/return-view-as-string-in-net-core
+            var mailto = await ms.SendAsync(@from, to, subject, emailbody).ConfigureAwait(false);
+
+            return mailto;
+        }
+
+
 
 
         //Helpers
@@ -1059,7 +1104,7 @@ namespace SecretSantaApp.BL
         }
 
         //This method works
-        public async Task<bool> SendInviteEmailAsync(InviteUsersViewModel i)
+        private async Task<bool> SendInviteEmailAsync(InviteUsersViewModel i)
         {
             var emailbody = $"Yo {i.Name}!  \n" +
                             $"You were invited to join group: {i.GroupName}. \n " +
@@ -1077,10 +1122,13 @@ namespace SecretSantaApp.BL
 
             //Get the razor view here
             //https://stackoverflow.com/questions/40912375/return-view-as-string-in-net-core
-            var mailto = await ms.SendAsync(from, to, subject, emailbody);
+            var mailto = await ms.SendAsync(@from, to, subject, emailbody).ConfigureAwait(false);
 
             return mailto;
         }
+
+
+
 
 
         //public List<DrawNamesEditModel> GetRandomUsersForDrawingNames(int groupid)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +18,7 @@ namespace SecretSantaApp.Controllers
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILogger<GroupsController> _log;
-        private readonly ISecretSantaBl _secretSantaBl;
+      private readonly ISecretSantaBl _secretSantaBl;
         private readonly IViewRenderService _viewRenderService;
 
 
@@ -147,7 +148,9 @@ namespace SecretSantaApp.Controllers
         public ActionResult SaveNewGroup(GroupEditModel model)
         {
             if (!ModelState.IsValid)
+            {
                 return View("NewGroup", model);
+            }
             try
             {
                 //save the new group - get the ID
@@ -175,7 +178,9 @@ namespace SecretSantaApp.Controllers
         public ActionResult SaveGroup(GroupEditModel model)
         {
             if (!ModelState.IsValid)
+            {
                 return View("NewGroup", model);
+            }
             try
             {
                 //save the new group - get the ID
@@ -246,7 +251,9 @@ namespace SecretSantaApp.Controllers
         public ActionResult SubmitJoinGroup(JoinGroupEditModel model)
         {
             if (!ModelState.IsValid)
+            {
                 return PartialView("_JoinGroupEntry", model);
+            }
             //We need to pass the correct password - if the user does that.Add them to the group, and load the group  homepage.
             try
             {
@@ -576,13 +583,15 @@ namespace SecretSantaApp.Controllers
 
 
         [HttpPost]
-        public ActionResult SubmitDrawNames(DrawNamesDisplayModel model)
+        public async Task<ActionResult> SubmitDrawNames(DrawNamesDisplayModel model)
         {
             if (!ModelState.IsValid)
+            {
                 return PartialView("_DrawNames", model);
+            }
             try
             {
-                var m = _secretSantaBl.DrawNames(model);
+                var m = await _secretSantaBl.DrawNamesAsync(model).ConfigureAwait(false);
                 m.Saved = true;
                 return PartialView("_DrawNames", m);
             }
@@ -665,7 +674,7 @@ namespace SecretSantaApp.Controllers
         }
 
         [HttpPost]
-        public ActionResult SendInvitesTousers(InviteUsersEditModel model)
+        public async Task<ActionResult> SendInvitesTousers(InviteUsersEditModel model)
         {
             try
             {
@@ -673,10 +682,10 @@ namespace SecretSantaApp.Controllers
                 //var url = Url.Action("GroupHome", "Groups", new {id = model.GroupId});
                 //var resulturl = baseurl + url;
                 var groupurlprefix = $"http://elfbuddies.com/Groups/GroupHome/{model.GroupId}?";
-                var groupurlsuffix = model.GroupId + "?";
-                var url = groupurlprefix + groupurlsuffix;
+                //var groupurlsuffix = model.GroupId + "?";
+                //var url = groupurlprefix + groupurlsuffix;
                 model.GroupUrl = groupurlprefix;
-                var m = _secretSantaBl.SendInviteToUsers(model);
+                var m = await _secretSantaBl.SendInviteToUsersAsync(model).ConfigureAwait(false);
                 m.Saved = true;
                 return PartialView("_InviteUsers", m);
             }

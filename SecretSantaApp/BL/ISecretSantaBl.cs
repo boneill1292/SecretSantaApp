@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SecretSantaApp.ViewModels;
@@ -37,7 +38,7 @@ namespace SecretSantaApp.BL
 
         InviteUsersViewModel AdditionalInviteUsersViewModel(int tempid, int groupid);
 
-        InviteUsersEditModel SendInviteToUsers(InviteUsersEditModel model);
+        Task<InviteUsersEditModel> SendInviteToUsersAsync(InviteUsersEditModel model);
         JoinGroupEditModel JoinGroupEditModelByGroupId(int groupid);
 
         JoinGroupEditModel CheckPasswordInput(JoinGroupEditModel model);
@@ -69,7 +70,7 @@ namespace SecretSantaApp.BL
 
         DrawNamesDisplayModel DrawNamesDisplayModelByGroupId(int groupid);
 
-        DrawNamesDisplayModel DrawNames(DrawNamesDisplayModel model);
+        Task<DrawNamesDisplayModel> DrawNamesAsync(DrawNamesDisplayModel model);
 
         GroupPairingDisplayModel GroupPairingDisplayModelByLoggedInUserByGroupId(int groupid);
 
