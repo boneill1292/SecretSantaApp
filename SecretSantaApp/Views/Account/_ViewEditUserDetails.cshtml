@@ -25,7 +25,7 @@
         }
         else
         {
-            <div class="col-lg-12 ControlBox" style="background-color: green">
+            <div class="col-lg-12 col-xs-12 ControlBox" style="background-color: green">
                 <div class="text-center">
 
                     <div class="row col-xs-12 center-block RoundCornerBox" style="background-color: lightgray; padding-bottom: 2%;">
@@ -58,12 +58,12 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                            @*<div class="form-group">
                                 <label class="control-label col-sm-3" style="margin: 0 auto !important" asp-for="PantsSize">Bottom Size<em>*</em></label>
                                 <div class="col-sm-8 col-xs-12" style="margin: 0 auto !important; text-align: center !important;">
                                     <select class="form-control" asp-for="PantsSize" asp-items="@commonsizesdropdown"></select>
                                 </div>
-                            </div>
+                            </div>*@
 
                             <div class="form-group">
                                 <label class="control-label col-sm-3" style="margin: 0 auto !important" asp-for="SweatShirtSize">SweatShirt Size<em>*</em></label>
@@ -135,14 +135,14 @@
                             </tr>
                         }
 
-                        @if (Model.PantsSize != null)
+                        @*@if (Model.PantsSize != null)
                         {
                             <tr>
                                 <th>Pant Size</th>
                                 <td>@Model.PantsSize</td>
                                 <th>&nbsp;</th>
                             </tr>
-                        }
+                        }*@
 
                         @if (Model.SweatShirtSize != null)
                         {

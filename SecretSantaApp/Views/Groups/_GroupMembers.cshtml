@@ -5,6 +5,7 @@
 
     var guid = Guid.NewGuid();
     var containerid = $"divcontainerid-{guid}";
+    var loggedinuser = Ssbl.CustomUserModelByLoggedInUser(User);
 }
 
 <div id="@containerid">
@@ -27,6 +28,8 @@
                 <tbody>
                 @foreach (var u in Model.GroupMembershipModelList)
                 {
+                    var isme = u.AccountNumberString == loggedinuser.AccountNumberString;
+
                     var user = Ssbl.UserFullNameByAccountNumberString(u.AccountNumberString);
                     var image = Ssbl.UserImageByAccountNumberString(u.AccountNumberString);
                     var userconditionsurl = Url.Action("NewMemberConditionPopup", "Groups", new {membershipid = u.ID, acctno = u.AccountNumberString});
@@ -44,11 +47,23 @@
                                     onclick="LoadPopup('@userconditionsurl')">
                                 New Condition
                             </button>
+                            
+                            
+                            @if (!isme)
+                            {
+                                <button class="btn btn-group BtnRed"
+                                        onclick="LoadPopup('@userdetailsurl')">
+                                    Info
+                                </button>
+                            }
+                            else
+                            {
+                                <button class="btn btn-group BtnRed"
+                                        onclick="LoadPopup('@userdetailsurl')">
+                                   Edit My Info
+                                </button>
+                            }
 
-                            <button class="btn btn-group BtnRed"
-                                    onclick="LoadPopup('@userdetailsurl')">
-                                Details
-                            </button>
 
 
                         </td>

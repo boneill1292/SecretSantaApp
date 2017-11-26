@@ -59,13 +59,12 @@ namespace SecretSantaApp.BL
         {
             var acctid = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
 
-            var testfromvscode = "second vs code test";
 
 
-
-            //resharper ignore nullcheck
             if (acctid == null)
+            {
                 throw new AppException("Error getting account number");
+            }
 
             var existinguser = _customUserDal.CustomUserByAccountNumber(acctid);
 
@@ -1130,6 +1129,10 @@ namespace SecretSantaApp.BL
 
 
 
+        public bool IsLoggedInUserMe(string acctno)
+        {
+            return true;
+        }
 
 
         //public List<DrawNamesEditModel> GetRandomUsersForDrawingNames(int groupid)

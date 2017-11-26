@@ -98,7 +98,7 @@ namespace SecretSantaApp.Controllers
         {
             var model = new LoginViewModel();
             model.ReturnUrl = returnUrl;
-            return View("Login",model);
+            return View("Login", model);
         }
 
         [HttpPost]
@@ -138,7 +138,7 @@ namespace SecretSantaApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser {UserName = loginViewModel.UserName};
+                var user = new IdentityUser { UserName = loginViewModel.UserName };
                 var result = await _userManager.CreateAsync(user, loginViewModel.Password).ConfigureAwait(false);
 
                 if (result.Succeeded)
@@ -273,37 +273,81 @@ namespace SecretSantaApp.Controllers
         [HttpGet]
         public IActionResult LoginExternal(string connection, string returnUrl)
         {
-            //Sends the user to our RedirectToLocal Action
-            //var url = Url.Action("RedirectToLocal", "Account");
-            string url;
-            if (returnUrl != null)
+            string msg;
+            try
             {
-                url = returnUrl;
+                //Sends the user to our RedirectToLocal Action
+                //var url = Url.Action("RedirectToLocal", "Account");
+
+                string url;
+                if (returnUrl != null)
+                {
+                    //Run them through the check user logic, then decide where they need to go
+                    //var usermodel = _secretSantaBl.CustomUserModelByLoggedInUser(User);
+                    //_secretSantaBl.CheckUserByCustomUserAccountNumber(usermodel);
+
+                    //If the user is a returning user
+                    //url = returnUrl;
+                    url = Url.Action("RedirectCreateUpdateUserSendBack", "Account", new {redirecturl = returnUrl});
+                }
+                else
+                {
+                    url = Url.Action("RedirectToLocal", "Account");
+                }
+
+                var properties = new AuthenticationProperties
+                {
+                    RedirectUri = url
+                };
+
+                if (!string.IsNullOrEmpty(connection))
+                {
+                    properties.Items.Add("connection", connection);
+                }
+
+
+                return new ChallengeResult("Auth0", properties);
             }
-            else
+
+            catch (AppException ax)
             {
-                url = Url.Action("RedirectToLocal", "Account");
+                msg = ax.Message;
             }
-
-            var properties = new AuthenticationProperties
+            catch (Exception)
             {
-                RedirectUri = url
-            };
-
-            if (!string.IsNullOrEmpty(connection))
-                properties.Items.Add("connection", connection);
-
-
-            return new ChallengeResult("Auth0", properties);
+                //var error = ex.Message;
+                msg = "An Error Has Occured";
+            }
+            return PartialView("_ErrorMessage", new StringModel(msg));
         }
+
+
+        public ActionResult RedirectCreateUpdateUserSendBack(string redirecturl )
+        {
+
+            //Create the user / update the user appropriately
+            var usermodel = _secretSantaBl.CustomUserModelByLoggedInUser(User);
+            _secretSantaBl.CheckUserByCustomUserAccountNumber(usermodel);
+
+
+            //Send them back to the Group
+            var absUrl = string.Format("{0}://{1}{2}", Request.Scheme,
+                Request.Host, redirecturl);
+
+            //string scheme = url.ActionContext.HttpContext.Request.Scheme;
+            return Redirect(absUrl);
+        }
+
+
+
 
 
         public Task LoginAuth(string returnUrl = "/")
         {
-            return HttpContext.ChallengeAsync("Auth0", new AuthenticationProperties {RedirectUri = returnUrl});
+            return HttpContext.ChallengeAsync("Auth0", new AuthenticationProperties { RedirectUri = returnUrl });
         }
 
-  
+
         public IActionResult AccessDenied()
         {
             return View("AccessDenied");
@@ -330,6 +374,7 @@ namespace SecretSantaApp.Controllers
             //var url = Url.Action("CheckUser", "Account");
             return RedirectToAction(nameof(CheckUser), "Account");
         }
+
 
 
         //[Authorize]
