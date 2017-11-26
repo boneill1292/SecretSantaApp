@@ -109,11 +109,11 @@ namespace SecretSantaApp.Controllers
             if (!ModelState.IsValid)
                 return View(loginViewModel);
 
-            var user = await _userManager.FindByNameAsync(loginViewModel.UserName);
+            var user = await _userManager.FindByNameAsync(loginViewModel.UserName).ConfigureAwait(false);
 
             if (user != null)
             {
-                var result = await _signInManager.PasswordSignInAsync(user, loginViewModel.Password, false, false);
+                var result = await _signInManager.PasswordSignInAsync(user, loginViewModel.Password, false, false).ConfigureAwait(false);
                 if (result.Succeeded)
                 {
                     if (string.IsNullOrEmpty(loginViewModel.ReturnUrl))
@@ -140,7 +140,7 @@ namespace SecretSantaApp.Controllers
             if (ModelState.IsValid)
             {
                 var user = new IdentityUser {UserName = loginViewModel.UserName};
-                var result = await _userManager.CreateAsync(user, loginViewModel.Password);
+                var result = await _userManager.CreateAsync(user, loginViewModel.Password).ConfigureAwait(false);
 
                 if (result.Succeeded)
                     return RedirectToAction("Index", "Home");
@@ -290,18 +290,12 @@ namespace SecretSantaApp.Controllers
         }
 
 
-        public async Task LoginAuth(string returnUrl = "/")
+        public Task LoginAuth(string returnUrl = "/")
         {
-            await HttpContext.ChallengeAsync("Auth0", new AuthenticationProperties {RedirectUri = returnUrl});
+            return HttpContext.ChallengeAsync("Auth0", new AuthenticationProperties {RedirectUri = returnUrl});
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> Logout()
-        //{
-        //    await _signInManager.SignOutAsync();
-        //    return RedirectToAction("Index", "Home");
-        //}
-
+  
         public IActionResult AccessDenied()
         {
             return View("AccessDenied");
@@ -317,8 +311,8 @@ namespace SecretSantaApp.Controllers
                 // Note that the resulting absolute Uri must be whitelisted in the 
                 // **Allowed Logout URLs** settings for the client.
                 RedirectUri = Url.Action("Index", "Home")
-            });
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            }).ConfigureAwait(false);
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme).ConfigureAwait(false);
         }
 
 

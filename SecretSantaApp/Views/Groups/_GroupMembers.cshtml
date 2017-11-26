@@ -1,6 +1,6 @@
 ﻿@using SecretSantaApp.BL
 @model GroupHomeEditModel
-@inject ISecretSantaBl ssbl
+@inject ISecretSantaBl Ssbl
 @{
 
     var guid = Guid.NewGuid();
@@ -27,8 +27,8 @@
                 <tbody>
                 @foreach (var u in Model.GroupMembershipModelList)
                 {
-                    var user = ssbl.UserFullNameByAccountNumberString(u.AccountNumberString);
-                    var image = ssbl.UserImageByAccountNumberString(u.AccountNumberString);
+                    var user = Ssbl.UserFullNameByAccountNumberString(u.AccountNumberString);
+                    var image = Ssbl.UserImageByAccountNumberString(u.AccountNumberString);
                     var userconditionsurl = Url.Action("NewMemberConditionPopup", "Groups", new {membershipid = u.ID, acctno = u.AccountNumberString});
                     var userdetailsurl = Url.Action("ViewOtherUserDetailsPartial", "Account", new {acctno = u.AccountNumberString});
                     <tr>
