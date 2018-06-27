@@ -1,24 +1,18 @@
 ﻿<!-- Views/Account/Login.cshtml -->
 
-@model LoginViewModel
-@{
-    ViewData["Title"] = "Log In";
-}
+@model LoginViewModel @{ ViewData["Title"] = "Log In"; }
 
 <div class="row">
     <div class="col-md-4 col-md-offset-4">
         <section>
-            <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+            <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData[" ReturnUrl "]" method="post">
                 <h4>Log In</h4>
                 <h5>Use External Login to select Facebook or Gmail</h5>
                 <hr/>
 
                 <div class="form-group">
-                    <a class="btn btn-lg btn-default btn-block"
-                       asp-controller="Account"
-                       asp-action="LoginExternal"
-                       asp-route-connection="google-oauth2"
-                       asp-route-returnurl="@Model.ReturnUrl">
+                    <a class="btn btn-lg btn-default btn-block" asp-controller="Account" asp-action="LoginExternal" asp-route-connection="google-oauth2"
+                        asp-route-returnurl="@Model.ReturnUrl">
                         Facebook or Gmail Login
                     </a>
                 </div>

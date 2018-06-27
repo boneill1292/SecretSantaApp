@@ -27,7 +27,7 @@ namespace SecretSantaApp.Controllers
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public AccountController(
+        public AccountController (
             //IOptions<Auth0Settings> auth0Settings, 
             ISecretSantaBl secretSantaBl,
             UserManager<IdentityUser> userManager,
@@ -71,7 +71,6 @@ namespace SecretSantaApp.Controllers
         //            var username = user.PreferredUsername;
         //            var email = user.Email;
 
-
         //            // Create claims principal
         //            var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new[]
         //            {
@@ -94,71 +93,69 @@ namespace SecretSantaApp.Controllers
         //}
 
         [AllowAnonymous]
-        public IActionResult Login(string returnUrl)
+        public IActionResult Login (string returnUrl)
         {
-            var model = new LoginViewModel();
+            var model = new LoginViewModel ();
             model.ReturnUrl = returnUrl;
-            return View("Login", model);
+            return View ("Login", model);
         }
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Login(LoginViewModel loginViewModel)
+        public async Task<IActionResult> Login (LoginViewModel loginViewModel)
         {
             if (!ModelState.IsValid)
-                return View(loginViewModel);
+                return View (loginViewModel);
 
-            var user = await _userManager.FindByNameAsync(loginViewModel.UserName).ConfigureAwait(false);
+            var user = await _userManager.FindByNameAsync (loginViewModel.UserName).ConfigureAwait (false);
 
             if (user != null)
             {
-                var result = await _signInManager.PasswordSignInAsync(user, loginViewModel.Password, false, false).ConfigureAwait(false);
+                var result = await _signInManager.PasswordSignInAsync (user, loginViewModel.Password, false, false).ConfigureAwait (false);
                 if (result.Succeeded)
                 {
-                    if (string.IsNullOrEmpty(loginViewModel.ReturnUrl))
-                        return RedirectToAction("Index", "Home");
+                    if (string.IsNullOrEmpty (loginViewModel.ReturnUrl))
+                        return RedirectToAction ("Index", "Home");
 
-                    return Redirect(loginViewModel.ReturnUrl);
+                    return Redirect (loginViewModel.ReturnUrl);
                 }
             }
 
-            ModelState.AddModelError("", "Username/password not found");
-            return View("Login", loginViewModel);
+            ModelState.AddModelError ("", "Username/password not found");
+            return View ("Login", loginViewModel);
         }
 
-
-        public IActionResult Register()
+        public IActionResult Register ()
         {
-            return View("Register");
+            return View ("Register");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(LoginViewModel loginViewModel)
+        public async Task<IActionResult> Register (LoginViewModel loginViewModel)
         {
             if (ModelState.IsValid)
             {
                 var user = new IdentityUser { UserName = loginViewModel.UserName };
-                var result = await _userManager.CreateAsync(user, loginViewModel.Password).ConfigureAwait(false);
+                var result = await _userManager.CreateAsync (user, loginViewModel.Password).ConfigureAwait (false);
 
                 if (result.Succeeded)
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction ("Index", "Home");
             }
-            return View("Register", loginViewModel);
+            return View ("Register", loginViewModel);
         }
 
-
         [HttpGet]
-        public IActionResult CheckUser()
+        public IActionResult CheckUser ()
         {
             string msg;
             try
             {
-                var usermodel = _secretSantaBl.CustomUserModelByLoggedInUser(User);
+                var usermodel = _secretSantaBl.CustomUserModelByLoggedInUser (User);
                 //Sends the user to see if it is already in our database, or if should be added
-                _secretSantaBl.CheckUserByCustomUserAccountNumber(usermodel);
+                _secretSantaBl.CheckUserByCustomUserAccountNumber (usermodel);
                 //return RedirectToAction(nameof(GroupsController.Index), "Groups");
-                return RedirectToAction(nameof(Profile), "Account");
+                return RedirectToAction (nameof (Profile), "Account");
             }
             catch (AppException ax)
             {
@@ -169,109 +166,105 @@ namespace SecretSantaApp.Controllers
                 //var error = ex.Message;
                 msg = "An Error Has Occured";
             }
-            return PartialView("_ErrorMessage", new StringModel(msg));
+            return PartialView ("_ErrorMessage", new StringModel (msg));
         }
 
-
-        [Authorize(Roles = "admin")]
-        public IActionResult Admin()
+        [Authorize (Roles = "admin")]
+        public IActionResult Admin ()
         {
-            return View();
+            return View ();
         }
-
 
         [Authorize]
         [HttpGet]
-        public ActionResult Profile()
+        public ActionResult Profile ()
         {
             string msg;
             try
             {
-                var model = _secretSantaBl.UserProfileViewModelByAcctNo(User);
-                return View("Profile", model);
+                var model = _secretSantaBl.UserProfileViewModelByAcctNo (User);
+                return View ("Profile", model);
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", ex.Message);
+                ModelState.AddModelError ("", ex.Message);
                 msg = "An Error Has Occured";
             }
-            return PartialView("_ErrorMessage", new StringModel(msg));
-        }
-
-
-        [HttpGet]
-        public ActionResult UserDetailsPartial(int userid)
-        {
-            string msg;
-            try
-            {
-                var model = _secretSantaBl.UserDetailsEditModelByUserId(userid);
-                return PartialView("_UserDetails", model);
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError("", ex.Message);
-                msg = "An Error Has Occured";
-            }
-            return PartialView("_ErrorMessage", new StringModel(msg));
+            return PartialView ("_ErrorMessage", new StringModel (msg));
         }
 
         [HttpGet]
-        public ActionResult ViewOtherUserDetailsPartial(string acctno)
+        public ActionResult UserDetailsPartial (int userid)
         {
             string msg;
             try
             {
-                var model = _secretSantaBl.CustomUserDetailsEditModelByAcctNo(acctno);
-                return PartialView("_ViewEditUserDetails", model);
+                var model = _secretSantaBl.UserDetailsEditModelByUserId (userid);
+                return PartialView ("_UserDetails", model);
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", ex.Message);
+                ModelState.AddModelError ("", ex.Message);
+                msg = "An Error Has Occured";
+            }
+            return PartialView ("_ErrorMessage", new StringModel (msg));
+        }
+
+        [HttpGet]
+        public ActionResult ViewOtherUserDetailsPartial (string acctno)
+        {
+            string msg;
+            try
+            {
+                var model = _secretSantaBl.CustomUserDetailsEditModelByAcctNo (acctno);
+                return PartialView ("_ViewEditUserDetails", model);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError ("", ex.Message);
                 msg = "Error has occured";
             }
-            return PartialView("_ErrorMessage", new StringModel(msg));
+            return PartialView ("_ErrorMessage", new StringModel (msg));
         }
 
         [HttpPost]
-        public ActionResult SaveUserDetails(CustomUserDetailsEditModel model)
+        public ActionResult SaveUserDetails (CustomUserDetailsEditModel model)
         {
             try
             {
-                var m = _secretSantaBl.SaveUserDetails(model);
+                var m = _secretSantaBl.SaveUserDetails (model);
                 m.Saved = true;
-                return PartialView("_UserDetails", m);
+                return PartialView ("_UserDetails", m);
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", ex.Message);
+                ModelState.AddModelError ("", ex.Message);
                 //_log.LogWarning(ex.Message);
             }
-            return PartialView("_UserDetails", model);
+            return PartialView ("_UserDetails", model);
         }
 
         [HttpPost]
-        public ActionResult SaveUserDetailsInGroup(CustomUserDetailsEditModel model)
+        public ActionResult SaveUserDetailsInGroup (CustomUserDetailsEditModel model)
         {
             try
             {
-                var m = _secretSantaBl.SaveUserDetails(model);
+                var m = _secretSantaBl.SaveUserDetails (model);
                 m.IsMe = true;
                 m.Saved = true;
                 //return RedirectToAction("ViewOtherUserDetailsPartial", new { acctno = m.UserAcctNo });
-                return PartialView("_ViewEditUserDetails", m);
+                return PartialView ("_ViewEditUserDetails", m);
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", ex.Message);
+                ModelState.AddModelError ("", ex.Message);
                 //_log.LogWarning(ex.Message);
             }
-            return PartialView("_ViewEditUserDetails", model);
+            return PartialView ("_ViewEditUserDetails", model);
         }
 
-
         [HttpGet]
-        public IActionResult LoginExternal(string connection, string returnUrl)
+        public IActionResult LoginExternal (string connection, string returnUrl)
         {
             string msg;
             try
@@ -288,11 +281,11 @@ namespace SecretSantaApp.Controllers
 
                     //If the user is a returning user
                     //url = returnUrl;
-                    url = Url.Action("RedirectCreateUpdateUserSendBack", "Account", new {redirecturl = returnUrl});
+                    url = Url.Action ("RedirectCreateUpdateUserSendBack", "Account", new { redirecturl = returnUrl });
                 }
                 else
                 {
-                    url = Url.Action("RedirectToLocal", "Account");
+                    url = Url.Action ("RedirectToLocal", "Account");
                 }
 
                 var properties = new AuthenticationProperties
@@ -300,15 +293,13 @@ namespace SecretSantaApp.Controllers
                     RedirectUri = url
                 };
 
-                if (!string.IsNullOrEmpty(connection))
+                if (!string.IsNullOrEmpty (connection))
                 {
-                    properties.Items.Add("connection", connection);
+                    properties.Items.Add ("connection", connection);
                 }
 
-
-                return new ChallengeResult("Auth0", properties);
+                return new ChallengeResult ("Auth0", properties);
             }
-
             catch (AppException ax)
             {
                 msg = ax.Message;
@@ -318,64 +309,53 @@ namespace SecretSantaApp.Controllers
                 //var error = ex.Message;
                 msg = "An Error Has Occured";
             }
-            return PartialView("_ErrorMessage", new StringModel(msg));
+            return PartialView ("_ErrorMessage", new StringModel (msg));
         }
 
-
-        public ActionResult RedirectCreateUpdateUserSendBack(string redirecturl )
+        public ActionResult RedirectCreateUpdateUserSendBack (string redirecturl)
         {
 
             //Create the user / update the user appropriately
-            var usermodel = _secretSantaBl.CustomUserModelByLoggedInUser(User);
-            _secretSantaBl.CheckUserByCustomUserAccountNumber(usermodel);
-
+            var usermodel = _secretSantaBl.CustomUserModelByLoggedInUser (User);
+            _secretSantaBl.CheckUserByCustomUserAccountNumber (usermodel);
 
             //Send them back to the Group
-            var absUrl = string.Format("{0}://{1}{2}", Request.Scheme,
+            var absUrl = string.Format ("{0}://{1}{2}", Request.Scheme,
                 Request.Host, redirecturl);
 
             //string scheme = url.ActionContext.HttpContext.Request.Scheme;
-            return Redirect(absUrl);
+            return Redirect (absUrl);
         }
 
-
-
-
-
-        public Task LoginAuth(string returnUrl = "/")
+        public Task LoginAuth (string returnUrl = "/")
         {
-            return HttpContext.ChallengeAsync("Auth0", new AuthenticationProperties { RedirectUri = returnUrl });
+            return HttpContext.ChallengeAsync ("Auth0", new AuthenticationProperties { RedirectUri = returnUrl });
         }
 
-
-        public IActionResult AccessDenied()
+        public IActionResult AccessDenied ()
         {
-            return View("AccessDenied");
+            return View ("AccessDenied");
         }
-
 
         [Authorize]
-        public async Task Logout()
+        public async Task Logout ()
         {
-            await HttpContext.SignOutAsync("Auth0", new AuthenticationProperties
+            await HttpContext.SignOutAsync ("Auth0", new AuthenticationProperties
             {
                 // Indicate here where Auth0 should redirect the user after a logout.
                 // Note that the resulting absolute Uri must be whitelisted in the 
                 // **Allowed Logout URLs** settings for the client.
-                RedirectUri = Url.Action("Index", "Home")
-            }).ConfigureAwait(false);
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme).ConfigureAwait(false);
+                RedirectUri = Url.Action ("Index", "Home")
+            }).ConfigureAwait (false);
+            await HttpContext.SignOutAsync (CookieAuthenticationDefaults.AuthenticationScheme).ConfigureAwait (false);
         }
-
 
         [HttpGet]
-        public IActionResult RedirectToLocal(string returnUrl)
+        public IActionResult RedirectToLocal (string returnUrl)
         {
             //var url = Url.Action("CheckUser", "Account");
-            return RedirectToAction(nameof(CheckUser), "Account");
+            return RedirectToAction (nameof (CheckUser), "Account");
         }
-
-
 
         //[Authorize]
         //public async Task Logout()
